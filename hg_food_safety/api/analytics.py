@@ -15,7 +15,7 @@ def dashboard_summary() -> dict:
     _guard()
     today = nowdate()
 
-    batches_on_hold = frappe.db.count("Batch", {"custom_qc_hold": 1})
+    batches_on_hold = frappe.db.count("Batch", {"custom_qc_hold": 1}) if frappe.db.has_column("Batch", "custom_qc_hold") else 0
     open_nc = frappe.db.count("Non Conformance", {"status": "Open"}) if frappe.db.exists("DocType", "Non Conformance") else 0
     samples_due = frappe.db.count("Sample Retention", {
         "keep_until": ("<=", today), "disposed_on": ("is", "not set")})

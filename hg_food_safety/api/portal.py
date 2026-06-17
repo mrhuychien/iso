@@ -19,5 +19,5 @@ def my_today() -> dict:
             "sanitation": frappe.db.count("Sanitation Log", {"log_date": today, "owner": frappe.session.user}),
             "water": frappe.db.count("Water Control Log", {"log_date": today, "owner": frappe.session.user}),
         },
-        "batches_on_hold": frappe.db.count("Batch", {"custom_qc_hold": 1}),
+        "batches_on_hold": frappe.db.count("Batch", {"custom_qc_hold": 1}) if frappe.db.has_column("Batch", "custom_qc_hold") else 0,
     }

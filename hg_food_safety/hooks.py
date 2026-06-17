@@ -7,6 +7,12 @@ app_license = "MIT"
 required_apps = ["frappe", "erpnext"]
 
 # ═══════════════════════════════════════════════════════════════
+# Setup chay THAT khi cai/migrate (patch bi skip tren fresh install)
+# ═══════════════════════════════════════════════════════════════
+after_install = "hg_food_safety.setup.install.after_install"
+after_migrate = "hg_food_safety.setup.install.after_migrate"
+
+# ═══════════════════════════════════════════════════════════════
 # DocType Events
 # ═══════════════════════════════════════════════════════════════
 doc_events = {
