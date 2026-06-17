@@ -1,0 +1,226 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "recall_type",
+  "workflow_state",
+  "batch_no",
+  "item",
+  "recall_level",
+  "cb1",
+  "reason",
+  "sec_q",
+  "qty_produced",
+  "qty_shipped",
+  "qty_recovered",
+  "recovery_pct",
+  "qty_stock",
+  "sec_x",
+  "disposition",
+  "root_cause",
+  "preventive_action",
+  "sec_mock",
+  "trace_time_hours",
+  "trace_pct",
+  "target",
+  "meets_target",
+  "sec_steps",
+  "steps"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "TH-.YYYY.-.###",
+   "reqd": 1,
+   "default": "TH-.YYYY.-.###"
+  },
+  {
+   "fieldname": "recall_type",
+   "fieldtype": "Select",
+   "label": "Loai",
+   "options": "That\nDien tap",
+   "reqd": 1,
+   "in_list_view": 1,
+   "default": "That"
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "Trang thai",
+   "options": "Workflow State",
+   "hidden": 1
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Lo (Batch)",
+   "options": "Batch",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "San pham",
+   "options": "Item"
+  },
+  {
+   "fieldname": "recall_level",
+   "fieldtype": "Select",
+   "label": "Muc do",
+   "options": "A\nB\nC",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Small Text",
+   "label": "Ly do"
+  },
+  {
+   "fieldname": "sec_q",
+   "fieldtype": "Section Break",
+   "label": "So lieu"
+  },
+  {
+   "fieldname": "qty_produced",
+   "fieldtype": "Float",
+   "label": "So da SX"
+  },
+  {
+   "fieldname": "qty_shipped",
+   "fieldtype": "Float",
+   "label": "So da xuat"
+  },
+  {
+   "fieldname": "qty_recovered",
+   "fieldtype": "Float",
+   "label": "So thu hoi duoc"
+  },
+  {
+   "fieldname": "recovery_pct",
+   "fieldtype": "Percent",
+   "label": "Ty le thu hoi (%)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "qty_stock",
+   "fieldtype": "Float",
+   "label": "So ton kho"
+  },
+  {
+   "fieldname": "sec_x",
+   "fieldtype": "Section Break",
+   "label": "Xu ly & nguyen nhan"
+  },
+  {
+   "fieldname": "disposition",
+   "fieldtype": "Small Text",
+   "label": "Bien phap xu ly hang thu hoi"
+  },
+  {
+   "fieldname": "root_cause",
+   "fieldtype": "Small Text",
+   "label": "Nguyen nhan goc"
+  },
+  {
+   "fieldname": "preventive_action",
+   "fieldtype": "Small Text",
+   "label": "Hanh dong phong ngua"
+  },
+  {
+   "fieldname": "sec_mock",
+   "fieldtype": "Section Break",
+   "label": "Dien tap (mock recall)"
+  },
+  {
+   "fieldname": "trace_time_hours",
+   "fieldtype": "Float",
+   "label": "Thoi gian truy xuat (gio)"
+  },
+  {
+   "fieldname": "trace_pct",
+   "fieldtype": "Percent",
+   "label": "% truy xuat"
+  },
+  {
+   "fieldname": "target",
+   "fieldtype": "Data",
+   "label": "Muc tieu (gio/%)"
+  },
+  {
+   "fieldname": "meets_target",
+   "fieldtype": "Check",
+   "label": "Dat muc tieu"
+  },
+  {
+   "fieldname": "sec_steps",
+   "fieldtype": "Section Break",
+   "label": "Cac buoc"
+  },
+  {
+   "fieldname": "steps",
+   "fieldtype": "Table",
+   "label": "Steps",
+   "options": "Recall Step"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Product Recall",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "is_submittable": 1,
+ "title_field": "batch_no",
+ "search_fields": "batch_no,item,recall_level"
+}

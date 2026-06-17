@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "clause",
+  "question",
+  "evidence",
+  "result",
+  "severity",
+  "quality_action"
+ ],
+ "fields": [
+  {
+   "fieldname": "clause",
+   "fieldtype": "Data",
+   "label": "Dieu khoan ISO",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "question",
+   "fieldtype": "Small Text",
+   "label": "Noi dung/cau hoi",
+   "columns": 3
+  },
+  {
+   "fieldname": "evidence",
+   "fieldtype": "Small Text",
+   "label": "Bang chung",
+   "columns": 3
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Select",
+   "label": "Ket qua",
+   "options": "Phu hop\nKhong phu hop\nKhuyen nghi",
+   "in_list_view": 1,
+   "default": "Phu hop",
+   "columns": 2
+  },
+  {
+   "fieldname": "severity",
+   "fieldtype": "Select",
+   "label": "Muc",
+   "options": "\nNang\nNhe",
+   "columns": 1
+  },
+  {
+   "fieldname": "quality_action",
+   "fieldtype": "Link",
+   "label": "Quality Action",
+   "options": "Quality Action",
+   "columns": 2
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Audit Finding",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

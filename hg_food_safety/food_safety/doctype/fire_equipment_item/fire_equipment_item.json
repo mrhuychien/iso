@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "equipment",
+  "location",
+  "qty",
+  "check_date",
+  "condition",
+  "next_check_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "equipment",
+   "fieldtype": "Data",
+   "label": "Thiet bi PCCC",
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Vi tri",
+   "columns": 2
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "label": "So luong",
+   "columns": 1
+  },
+  {
+   "fieldname": "check_date",
+   "fieldtype": "Date",
+   "label": "Ngay kiem tra",
+   "columns": 2
+  },
+  {
+   "fieldname": "condition",
+   "fieldtype": "Select",
+   "label": "Tinh trang",
+   "options": "Dat\nCan xu ly",
+   "in_list_view": 1,
+   "default": "Dat",
+   "columns": 2
+  },
+  {
+   "fieldname": "next_check_date",
+   "fieldtype": "Date",
+   "label": "Han ke tiep",
+   "columns": 2
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Fire Equipment Item",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

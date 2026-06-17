@@ -1,0 +1,138 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "log_date",
+  "item",
+  "cb1",
+  "source_batch",
+  "rework_qty",
+  "target_batch",
+  "rework_pct",
+  "like_into_like",
+  "approved_by"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "RW-.YYYY.-.#####",
+   "reqd": 1,
+   "default": "RW-.YYYY.-.#####"
+  },
+  {
+   "fieldname": "log_date",
+   "fieldtype": "Date",
+   "label": "Ngay",
+   "reqd": 1,
+   "in_list_view": 1,
+   "default": "Today"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "San pham",
+   "options": "Item",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "source_batch",
+   "fieldtype": "Link",
+   "label": "Lo goc",
+   "options": "Batch",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "rework_qty",
+   "fieldtype": "Float",
+   "label": "KL rework (kg)"
+  },
+  {
+   "fieldname": "target_batch",
+   "fieldtype": "Link",
+   "label": "Lo dua vao",
+   "options": "Batch",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "rework_pct",
+   "fieldtype": "Percent",
+   "label": "Ty le % rework",
+   "read_only": 1
+  },
+  {
+   "fieldname": "like_into_like",
+   "fieldtype": "Check",
+   "label": "Cung loai vao cung loai",
+   "description": "Bat buoc tick: chi rework cung ho so san pham"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Nguoi duyet",
+   "options": "Employee"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Rework Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "source_batch",
+ "search_fields": "source_batch,target_batch"
+}

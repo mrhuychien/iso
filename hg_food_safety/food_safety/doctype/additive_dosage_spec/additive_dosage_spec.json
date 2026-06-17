@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "legal_ref",
+  "sec_r",
+  "rows"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Tieu de",
+   "reqd": 1,
+   "in_list_view": 1,
+   "default": "Dinh muc phu gia, pham mau"
+  },
+  {
+   "fieldname": "legal_ref",
+   "fieldtype": "Data",
+   "label": "Can cu phap ly",
+   "default": "TT 24/2019/TT-BYT - Phu luc 2A, nhom 07.2"
+  },
+  {
+   "fieldname": "sec_r",
+   "fieldtype": "Section Break",
+   "label": ""
+  },
+  {
+   "fieldname": "rows",
+   "fieldtype": "Table",
+   "label": "Rows",
+   "options": "Additive Dosage Row"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Additive Dosage Spec",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "title_field": "title"
+}

@@ -1,0 +1,74 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "point",
+  "threat",
+  "likelihood",
+  "severity",
+  "score",
+  "control",
+  "residual_risk"
+ ],
+ "fields": [
+  {
+   "fieldname": "point",
+   "fieldtype": "Data",
+   "label": "Diem/khau chuoi cung ung",
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "threat",
+   "fieldtype": "Small Text",
+   "label": "Moi de doa",
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
+   "fieldname": "likelihood",
+   "fieldtype": "Int",
+   "label": "Kha nang (1-5)",
+   "columns": 1
+  },
+  {
+   "fieldname": "severity",
+   "fieldtype": "Int",
+   "label": "Hau qua (1-5)",
+   "columns": 1
+  },
+  {
+   "fieldname": "score",
+   "fieldtype": "Int",
+   "label": "Muc (=LxS)",
+   "read_only": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "control",
+   "fieldtype": "Small Text",
+   "label": "Bien phap phong ve",
+   "columns": 3
+  },
+  {
+   "fieldname": "residual_risk",
+   "fieldtype": "Data",
+   "label": "Rui ro ton du",
+   "columns": 2
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Threat Item",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

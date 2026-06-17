@@ -1,0 +1,74 @@
+import { call } from "../lib/api.js";
+import { escapeHtml, formatNumber, pct } from "../lib/format.js";
+
+let chartRef = null;
+
+export async function render({ container }) {
+  if (!(window.FS_CONTEXT && window.FS_CONTEXT.isManager)) {
+    container.innerHTML = '<div class="app-alert app-alert-red">Chi quan ly ATTP duoc xem dashboard.</div>';
+    return;
+  }
+  container.innerHTML = '<div class="app-card">Dang tai dashboard...</div>';
+  try {
+    const s = await call("hg_food_safety.api.analytics.dashboard_summary");
+    const a = s.alerts || {};
+    const today = s.today || {};
+    const to = new Date().toISOString().slice(0, 10);
+    const from = new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10);
+    const k = await call("hg_food_safety.api.analytics.qc_kpis", { from_date: from, to_date: to });
+    container.innerHTML = `
+      <h2 class="app-h2">Bang dieu khien ATTP</h2>
+      <div class="app-grid">
+        ${stat("Lo dang co lap", a.batches_on_hold, a.batches_on_hold ? "red" : "")}
+        ${stat("NC dang mo", a.open_non_conformance)}
+        ${stat("Mau den han huy", a.samples_due_disposal)}
+        ${stat("Hieu chuan <30 ngay", a.calibration_due_30d)}
+      </div>
+      <h3 class="app-h3">KPI 30 ngay</h3>
+      <div class="app-grid">
+        ${stat("% dat thanh pham", k.finished_pass_rate === null ? "-" : pct(k.finished_pass_rate))}
+        ${stat("% OPRP vuot", k.oprp_deviation_rate === null ? "-" : pct(k.oprp_deviation_rate))}
+        ${stat("Mock recall (gio)", k.mock_recall ? (k.mock_recall.avg_trace_hours ?? "-") : "-")}
+      </div>
+      <h3 class="app-h3">Ghi nhan hom nay</h3>
+      <div class="app-chart-wrap"><canvas id="app-today-chart"></canvas></div>`;
+    await drawChart(today);
+  } catch (e) {
+    container.innerHTML = `<div class="app-alert app-alert-red">${escapeHtml(e.message)}</div>`;
+  }
+}
+
+function stat(label, val, tone) {
+  const v = typeof val === "number" ? formatNumber(val) : escapeHtml(String(val));
+  return `<div class="app-stat ${tone === "red" ? "app-stat-red" : ""}">
+    <div class="app-stat-label">${escapeHtml(label)}</div><div class="app-stat-val">${v}</div></div>`;
+}
+
+async function loadChartLib() {
+  if (window.Chart) return window.Chart;
+  await new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js";
+    s.onload = res; s.onerror = rej; document.head.appendChild(s);
+  });
+  return window.Chart;
+}
+
+async function drawChart(today) {
+  const Chart = await loadChartLib();
+  const ctx = document.getElementById("app-today-chart");
+  if (!ctx) return;
+  if (chartRef) { chartRef.destroy(); chartRef = null; }
+  chartRef = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["OPRP", "Thanh pham", "Di vat", "Ve sinh"],
+      datasets: [{
+        label: "So ban ghi hom nay",
+        data: [today.oprp_logs, today.finished_checks, today.foreign_body_checks, today.sanitation_logs],
+        backgroundColor: "#1d9e75",
+      }],
+    },
+    options: { responsive: true, plugins: { legend: { display: false } } },
+  });
+}

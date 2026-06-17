@@ -1,0 +1,135 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "asset",
+  "method",
+  "cb1",
+  "reference_standard",
+  "tolerance",
+  "sec_r",
+  "result",
+  "passed",
+  "calibration_date",
+  "next_due"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "HC-.YYYY.-.####",
+   "reqd": 1,
+   "default": "HC-.YYYY.-.####"
+  },
+  {
+   "fieldname": "asset",
+   "fieldtype": "Link",
+   "label": "Thiet bi do",
+   "options": "Asset",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "method",
+   "fieldtype": "Select",
+   "label": "Hinh thuc",
+   "options": "Noi bo\nBen ngoai",
+   "in_list_view": 1,
+   "default": "Ben ngoai"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "reference_standard",
+   "fieldtype": "Data",
+   "label": "Chuan so sanh"
+  },
+  {
+   "fieldname": "tolerance",
+   "fieldtype": "Data",
+   "label": "Sai so cho phep"
+  },
+  {
+   "fieldname": "sec_r",
+   "fieldtype": "Section Break",
+   "label": ""
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Data",
+   "label": "Ket qua do"
+  },
+  {
+   "fieldname": "passed",
+   "fieldtype": "Check",
+   "label": "Dat",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "calibration_date",
+   "fieldtype": "Date",
+   "label": "Ngay hieu chuan"
+  },
+  {
+   "fieldname": "next_due",
+   "fieldtype": "Date",
+   "label": "Han ke tiep",
+   "in_list_view": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Calibration Record",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "asset",
+ "search_fields": "asset,next_due"
+}

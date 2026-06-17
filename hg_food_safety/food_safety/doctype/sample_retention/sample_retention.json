@@ -1,0 +1,39 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["naming_series","retention_date","item","batch_no","column_break_a","qty","location","keep_until","section_disp","disposed_on","kept_by","disposed_by"],
+ "fields": [
+  {"fieldname": "naming_series", "fieldtype": "Select", "label": "Series", "options": "LM-.YYYY.-.#####", "reqd": 1, "default": "LM-.YYYY.-.#####"},
+  {"fieldname": "retention_date", "fieldtype": "Date", "label": "Ngay luu", "default": "Today", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "item", "fieldtype": "Link", "label": "San pham", "options": "Item", "in_list_view": 1},
+  {"fieldname": "batch_no", "fieldtype": "Link", "label": "Lo (Batch)", "options": "Batch", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "column_break_a", "fieldtype": "Column Break"},
+  {"fieldname": "qty", "fieldtype": "Int", "label": "So luong mau"},
+  {"fieldname": "location", "fieldtype": "Data", "label": "Vi tri luu"},
+  {"fieldname": "keep_until", "fieldtype": "Date", "label": "Luu den ngay", "in_list_view": 1, "description": "Tu dong = ngay SX + han su dung (lay tu Batch neu co)"},
+  {"fieldname": "section_disp", "fieldtype": "Section Break", "label": "Huy mau"},
+  {"fieldname": "disposed_on", "fieldtype": "Date", "label": "Ngay huy"},
+  {"fieldname": "kept_by", "fieldtype": "Link", "label": "Nguoi luu", "options": "Employee"},
+  {"fieldname": "disposed_by", "fieldtype": "Link", "label": "Nguoi huy", "options": "Employee"}
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Sample Retention",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "report": 1, "export": 1, "share": 1},
+  {"role": "FS QA Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "print": 1, "report": 1, "export": 1},
+  {"role": "FS QC", "read": 1, "write": 1, "create": 1, "print": 1, "report": 1}
+ ],
+ "search_fields": "batch_no,item,retention_date",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "batch_no",
+ "track_changes": 1
+}

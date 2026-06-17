@@ -1,0 +1,29 @@
+.app-root { max-width: 860px; margin: 0 auto; padding: 12px; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+.app-header { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; background:#1f4e78; color:#fff !important; border-radius:10px; }
+.app-brand { font-weight:600; }
+.app-user { font-size:12px; opacity:.9; }
+.app-nav { display:flex; gap:8px; margin:12px 0; flex-wrap:wrap; }
+.app-nav-link { padding:8px 14px; border:1px solid #d0d5dd; border-radius:8px; text-decoration:none; color:#1f4e78 !important; font-size:14px; }
+.app-nav-link.app-active { background:#1f4e78; color:#fff !important; border-color:#1f4e78; }
+.app-main { margin-top:8px; }
+.app-h2 { font-size:18px; margin:6px 0 12px; color:#1f4e78; }
+.app-h3 { font-size:15px; margin:16px 0 8px; color:#1f4e78; }
+.app-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+.app-stat { background:#f4f6fa; border-radius:10px; padding:14px; }
+.app-stat-red { background:#fcebeb; }
+.app-stat-label { font-size:12px; color:#555; }
+.app-stat-val { font-size:24px; font-weight:600; margin-top:4px; }
+.app-card { background:#f4f6fa; border-radius:10px; padding:16px; }
+.app-alert { background:#eef2f7; border-radius:8px; padding:10px 12px; margin:12px 0; }
+.app-alert-red { background:#fcebeb; color:#a32d2d; }
+.app-row { display:flex; gap:8px; margin-bottom:12px; }
+.app-input { flex:1; padding:9px 12px; border:1px solid #d0d5dd; border-radius:8px; font-size:14px; }
+.app-btn { padding:9px 16px; background:#1f4e78; color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:14px; }
+.app-tl-sec { margin:12px 0; }
+.app-tl-title { font-weight:600; font-size:13px; color:#1f4e78; margin-bottom:6px; }
+.app-tl-row { display:flex; justify-content:space-between; padding:6px 10px; background:#f4f6fa; border-radius:6px; margin-bottom:4px; font-size:13px; }
+.app-tl-name { font-family:monospace; }
+.app-tl-detail { color:#555; }
+.app-tl-empty { font-size:12px; color:#999; padding:4px 10px; }
+.app-chart-wrap { max-width:520px; margin-top:8px; }
+.app-loading { padding:20px; color:#888; }

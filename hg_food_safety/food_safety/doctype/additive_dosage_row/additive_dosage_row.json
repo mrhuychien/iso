@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "additive_name",
+  "ins",
+  "function",
+  "product",
+  "max_level",
+  "actual_level",
+  "legal_basis"
+ ],
+ "fields": [
+  {
+   "fieldname": "additive_name",
+   "fieldtype": "Data",
+   "label": "Phu gia",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "ins",
+   "fieldtype": "Data",
+   "label": "INS",
+   "in_list_view": 1,
+   "columns": 1
+  },
+  {
+   "fieldname": "function",
+   "fieldtype": "Data",
+   "label": "Nhom chuc nang",
+   "columns": 2
+  },
+  {
+   "fieldname": "product",
+   "fieldtype": "Link",
+   "label": "San pham",
+   "options": "Item",
+   "columns": 2
+  },
+  {
+   "fieldname": "max_level",
+   "fieldtype": "Data",
+   "label": "Muc toi da (ML)",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "actual_level",
+   "fieldtype": "Data",
+   "label": "Muc su dung thuc te",
+   "columns": 2
+  },
+  {
+   "fieldname": "legal_basis",
+   "fieldtype": "Data",
+   "label": "Can cu",
+   "columns": 2
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Additive Dosage Row",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

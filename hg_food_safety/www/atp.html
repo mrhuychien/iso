@@ -1,0 +1,29 @@
+{% extends "templates/web.html" %}
+
+{% block head_include %}
+{% set v = fs_asset_version %}
+<script type="importmap">
+{ "imports": {
+  "/assets/hg_food_safety/atp/lib/api.js":    "/assets/hg_food_safety/atp/lib/api.js?v={{ v }}",
+  "/assets/hg_food_safety/atp/lib/dom.js":    "/assets/hg_food_safety/atp/lib/dom.js?v={{ v }}",
+  "/assets/hg_food_safety/atp/lib/format.js": "/assets/hg_food_safety/atp/lib/format.js?v={{ v }}"
+}}
+</script>
+<script>
+window.FS_CONTEXT = {
+  user: "{{ fs_user }}",
+  isManager: {{ fs_is_manager }} === 1,
+  assetVersion: "{{ fs_asset_version }}",
+  csrf: "{{ fs_csrf }}",
+  baseUrl: "/api/method/"
+};
+</script>
+<link rel="stylesheet" href="/assets/hg_food_safety/atp/shell.css?v={{ fs_asset_version }}">
+{% endblock %}
+
+{% block page_content %}
+<div id="app-root" class="app-root">
+  <div class="app-loading">Dang tai...</div>
+</div>
+<script type="module" src="/assets/hg_food_safety/atp/shell.js?v={{ fs_asset_version }}"></script>
+{% endblock %}

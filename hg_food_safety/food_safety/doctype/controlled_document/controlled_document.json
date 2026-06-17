@@ -1,0 +1,125 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "doc_name",
+  "doc_code",
+  "doc_type",
+  "cb1",
+  "version",
+  "effective_date",
+  "status",
+  "superseded_by",
+  "location",
+  "retention"
+ ],
+ "fields": [
+  {
+   "fieldname": "doc_name",
+   "fieldtype": "Data",
+   "label": "Ten tai lieu",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "doc_code",
+   "fieldtype": "Data",
+   "label": "Ma tai lieu",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "doc_type",
+   "fieldtype": "Select",
+   "label": "Loai",
+   "options": "Noi bo\nBen ngoai",
+   "in_list_view": 1,
+   "default": "Noi bo"
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Data",
+   "label": "Phien ban"
+  },
+  {
+   "fieldname": "effective_date",
+   "fieldtype": "Date",
+   "label": "Ngay hieu luc"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Tinh trang",
+   "options": "Hieu luc\nDa thay the\nHet hieu luc",
+   "in_list_view": 1,
+   "default": "Hieu luc"
+  },
+  {
+   "fieldname": "superseded_by",
+   "fieldtype": "Data",
+   "label": "Van ban thay the"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Noi luu"
+  },
+  {
+   "fieldname": "retention",
+   "fieldtype": "Data",
+   "label": "Thoi gian luu"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Controlled Document",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "title_field": "doc_name",
+ "search_fields": "doc_code,doc_name"
+}

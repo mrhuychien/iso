@@ -1,0 +1,24 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": ["category", "content", "result", "action"],
+ "fields": [
+  {"fieldname": "category", "fieldtype": "Select", "label": "Hang muc", "options": "Ca nhan\nBe mat - Thiet bi\nKhu vuc\nChat thai", "in_list_view": 1, "reqd": 1, "columns": 2},
+  {"fieldname": "content", "fieldtype": "Data", "label": "Noi dung kiem tra", "in_list_view": 1, "columns": 4},
+  {"fieldname": "result", "fieldtype": "Select", "label": "Ket qua", "options": "Dat\nKhong dat", "default": "Dat", "in_list_view": 1, "reqd": 1, "columns": 2},
+  {"fieldname": "action", "fieldtype": "Data", "label": "Hanh dong khac phuc", "in_list_view": 1, "columns": 3}
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Sanitation Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

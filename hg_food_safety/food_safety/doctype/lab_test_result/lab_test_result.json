@@ -1,0 +1,154 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sample_date",
+  "target_type",
+  "cb1",
+  "item",
+  "batch_no",
+  "sec_r",
+  "parameter",
+  "limit_basis",
+  "result",
+  "status",
+  "lab",
+  "action_if_fail"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "KN-.YYYY.-.####",
+   "reqd": 1,
+   "default": "KN-.YYYY.-.####"
+  },
+  {
+   "fieldname": "sample_date",
+   "fieldtype": "Date",
+   "label": "Ngay lay mau",
+   "reqd": 1,
+   "in_list_view": 1,
+   "default": "Today"
+  },
+  {
+   "fieldname": "target_type",
+   "fieldtype": "Select",
+   "label": "Doi tuong",
+   "options": "San pham\nNuoc\nNguyen lieu",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "San pham/NL",
+   "options": "Item"
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "label": "Lo",
+   "options": "Batch"
+  },
+  {
+   "fieldname": "sec_r",
+   "fieldtype": "Section Break",
+   "label": ""
+  },
+  {
+   "fieldname": "parameter",
+   "fieldtype": "Data",
+   "label": "Chi tieu"
+  },
+  {
+   "fieldname": "limit_basis",
+   "fieldtype": "Data",
+   "label": "Gioi han / Can cu (QCVN)"
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Data",
+   "label": "Ket qua"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Ket qua",
+   "options": "Dat\nKhong dat",
+   "in_list_view": 1,
+   "default": "Dat"
+  },
+  {
+   "fieldname": "lab",
+   "fieldtype": "Data",
+   "label": "Phong thu nghiem (ISO 17025)"
+  },
+  {
+   "fieldname": "action_if_fail",
+   "fieldtype": "Small Text",
+   "label": "Xu ly neu khong dat",
+   "depends_on": "eval:doc.status=='Khong dat'"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Lab Test Result",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "target_type",
+ "search_fields": "batch_no,item,sample_date"
+}

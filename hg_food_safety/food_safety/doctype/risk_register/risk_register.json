@@ -1,0 +1,139 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "context",
+  "risk_opportunity",
+  "cb1",
+  "likelihood",
+  "consequence",
+  "level",
+  "sec_c",
+  "control",
+  "residual_risk",
+  "owner",
+  "due"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "RR-.YYYY.-.###",
+   "reqd": 1,
+   "default": "RR-.YYYY.-.###"
+  },
+  {
+   "fieldname": "context",
+   "fieldtype": "Data",
+   "label": "Boi canh/khia canh",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "risk_opportunity",
+   "fieldtype": "Small Text",
+   "label": "Rui ro/Co hoi",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "likelihood",
+   "fieldtype": "Int",
+   "label": "Kha nang (1-5)"
+  },
+  {
+   "fieldname": "consequence",
+   "fieldtype": "Int",
+   "label": "Hau qua (1-5)"
+  },
+  {
+   "fieldname": "level",
+   "fieldtype": "Int",
+   "label": "Muc (=KNxHQ)",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_c",
+   "fieldtype": "Section Break",
+   "label": ""
+  },
+  {
+   "fieldname": "control",
+   "fieldtype": "Small Text",
+   "label": "Bien phap kiem soat"
+  },
+  {
+   "fieldname": "residual_risk",
+   "fieldtype": "Data",
+   "label": "Rui ro ton du"
+  },
+  {
+   "fieldname": "owner",
+   "fieldtype": "Link",
+   "label": "Nguoi phu trach",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "due",
+   "fieldtype": "Date",
+   "label": "Thoi han"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Risk Register",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "context",
+ "search_fields": "context"
+}

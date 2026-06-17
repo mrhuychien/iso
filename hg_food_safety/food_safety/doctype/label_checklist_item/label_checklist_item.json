@@ -1,0 +1,40 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "criterion",
+  "result"
+ ],
+ "fields": [
+  {
+   "fieldname": "criterion",
+   "fieldtype": "Data",
+   "label": "Noi dung bat buoc",
+   "in_list_view": 1,
+   "columns": 6
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Select",
+   "label": "Ket qua",
+   "options": "Dat\nKhong dat",
+   "in_list_view": 1,
+   "default": "Dat",
+   "columns": 2
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Label Checklist Item",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

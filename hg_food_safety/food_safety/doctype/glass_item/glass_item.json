@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "location",
+  "type",
+  "qty",
+  "last_check_date",
+  "condition",
+  "action_if_broken"
+ ],
+ "fields": [
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Vi tri",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "label": "Loai (den/kinh/dong ho)",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "label": "So luong",
+   "columns": 1
+  },
+  {
+   "fieldname": "last_check_date",
+   "fieldtype": "Date",
+   "label": "Ngay kiem tra",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "condition",
+   "fieldtype": "Select",
+   "label": "Tinh trang",
+   "options": "Nguyen ven\nVo",
+   "in_list_view": 1,
+   "default": "Nguyen ven",
+   "columns": 2
+  },
+  {
+   "fieldname": "action_if_broken",
+   "fieldtype": "Data",
+   "label": "Hanh dong neu vo",
+   "columns": 3
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Glass Item",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

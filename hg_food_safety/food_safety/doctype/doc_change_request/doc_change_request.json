@@ -1,0 +1,138 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "requested_by",
+  "target_doc",
+  "change_type",
+  "cb1",
+  "workflow_state",
+  "reason",
+  "old_version",
+  "new_version",
+  "approved_by",
+  "old_copy_withdrawn"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "YCTL-.YYYY.-.####",
+   "reqd": 1,
+   "default": "YCTL-.YYYY.-.####"
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Nguoi de nghi",
+   "options": "Employee",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "target_doc",
+   "fieldtype": "Link",
+   "label": "Tai lieu",
+   "options": "Controlled Document",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "change_type",
+   "fieldtype": "Select",
+   "label": "Loai yeu cau",
+   "options": "Ban hanh\nSua doi\nHuy",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "workflow_state",
+   "fieldtype": "Link",
+   "label": "Trang thai",
+   "options": "Workflow State",
+   "hidden": 1
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Small Text",
+   "label": "Ly do & noi dung"
+  },
+  {
+   "fieldname": "old_version",
+   "fieldtype": "Data",
+   "label": "Phien ban cu"
+  },
+  {
+   "fieldname": "new_version",
+   "fieldtype": "Data",
+   "label": "Phien ban moi"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Nguoi phe duyet",
+   "options": "Employee"
+  },
+  {
+   "fieldname": "old_copy_withdrawn",
+   "fieldtype": "Check",
+   "label": "Da thu hoi ban cu"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Doc Change Request",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "is_submittable": 1,
+ "title_field": "target_doc",
+ "search_fields": "target_doc"
+}

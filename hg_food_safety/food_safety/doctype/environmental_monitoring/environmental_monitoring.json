@@ -1,0 +1,146 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sample_date",
+  "location",
+  "cb1",
+  "parameter",
+  "warning_limit",
+  "action_limit",
+  "sec_r",
+  "result",
+  "status",
+  "corrective_action",
+  "tested_by"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ENV-.YYYY.-.####",
+   "reqd": 1,
+   "default": "ENV-.YYYY.-.####"
+  },
+  {
+   "fieldname": "sample_date",
+   "fieldtype": "Date",
+   "label": "Ngay",
+   "reqd": 1,
+   "in_list_view": 1,
+   "default": "Today"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Vi tri lay mau",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break",
+   "label": ""
+  },
+  {
+   "fieldname": "parameter",
+   "fieldtype": "Data",
+   "label": "Chi tieu"
+  },
+  {
+   "fieldname": "warning_limit",
+   "fieldtype": "Data",
+   "label": "Muc canh bao"
+  },
+  {
+   "fieldname": "action_limit",
+   "fieldtype": "Data",
+   "label": "Muc hanh dong"
+  },
+  {
+   "fieldname": "sec_r",
+   "fieldtype": "Section Break",
+   "label": ""
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Data",
+   "label": "Ket qua"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Trang thai",
+   "options": "Dat\nCanh bao\nHanh dong",
+   "in_list_view": 1,
+   "default": "Dat"
+  },
+  {
+   "fieldname": "corrective_action",
+   "fieldtype": "Small Text",
+   "label": "Hanh dong khac phuc",
+   "depends_on": "eval:doc.status!='Dat'"
+  },
+  {
+   "fieldname": "tested_by",
+   "fieldtype": "Link",
+   "label": "Nguoi thuc hien",
+   "options": "Employee"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Environmental Monitoring",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "location",
+ "search_fields": "location,sample_date"
+}

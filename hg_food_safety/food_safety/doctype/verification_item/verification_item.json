@@ -1,0 +1,65 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "category",
+  "content",
+  "method",
+  "result",
+  "passed",
+  "recommendation"
+ ],
+ "fields": [
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Hang muc tham tra",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "content",
+   "fieldtype": "Small Text",
+   "label": "Noi dung",
+   "columns": 3
+  },
+  {
+   "fieldname": "method",
+   "fieldtype": "Data",
+   "label": "Phuong phap",
+   "columns": 2
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Small Text",
+   "label": "Ket qua",
+   "columns": 2
+  },
+  {
+   "fieldname": "passed",
+   "fieldtype": "Check",
+   "label": "Dat",
+   "columns": 1
+  },
+  {
+   "fieldname": "recommendation",
+   "fieldtype": "Small Text",
+   "label": "Kien nghi",
+   "columns": 2
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Verification Item",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

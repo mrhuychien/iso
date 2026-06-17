@@ -1,0 +1,61 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "time_point",
+  "sensory",
+  "microbio",
+  "physchem",
+  "result"
+ ],
+ "fields": [
+  {
+   "fieldname": "time_point",
+   "fieldtype": "Data",
+   "label": "Moc thoi gian",
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "sensory",
+   "fieldtype": "Data",
+   "label": "Cam quan",
+   "columns": 3
+  },
+  {
+   "fieldname": "microbio",
+   "fieldtype": "Data",
+   "label": "Vi sinh",
+   "columns": 3
+  },
+  {
+   "fieldname": "physchem",
+   "fieldtype": "Data",
+   "label": "Ly hoa",
+   "columns": 2
+  },
+  {
+   "fieldname": "result",
+   "fieldtype": "Select",
+   "label": "Ket qua",
+   "options": "Dat\nKhong dat",
+   "in_list_view": 1,
+   "default": "Dat",
+   "columns": 2
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Shelf Life Reading",
+ "owner": "Administrator",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "istable": 1,
+ "editable_grid": 1,
+ "permissions": []
+}

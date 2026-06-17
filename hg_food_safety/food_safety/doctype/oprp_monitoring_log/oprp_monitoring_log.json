@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series", "log_date", "shift", "column_break_ctx", "batch_no", "work_order",
+  "section_break_readings", "readings",
+  "section_break_dev", "has_deviation", "corrective_action", "column_break_dev", "monitored_by"
+ ],
+ "fields": [
+  {"fieldname": "naming_series", "fieldtype": "Select", "label": "Series", "options": "OPRP-.YYYY.-.#####", "reqd": 1, "default": "OPRP-.YYYY.-.#####"},
+  {"fieldname": "log_date", "fieldtype": "Date", "label": "Ngay", "default": "Today", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "shift", "fieldtype": "Select", "label": "Ca", "options": "Sang\nChieu\nToi", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "column_break_ctx", "fieldtype": "Column Break"},
+  {"fieldname": "batch_no", "fieldtype": "Link", "label": "Lo (Batch)", "options": "Batch", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "work_order", "fieldtype": "Link", "label": "Lenh san xuat", "options": "Work Order"},
+  {"fieldname": "section_break_readings", "fieldtype": "Section Break", "label": "Chi tiet giam sat"},
+  {"fieldname": "readings", "fieldtype": "Table", "label": "Readings", "options": "OPRP Reading", "reqd": 1},
+  {"fieldname": "section_break_dev", "fieldtype": "Section Break", "label": "Sai lech & khac phuc"},
+  {"fieldname": "has_deviation", "fieldtype": "Check", "label": "Co vuot gioi han", "read_only": 1, "in_list_view": 1},
+  {"fieldname": "corrective_action", "fieldtype": "Small Text", "label": "Hanh dong khac phuc", "depends_on": "eval:doc.has_deviation", "mandatory_depends_on": "eval:doc.has_deviation"},
+  {"fieldname": "column_break_dev", "fieldtype": "Column Break"},
+  {"fieldname": "monitored_by", "fieldtype": "Link", "label": "Nguoi giam sat", "options": "Employee", "reqd": 1}
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "OPRP Monitoring Log",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "amend": 1, "print": 1, "report": 1, "export": 1, "share": 1},
+  {"role": "FS QA Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "amend": 1, "print": 1, "report": 1, "export": 1},
+  {"role": "FS QC", "read": 1, "write": 1, "create": 1, "submit": 1, "print": 1, "report": 1}
+ ],
+ "search_fields": "batch_no,log_date,shift",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "batch_no",
+ "track_changes": 1
+}

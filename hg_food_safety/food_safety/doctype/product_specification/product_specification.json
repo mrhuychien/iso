@@ -1,0 +1,127 @@
+{
+ "actions": [],
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "item",
+  "self_declaration_no",
+  "sec_c",
+  "ingredients",
+  "sensory_spec",
+  "physchem_spec",
+  "microbio_spec",
+  "sec_p",
+  "packaging_spec",
+  "shelf_life",
+  "label_info"
+ ],
+ "fields": [
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "San pham",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "self_declaration_no",
+   "fieldtype": "Data",
+   "label": "So tu cong bo",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sec_c",
+   "fieldtype": "Section Break",
+   "label": "Thanh phan & chi tieu"
+  },
+  {
+   "fieldname": "ingredients",
+   "fieldtype": "Text",
+   "label": "Thanh phan & ty le"
+  },
+  {
+   "fieldname": "sensory_spec",
+   "fieldtype": "Small Text",
+   "label": "Chi tieu cam quan"
+  },
+  {
+   "fieldname": "physchem_spec",
+   "fieldtype": "Small Text",
+   "label": "Chi tieu ly-hoa"
+  },
+  {
+   "fieldname": "microbio_spec",
+   "fieldtype": "Small Text",
+   "label": "Chi tieu vi sinh"
+  },
+  {
+   "fieldname": "sec_p",
+   "fieldtype": "Section Break",
+   "label": "Dong goi & nhan"
+  },
+  {
+   "fieldname": "packaging_spec",
+   "fieldtype": "Small Text",
+   "label": "Quy cach dong goi"
+  },
+  {
+   "fieldname": "shelf_life",
+   "fieldtype": "Data",
+   "label": "Han su dung"
+  },
+  {
+   "fieldname": "label_info",
+   "fieldtype": "Text",
+   "label": "Thong tin ghi nhan"
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Product Specification",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1,
+   "share": 1
+  },
+  {
+   "role": "FS QA Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "print": 1,
+   "report": 1,
+   "export": 1
+  },
+  {
+   "role": "FS QC",
+   "read": 1,
+   "print": 1,
+   "report": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "title_field": "item",
+ "search_fields": "item"
+}

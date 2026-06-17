@@ -1,0 +1,15 @@
+[project]
+name = "hg_food_safety"
+authors = [{ name = "Hoang Giang JSC", email = "info@rongvanghoanggia.com" }]
+description = "He thong an toan thuc pham (ISO 22000) tich hop module Quality - ERPNext v16"
+requires-python = ">=3.10"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = []
+
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "hg_food_safety"

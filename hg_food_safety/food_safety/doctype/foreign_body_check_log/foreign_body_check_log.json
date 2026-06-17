@@ -1,0 +1,41 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-06-16 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["naming_series","log_date","shift","batch_no","stage","column_break_a","sieve_status","metal_detector","foreign_body_found","section_res","status","action","checked_by"],
+ "fields": [
+  {"fieldname": "naming_series", "fieldtype": "Select", "label": "Series", "options": "FBC-.YYYY.-.#####", "reqd": 1, "default": "FBC-.YYYY.-.#####"},
+  {"fieldname": "log_date", "fieldtype": "Date", "label": "Ngay", "default": "Today", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "shift", "fieldtype": "Select", "label": "Ca", "options": "Sang\nChieu\nToi", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "batch_no", "fieldtype": "Link", "label": "Lo (Batch)", "options": "Batch", "in_list_view": 1},
+  {"fieldname": "stage", "fieldtype": "Data", "label": "Cong doan"},
+  {"fieldname": "column_break_a", "fieldtype": "Column Break"},
+  {"fieldname": "sieve_status", "fieldtype": "Select", "label": "Tinh trang luoi sang", "options": "Nguyen ven - dung co\nBat thuong", "default": "Nguyen ven - dung co"},
+  {"fieldname": "metal_detector", "fieldtype": "Select", "label": "Dau do kim loai", "options": "Khong bao\nBao\nKhong ap dung", "default": "Khong ap dung", "in_list_view": 1},
+  {"fieldname": "foreign_body_found", "fieldtype": "Small Text", "label": "Di vat phat hien"},
+  {"fieldname": "section_res", "fieldtype": "Section Break"},
+  {"fieldname": "status", "fieldtype": "Select", "label": "Ket qua", "options": "Dat\nKhong dat", "default": "Dat", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "action", "fieldtype": "Small Text", "label": "Hanh dong khac phuc", "depends_on": "eval:doc.status=='Khong dat'", "mandatory_depends_on": "eval:doc.status=='Khong dat'"},
+  {"fieldname": "checked_by", "fieldtype": "Link", "label": "Nguoi kiem tra", "options": "Employee", "reqd": 1}
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-06-16 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Food Safety",
+ "name": "Foreign Body Check Log",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "amend": 1, "print": 1, "report": 1, "export": 1, "share": 1},
+  {"role": "FS QA Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "amend": 1, "print": 1, "report": 1, "export": 1},
+  {"role": "FS QC", "read": 1, "write": 1, "create": 1, "submit": 1, "print": 1, "report": 1}
+ ],
+ "search_fields": "batch_no,log_date,shift",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "batch_no",
+ "track_changes": 1
+}
