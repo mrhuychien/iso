@@ -1,0 +1,27 @@
+{
+ "actions": [], "autoname": "naming_series:", "creation": "2026-06-17 00:00:00.000000",
+ "doctype": "DocType", "engine": "InnoDB",
+ "field_order": ["naming_series","title","task_group","frequency","column_break_a","responsible","linked_form","linked_doctype","procedure_ref","active"],
+ "fields": [
+  {"fieldname":"naming_series","fieldtype":"Select","label":"Series","options":"CV-.#####","reqd":1,"default":"CV-.#####"},
+  {"fieldname":"title","fieldtype":"Data","label":"Cong viec","reqd":1,"in_list_view":1},
+  {"fieldname":"task_group","fieldtype":"Select","label":"Nhom","options":"Hang ngay / Moi ca\nDinh ky ngan\nDinh ky 6 thang\nHang nam\nKhi phat sinh","in_list_view":1},
+  {"fieldname":"frequency","fieldtype":"Select","label":"Tan suat","options":"Hang ngay\nMoi ca\n15 ngay\nHang thang\nHang quy\n6 thang\nHang nam\nKhi phat sinh","reqd":1,"in_list_view":1},
+  {"fieldname":"column_break_a","fieldtype":"Column Break"},
+  {"fieldname":"responsible","fieldtype":"Data","label":"Bo phan/Nguoi phu trach"},
+  {"fieldname":"linked_form","fieldtype":"Data","label":"Bieu mau portal (key)","description":"vd: oprp, foreign_body, sanitation, water, sample, rework, lab"},
+  {"fieldname":"linked_doctype","fieldtype":"Link","label":"DocType lien ket","options":"DocType"},
+  {"fieldname":"procedure_ref","fieldtype":"Data","label":"Can cu quy trinh"},
+  {"fieldname":"active","fieldtype":"Check","label":"Dang ap dung","default":"1","in_list_view":1}
+ ],
+ "links": [], "modified": "2026-06-17 00:00:00.000000", "modified_by": "Administrator",
+ "module": "Food Safety", "name": "ATTP Task", "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {"role":"System Manager","read":1,"write":1,"create":1,"delete":1,"print":1,"report":1,"export":1,"share":1},
+  {"role":"FS QA Manager","read":1,"write":1,"create":1,"delete":1,"print":1,"report":1,"export":1},
+  {"role":"FS QC","read":1,"report":1}
+ ],
+ "search_fields": "title,frequency", "sort_field": "modified", "sort_order": "DESC",
+ "title_field": "title", "track_changes": 1
+}

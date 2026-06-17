@@ -8,12 +8,14 @@ const VIEW_MODULES = {
   "": "./views/home.js",
   "entry": "./views/entry.js",
   "trace": "./views/trace.js",
+  "documents": "./views/documents.js",
   "dashboard": "./views/dashboard.js",
 };
 
 const NAV = [
   { route: "", label: "Hôm nay", icon: "today" },
   { route: "trace", label: "Truy xuất lô", icon: "search" },
+  { route: "documents", label: "Tài liệu", icon: "folder_open" },
 ];
 
 function parseHash() {

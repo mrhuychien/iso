@@ -19,6 +19,7 @@ def run_all():
     ensure_roles()
     ensure_custom_fields()
     ensure_workflows()
+    ensure_tasks()
     frappe.db.commit()
 
 
@@ -61,3 +62,46 @@ def ensure_custom_fields():
 def ensure_workflows():
     from hg_food_safety.patches.v0_1_0.create_workflows import execute as _wf
     _wf()
+
+
+SEED_TASKS = [
+    # (title, group, frequency, responsible, linked_form, linked_doctype, procedure)
+    ("Giam sat OPRP theo ca", "Hang ngay / Moi ca", "Moi ca", "KCS", "oprp", "OPRP Monitoring Log", "KH.OPRP.01"),
+    ("Kiem tra di vat / luoi sang / dau do", "Hang ngay / Moi ca", "Moi ca", "KCS", "foreign_body", "Foreign Body Check Log", "QT10"),
+    ("Kiem tra thanh pham moi lo", "Hang ngay / Moi ca", "Hang ngay", "KCS", "", "Quality Inspection", "KH HACCP"),
+    ("Lay mau luu cuoi ngay", "Hang ngay / Moi ca", "Hang ngay", "Ky thuat", "sample", "Sample Retention", "QD.01"),
+    ("Nhat ky ve sinh dau/cuoi ca", "Hang ngay / Moi ca", "Hang ngay", "KCS", "sanitation", "Sanitation Log", "PRP-SSOP2"),
+    ("Xa nuoc dau voi + cam quan nuoc", "Hang ngay / Moi ca", "Hang ngay", "Cong nhan/KCS", "water", "Water Control Log", "PRP-SSOP1"),
+    ("Ghi nhan hang tai che (rework)", "Khi phat sinh", "Khi phat sinh", "KCS", "rework", "Rework Log", "QT10"),
+    ("Diet ruoi muoi khu nha xuong", "Dinh ky ngan", "15 ngay", "Phan xuong", "", "Periodic Sanitation Log", "PRP-SSOP7"),
+    ("Kiem tra thiet bi PCCC", "Dinh ky ngan", "Hang thang", "Van phong", "", "Fire Equipment Log", "QT03"),
+    ("Ve sinh dinh ky + diet con trung/chuot", "Dinh ky ngan", "Hang thang", "Phan xuong", "", "Periodic Sanitation Log", "PRP-SSOP7"),
+    ("Giam sat moi truong (swab be mat/khong khi)", "Dinh ky ngan", "Hang quy", "KCS/Ban ISO", "", "Environmental Monitoring", "KH.KN.01"),
+    ("Bao duong dinh ky thiet bi san xuat", "Dinh ky 6 thang", "6 thang", "Co dien", "", "Asset Maintenance", "QT06"),
+    ("Hieu chuan/kiem dinh thiet bi do", "Dinh ky 6 thang", "6 thang", "Xuong SX", "", "Calibration Record", "QT06"),
+    ("Ra soat danh muc thuy tinh - nhua gion", "Dinh ky 6 thang", "6 thang", "KCS", "", "Glass Brittle Register", "QT10"),
+    ("Kiem nghiem nuoc/san pham dinh ky", "Dinh ky 6 thang", "6 thang", "KCS/Van phong", "lab", "Lab Test Result", "KH.KN.01"),
+    ("Danh gia noi bo toan bo bo phan", "Hang nam", "Hang nam", "Ban ISO", "", "Internal Audit", "QT01"),
+    ("Tham tra he thong HACCP/OPRP", "Hang nam", "Hang nam", "Doi HACCP", "", "Verification Record", "QT04"),
+    ("Xac dinh lai rui ro & co hoi", "Hang nam", "Hang nam", "Ban ISO", "", "Risk Register", "QT05"),
+    ("Tap huan kien thuc VSATTP", "Hang nam", "Hang nam", "Van phong", "", "", "Muc tieu ATTP"),
+    ("Kham suc khoe dinh ky cong nhan", "Hang nam", "Hang nam", "Van phong", "", "", "PRP-SSOP5"),
+    ("Dien tap tinh huong khan cap", "Hang nam", "Hang nam", "Ban ATTP", "", "Emergency Record", "QT03"),
+    ("Dien tap thu hoi (mock recall)", "Hang nam", "Hang nam", "Doi ATTP", "", "Product Recall", "QT02"),
+    ("Danh gia phong ve thuc pham (TACCP/VACCP)", "Hang nam", "Hang nam", "Ban ISO", "", "Food Defense Assessment", "QT11"),
+    ("Tham dinh han su dung (shelf-life)", "Hang nam", "Hang nam", "Ban ISO/Ky thuat", "", "Shelf Life Study", "KH.SL.01"),
+    ("Danh gia & duyet nha cung cap", "Khi phat sinh", "Khi phat sinh", "Mua hang", "", "", "QT07"),
+    ("Kiem tra chat luong hang nhap", "Khi phat sinh", "Khi phat sinh", "KCS/Kho", "", "Quality Inspection", "QT07"),
+    ("Thu hoi san pham mat an toan", "Khi phat sinh", "Khi phat sinh", "Doi ATTP", "", "Product Recall", "QT02"),
+]
+
+
+def ensure_tasks():
+    for (title, group, freq, resp, form, dt, proc) in SEED_TASKS:
+        if frappe.db.exists("ATTP Task", {"title": title}):
+            continue
+        frappe.get_doc({
+            "doctype": "ATTP Task", "title": title, "task_group": group,
+            "frequency": freq, "responsible": resp, "linked_form": form,
+            "linked_doctype": dt or None, "procedure_ref": proc, "active": 1,
+        }).insert(ignore_permissions=True)

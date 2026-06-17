@@ -1,0 +1,30 @@
+{
+ "actions": [], "creation": "2026-06-17 00:00:00.000000",
+ "doctype": "DocType", "engine": "InnoDB",
+ "field_order": ["task","title","task_group","frequency","column_break_a","period_date","period_key","status","section_done","done_by","done_on","reference_doctype","reference_name","note"],
+ "fields": [
+  {"fieldname":"task","fieldtype":"Link","label":"Cong viec","options":"ATTP Task","reqd":1,"in_list_view":1},
+  {"fieldname":"title","fieldtype":"Data","label":"Ten cong viec","in_list_view":1},
+  {"fieldname":"task_group","fieldtype":"Data","label":"Nhom"},
+  {"fieldname":"frequency","fieldtype":"Data","label":"Tan suat"},
+  {"fieldname":"column_break_a","fieldtype":"Column Break"},
+  {"fieldname":"period_date","fieldtype":"Date","label":"Ngay ky","default":"Today","in_list_view":1},
+  {"fieldname":"period_key","fieldtype":"Data","label":"Period key","hidden":1},
+  {"fieldname":"status","fieldtype":"Select","label":"Trang thai","options":"Cho lam\nDa lam\nTre","default":"Cho lam","in_list_view":1},
+  {"fieldname":"section_done","fieldtype":"Section Break","label":"Thuc hien"},
+  {"fieldname":"done_by","fieldtype":"Link","label":"Nguoi thuc hien","options":"User"},
+  {"fieldname":"done_on","fieldtype":"Datetime","label":"Thoi diem"},
+  {"fieldname":"reference_doctype","fieldtype":"Data","label":"DocType ban ghi"},
+  {"fieldname":"reference_name","fieldtype":"Data","label":"Ban ghi lien ket"},
+  {"fieldname":"note","fieldtype":"Small Text","label":"Ghi chu"}
+ ],
+ "links": [], "modified": "2026-06-17 00:00:00.000000", "modified_by": "Administrator",
+ "module": "Food Safety", "name": "ATTP Task Log", "owner": "Administrator",
+ "permissions": [
+  {"role":"System Manager","read":1,"write":1,"create":1,"delete":1,"print":1,"report":1,"export":1,"share":1},
+  {"role":"FS QA Manager","read":1,"write":1,"create":1,"delete":1,"print":1,"report":1,"export":1},
+  {"role":"FS QC","read":1,"write":1,"create":1,"report":1}
+ ],
+ "search_fields": "task,period_date,status", "sort_field": "modified", "sort_order": "DESC",
+ "title_field": "title", "track_changes": 1
+}

@@ -39,6 +39,7 @@ doc_events = {
 # ═══════════════════════════════════════════════════════════════
 scheduler_events = {
     "daily": [
+        "hg_food_safety.schedule.generate_task_logs",
         "hg_food_safety.tasks.remind_sample_disposal",
         "hg_food_safety.tasks.remind_calibration_due",
         "hg_food_safety.tasks.remind_lab_test_due",
