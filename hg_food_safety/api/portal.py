@@ -13,10 +13,23 @@ ALLOWED_LINK = {"Batch", "Item", "Employee"}
 GROUP_ORDER = ["Hang ngay / Moi ca", "Dinh ky ngan", "Dinh ky 6 thang", "Hang nam", "Khi phat sinh"]
 
 
+def _ensure_today():
+    """Tu seed ATTP Task (neu trong) + sinh log den ky -> list luon co viec hien."""
+    try:
+        if not frappe.db.count("ATTP Task"):
+            from hg_food_safety.setup.install import ensure_tasks
+            ensure_tasks()
+        from hg_food_safety.schedule import generate_task_logs
+        generate_task_logs()
+    except Exception:
+        frappe.log_error(title="today_tasks ensure")
+
+
 @frappe.whitelist()
 def today_tasks() -> dict:
     """Cong viec dang cho/tre (checklist theo lich cong viec ATTP), gom theo nhom."""
     require_fs()
+    _ensure_today()
     logs = frappe.get_all("ATTP Task Log",
         filters={"status": ["in", ["Cho lam", "Tre"]]},
         fields=["name", "task", "title", "task_group", "frequency", "status", "period_date"],
