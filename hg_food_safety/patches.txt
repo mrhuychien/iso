@@ -1,3 +1,5 @@
+[pre_model_sync]
+
 [post_model_sync]
 hg_food_safety.patches.v0_1_0.create_fs_roles
 hg_food_safety.patches.v0_1_0.seed_custom_fields
