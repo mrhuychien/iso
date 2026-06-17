@@ -12,8 +12,8 @@ const VIEW_MODULES = {
 };
 
 const NAV = [
-  { route: "", label: "Hôm nay", icon: "M3 12l9-9 9 9M5 10v10h14V10" },
-  { route: "trace", label: "Truy xuất lô", icon: "M21 21l-5-5M3 10a7 7 0 1014 0 7 7 0 00-14 0" },
+  { route: "", label: "Hôm nay", icon: "today" },
+  { route: "trace", label: "Truy xuất lô", icon: "search" },
 ];
 
 function parseHash() {
@@ -24,20 +24,21 @@ function parseHash() {
   return { route: path || "", query };
 }
 
+function sym(name) { return `<span class="material-symbols-outlined">${name}</span>`; }
+
 function renderShell() {
   const root = document.getElementById("app-root");
   const nav = NAV.slice();
-  if (ctx.isManager) nav.push({ route: "dashboard", label: "Bảng điều khiển", icon: "M4 13h6V4H4zM14 21h6v-9h-6zM14 4v5h6V4zM4 21h6v-5H4z" });
+  if (ctx.isManager) nav.push({ route: "dashboard", label: "Bảng điều khiển", icon: "dashboard" });
   root.innerHTML = `
     <header class="app-header">
-      <div class="app-brand"><span class="app-logo">ATTP</span><span>Hoàng Giang</span></div>
-      <span class="app-user">${escapeHtml(ctx.user || "")}</span>
+      <div class="app-brand">${sym("security")}<span>ATTP Hoàng Giang</span></div>
+      <span class="app-user">${sym("account_circle")}${escapeHtml(ctx.user || "")}</span>
     </header>
     <main id="app-main" class="app-main"></main>
     <nav class="app-bottomnav">${nav.map((n) =>
       `<a class="app-tab" data-route="${n.route}" href="#/${n.route}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${n.icon}"/></svg>
-        <span>${escapeHtml(n.label)}</span></a>`).join("")}</nav>`;
+        <span class="app-tab-ic">${sym(n.icon)}</span><span>${escapeHtml(n.label)}</span></a>`).join("")}</nav>`;
 }
 
 async function route() {

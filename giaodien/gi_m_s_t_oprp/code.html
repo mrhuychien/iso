@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Giám sát OPRP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#f7fff2",
+                        "background": "#f4fcf0",
+                        "surface-container": "#e9f0e5",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#005323",
+                        "surface-container-high": "#e3eadf",
+                        "surface-container-low": "#eff6ea",
+                        "primary": "#006b2c",
+                        "tertiary": "#a72d51",
+                        "on-surface": "#171d16",
+                        "primary-fixed-dim": "#62df7d",
+                        "primary-container": "#00873a",
+                        "secondary-fixed": "#95f8a7",
+                        "outline-variant": "#bdcaba",
+                        "surface": "#f4fcf0",
+                        "on-primary-fixed-variant": "#005320",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#007233",
+                        "secondary-fixed-dim": "#79db8d",
+                        "surface-container-highest": "#dde5d9",
+                        "surface-tint": "#006e2d",
+                        "tertiary-fixed": "#ffd9de",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002109",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#3f0016",
+                        "inverse-primary": "#62df7d",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#92f5a4",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d5dcd1",
+                        "on-secondary-fixed": "#00210a",
+                        "surface-variant": "#dde5d9",
+                        "on-background": "#171d16",
+                        "inverse-surface": "#2b322b",
+                        "tertiary-fixed-dim": "#ffb2bf",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#c74668",
+                        "secondary": "#006d30",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f4fcf0",
+                        "on-surface-variant": "#3e4a3d",
+                        "outline": "#6e7b6c",
+                        "inverse-on-surface": "#ecf3e7",
+                        "on-tertiary-fixed-variant": "#8a143c",
+                        "primary-fixed": "#7ffc97"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "sm": "12px",
+                        "xl": "32px",
+                        "gutter": "12px",
+                        "touch-target": "44px",
+                        "container-margin": "16px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-20 pt-16">
+<!-- TopAppBar -->
+<header class="bg-primary dark:bg-primary fixed top-0 left-0 w-full z-50 flex items-center justify-between px-container-margin h-touch-target flat no shadows text-on-primary dark:text-on-primary font-headline-md text-headline-md-mobile transition-colors duration-200">
+<button aria-label="Quay lại" class="flex items-center hover:bg-primary-container/20 p-2 -ml-2 rounded-full">
+<span class="material-symbols-outlined text-on-primary/80">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-on-primary text-center flex-1">Giám sát OPRP</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="px-container-margin py-md max-w-2xl mx-auto space-y-lg">
+<!-- General Info Section -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-[0px_2px_4px_rgba(15,23,42,0.05)] space-y-md">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Thông tin chung</h2>
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col space-y-base">
+<label class="font-label-lg text-label-lg text-on-surface-variant" for="date">Ngày</label>
+<input class="h-touch-target px-sm rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow w-full font-body-lg text-body-lg" id="date" type="date"/>
+</div>
+<div class="flex flex-col space-y-base">
+<label class="font-label-lg text-label-lg text-on-surface-variant" for="shift">Ca</label>
+<select class="h-touch-target px-sm rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow w-full font-body-lg text-body-lg" id="shift">
+<option>Sáng</option>
+<option>Chiều</option>
+<option>Tối</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col space-y-base">
+<label class="font-label-lg text-label-lg text-on-surface-variant" for="batch">Lô (Batch)</label>
+<div class="relative">
+<input class="h-touch-target pl-10 pr-sm rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow w-full font-body-lg text-body-lg" id="batch" placeholder="Tìm kiếm lô..." type="text"/>
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+</div>
+<div class="flex flex-col space-y-base">
+<label class="font-label-lg text-label-lg text-on-surface-variant" for="supervisor">Người giám sát</label>
+<div class="relative">
+<input class="h-touch-target pl-10 pr-sm rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow w-full font-body-lg text-body-lg" id="supervisor" placeholder="Tìm người giám sát..." type="text"/>
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">person_search</span>
+</div>
+</div>
+</section>
+<!-- Monitoring Details Section -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-[0px_2px_4px_rgba(15,23,42,0.05)] space-y-md">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Chi tiết giám sát</h2>
+<button class="text-primary font-label-lg text-label-lg flex items-center gap-xs hover:bg-primary-container/10 px-sm py-xs rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Thêm dòng
+                </button>
+</div>
+<!-- Single Record Row (Simulated Mobile Layout) -->
+<div class="border border-surface-variant rounded-DEFAULT p-sm bg-surface space-y-sm">
+<div class="grid grid-cols-2 gap-sm">
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">OPRP/Công đoạn</label>
+<input class="w-full h-10 px-xs border border-outline-variant rounded-DEFAULT bg-surface-container-lowest" type="text" value="Nhiệt độ phòng lạnh"/>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Thông số</label>
+<input class="w-full h-10 px-xs border border-outline-variant rounded-DEFAULT bg-surface-container-lowest" type="text" value="&lt; 5°C"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-sm items-end">
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Kết quả</label>
+<input class="w-full h-10 px-xs border border-outline-variant rounded-DEFAULT bg-surface-container-lowest" placeholder="Nhập kết quả" type="text"/>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Trạng thái</label>
+<select class="w-full h-10 px-xs border border-outline-variant rounded-DEFAULT bg-surface-container-lowest text-on-surface">
+<option value="">Chọn</option>
+<option class="text-primary" value="pass">Đạt</option>
+<option class="text-error" value="fail">Không đạt</option>
+</select>
+</div>
+</div>
+<div class="flex justify-end pt-2 border-t border-surface-variant mt-2">
+<button class="text-error flex items-center p-1 rounded-full hover:bg-error-container/20">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Corrective Action Section -->
+<section class="bg-surface-container-lowest rounded-lg border border-outline-variant p-md shadow-[0px_2px_4px_rgba(15,23,42,0.05)] space-y-sm">
+<label class="font-headline-sm text-headline-sm text-on-surface block" for="corrective_action">Hành động khắc phục <span class="font-body-md text-body-md text-on-surface-variant font-normal">(nếu vượt giới hạn)</span></label>
+<textarea class="w-full p-sm rounded-DEFAULT border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-shadow font-body-lg text-body-lg resize-y" id="corrective_action" placeholder="Nhập hành động khắc phục đã thực hiện..." rows="4"></textarea>
+</section>
+<!-- Submit Button -->
+<div class="pt-lg pb-md">
+<button class="w-full bg-primary text-on-primary h-touch-target rounded-lg font-headline-sm text-headline-sm flex items-center justify-center gap-sm shadow-md hover:bg-primary-container active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+                Lưu &amp; gửi
+            </button>
+</div>
+</main>
+<!-- BottomNavBar (Suppressed due to form nature, but requested by prompt) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-14 bg-surface dark:bg-surface-dim px-xs pb-safe border-t-0 shadow-lg scale-95 active:scale-90 transition-transform">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high px-4 py-1 rounded-full transition-colors w-full" href="#">
+<span class="material-symbols-outlined">today</span>
+<span class="font-label-md text-label-md">Hôm nay</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high px-4 py-1 rounded-full transition-colors w-full" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-md text-label-md">Truy xuất lô</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high px-4 py-1 rounded-full transition-colors w-full" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Bảng điều khiển</span>
+</a>
+</nav>
+</body></html>

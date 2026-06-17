@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ATTP Hoàng Giang - Hôm nay</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#f7fff2",
+                        "background": "#f4fcf0",
+                        "surface-container": "#e9f0e5",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#005323",
+                        "surface-container-high": "#e3eadf",
+                        "surface-container-low": "#eff6ea",
+                        "primary": "#006b2c",
+                        "tertiary": "#a72d51",
+                        "on-surface": "#171d16",
+                        "primary-fixed-dim": "#62df7d",
+                        "primary-container": "#00873a",
+                        "secondary-fixed": "#95f8a7",
+                        "outline-variant": "#bdcaba",
+                        "surface": "#f4fcf0",
+                        "on-primary-fixed-variant": "#005320",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#007233",
+                        "secondary-fixed-dim": "#79db8d",
+                        "surface-container-highest": "#dde5d9",
+                        "surface-tint": "#006e2d",
+                        "tertiary-fixed": "#ffd9de",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002109",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#3f0016",
+                        "inverse-primary": "#62df7d",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#92f5a4",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d5dcd1",
+                        "on-secondary-fixed": "#00210a",
+                        "surface-variant": "#dde5d9",
+                        "on-background": "#171d16",
+                        "inverse-surface": "#2b322b",
+                        "tertiary-fixed-dim": "#ffb2bf",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#c74668",
+                        "secondary": "#006d30",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#f4fcf0",
+                        "on-surface-variant": "#3e4a3d",
+                        "outline": "#6e7b6c",
+                        "inverse-on-surface": "#ecf3e7",
+                        "on-tertiary-fixed-variant": "#8a143c",
+                        "primary-fixed": "#7ffc97"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "sm": "12px",
+                        "xl": "32px",
+                        "gutter": "12px",
+                        "touch-target": "44px",
+                        "container-margin": "16px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-[80px] pt-[60px] antialiased">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-container-margin h-touch-target bg-primary text-on-primary">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[24px]">security</span>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-on-primary">ATTP Hoàng Giang</h1>
+</div>
+<div class="flex items-center">
+<span class="font-label-lg text-label-lg">Admin</span>
+</div>
+</header>
+<main class="px-container-margin py-md flex flex-col gap-lg max-w-2xl mx-auto">
+<!-- Warning Banner -->
+<div class="bg-error-container rounded-lg p-sm flex items-center gap-sm shadow-sm">
+<span class="material-symbols-outlined text-on-error-container" style="font-variation-settings: 'FILL' 1;">warning</span>
+<p class="font-label-lg text-label-lg text-on-error-container">2 lô đang bị cô lập — cần xử lý</p>
+</div>
+<!-- Section: Ghi nhanh -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Ghi nhanh</h2>
+<div class="grid grid-cols-2 gap-sm">
+<!-- Action Card 1 -->
+<button class="bg-surface-container-lowest rounded-xl p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex flex-col items-center justify-center gap-sm min-h-[120px] active:scale-95 transition-transform hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.1)]">
+<div class="bg-secondary-container text-on-secondary-container rounded-full w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined">visibility</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface text-center leading-tight">Giám sát OPRP</span>
+</button>
+<!-- Action Card 2 -->
+<button class="bg-surface-container-lowest rounded-xl p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex flex-col items-center justify-center gap-sm min-h-[120px] active:scale-95 transition-transform hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.1)]">
+<div class="bg-secondary-container text-on-secondary-container rounded-full w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface text-center leading-tight">Kiểm dị vật</span>
+</button>
+<!-- Action Card 3 -->
+<button class="bg-surface-container-lowest rounded-xl p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex flex-col items-center justify-center gap-sm min-h-[120px] active:scale-95 transition-transform hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.1)]">
+<div class="bg-secondary-container text-on-secondary-container rounded-full w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined">science</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface text-center leading-tight">Kết quả kiểm nghiệm</span>
+</button>
+<!-- Action Card 4 -->
+<button class="bg-surface-container-lowest rounded-xl p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex flex-col items-center justify-center gap-sm min-h-[120px] active:scale-95 transition-transform hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.1)]">
+<div class="bg-secondary-container text-on-secondary-container rounded-full w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface text-center leading-tight">Lưu mẫu</span>
+</button>
+<!-- Action Card 5 -->
+<button class="bg-surface-container-lowest rounded-xl p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex flex-col items-center justify-center gap-sm min-h-[120px] active:scale-95 transition-transform hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.1)]">
+<div class="bg-secondary-container text-on-secondary-container rounded-full w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined">clean_hands</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface text-center leading-tight">Nhật ký vệ sinh</span>
+</button>
+<!-- Action Card 6 -->
+<button class="bg-surface-container-lowest rounded-xl p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex flex-col items-center justify-center gap-sm min-h-[120px] active:scale-95 transition-transform hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.1)]">
+<div class="bg-secondary-container text-on-secondary-container rounded-full w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined">water_drop</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface text-center leading-tight">Kiểm soát nước</span>
+</button>
+<!-- Action Card 7 -->
+<button class="bg-surface-container-lowest rounded-xl p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex flex-col items-center justify-center gap-sm min-h-[120px] active:scale-95 transition-transform hover:shadow-[0_10px_15px_-3px_rgba(15,23,42,0.1)]">
+<div class="bg-secondary-container text-on-secondary-container rounded-full w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined">recycling</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface text-center leading-tight">Hàng tái chế</span>
+</button>
+</div>
+</section>
+<!-- Section: Đã ghi hôm nay -->
+<section class="flex flex-col gap-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Đã ghi hôm nay</h2>
+<div class="grid grid-cols-2 gap-sm">
+<!-- Data Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex justify-between items-center h-touch-target">
+<span class="font-body-md text-body-md text-on-surface truncate pr-xs">Giám sát OPRP</span>
+<span class="font-label-lg text-label-lg text-primary bg-primary-container/10 px-2 py-0.5 rounded-full">3</span>
+</div>
+<!-- Data Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex justify-between items-center h-touch-target">
+<span class="font-body-md text-body-md text-on-surface truncate pr-xs">Kiểm dị vật</span>
+<span class="font-label-lg text-label-lg text-primary bg-primary-container/10 px-2 py-0.5 rounded-full">5</span>
+</div>
+<!-- Data Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex justify-between items-center h-touch-target">
+<span class="font-body-md text-body-md text-on-surface truncate pr-xs">Nhật ký vệ sinh</span>
+<span class="font-label-lg text-label-lg text-primary bg-primary-container/10 px-2 py-0.5 rounded-full">2</span>
+</div>
+<!-- Data Card 4 -->
+<div class="bg-surface-container-lowest rounded-lg p-sm shadow-[0_2px_4px_rgba(15,23,42,0.05)] border border-outline-variant flex justify-between items-center h-touch-target">
+<span class="font-body-md text-body-md text-on-surface truncate pr-xs">Kiểm soát nước</span>
+<span class="font-label-lg text-label-lg text-primary bg-primary-container/10 px-2 py-0.5 rounded-full">1</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-14 bg-surface px-xs pb-safe rounded-t-xl shadow-[0_-2px_10px_rgba(0,0,0,0.05)] md:hidden">
+<!-- Active Tab: Hôm nay -->
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-95 active:scale-90 transition-transform h-touch-target">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">today</span>
+<span class="font-label-md text-label-md mt-0.5">Hôm nay</span>
+</button>
+<!-- Inactive Tab: Truy xuất lô -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-95 active:scale-90 transition-transform h-touch-target px-4 rounded-xl">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-label-md text-label-md mt-0.5">Truy xuất lô</span>
+</button>
+<!-- Inactive Tab: Bảng điều khiển -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high scale-95 active:scale-90 transition-transform h-touch-target px-4 rounded-xl">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md mt-0.5">Bảng điều khiển</span>
+</button>
+</nav>
+</body></html>

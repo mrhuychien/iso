@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bảng điều khiển - ISO 22000 Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#ffb2bf",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#62df7d",
+                        "outline": "#6e7b6c",
+                        "surface": "#f4fcf0",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#dde5d9",
+                        "on-primary-fixed": "#002109",
+                        "surface-container": "#e9f0e5",
+                        "on-secondary-container": "#007233",
+                        "surface-container-high": "#e3eadf",
+                        "primary": "#006b2c",
+                        "tertiary-container": "#c74668",
+                        "on-primary-fixed-variant": "#005320",
+                        "surface-bright": "#f4fcf0",
+                        "inverse-on-surface": "#ecf3e7",
+                        "surface-container-low": "#eff6ea",
+                        "on-tertiary-fixed": "#3f0016",
+                        "on-secondary-fixed": "#00210a",
+                        "inverse-surface": "#2b322b",
+                        "tertiary-fixed": "#ffd9de",
+                        "on-background": "#171d16",
+                        "outline-variant": "#bdcaba",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#8a143c",
+                        "secondary-fixed": "#95f8a7",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d5dcd1",
+                        "on-surface": "#171d16",
+                        "primary-container": "#00873a",
+                        "secondary-container": "#92f5a4",
+                        "secondary": "#006d30",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#f7fff2",
+                        "tertiary": "#a72d51",
+                        "secondary-fixed-dim": "#79db8d",
+                        "primary-fixed": "#7ffc97",
+                        "on-surface-variant": "#3e4a3d",
+                        "surface-variant": "#dde5d9",
+                        "on-primary": "#ffffff",
+                        "background": "#f4fcf0",
+                        "primary-fixed-dim": "#62df7d",
+                        "on-secondary-fixed-variant": "#005323",
+                        "surface-tint": "#006e2d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target": "44px",
+                        "xs": "8px",
+                        "container-margin": "16px",
+                        "gutter": "12px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "label-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-md h-touch-target bg-primary dark:bg-primary-fixed-dim text-on-primary dark:text-on-primary-fixed">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-on-primary">ATTP Hoàng Giang</span>
+</div>
+<div class="flex items-center gap-sm">
+<button class="w-touch-target h-touch-target flex items-center justify-center hover:bg-on-primary/10 transition-colors rounded-full active:opacity-80 transition-all text-on-primary/80">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-touch-target h-touch-target flex items-center justify-center hover:bg-on-primary/10 transition-colors rounded-full active:opacity-80 transition-all text-on-primary/80">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden ml-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full pt-16 flex flex-col bg-surface dark:bg-inverse-surface text-primary dark:text-primary-fixed w-64 border-r border-outline-variant dark:border-outline shadow-sm z-40">
+<div class="px-md py-lg border-b border-outline-variant">
+<h2 class="font-headline-sm text-headline-sm text-primary">Hoàng Giang</h2>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">ISO 22000 Portal</p>
+</div>
+<div class="flex-1 py-md flex flex-col gap-xs px-sm">
+<a class="flex items-center gap-sm text-on-surface-variant dark:text-on-surface px-md py-sm rounded-lg hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="today">today</span>
+<span class="font-label-lg text-label-lg">Hôm nay</span>
+</a>
+<a class="flex items-center gap-sm text-on-surface-variant dark:text-on-surface px-md py-sm rounded-lg hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-lg text-label-lg">Truy xuất lô</span>
+</a>
+<a class="flex items-center gap-sm bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg px-md py-sm hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined icon-fill" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Bảng điều khiển</span>
+</a>
+</div>
+<div class="p-sm mt-auto border-t border-outline-variant">
+<a class="flex items-center gap-sm text-on-surface-variant dark:text-on-surface px-md py-sm rounded-lg hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-lg text-label-lg">Đăng xuất</span>
+</a>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pl-64 pt-16 min-h-screen bg-surface-container-low">
+<div class="max-w-7xl mx-auto p-container-margin md:p-xl space-y-xl">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Bảng điều khiển QA</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Tổng quan trạng thái an toàn thực phẩm - ISO 22000</p>
+</div>
+<div class="flex gap-sm">
+<button class="h-touch-target px-md rounded bg-surface border border-outline-variant text-on-surface font-label-lg text-label-lg flex items-center gap-xs hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                        Xuất báo cáo
+                    </button>
+<button class="h-touch-target px-md rounded bg-primary text-on-primary font-label-lg text-label-lg hover:bg-primary/90 transition-colors shadow-sm">
+                        Cập nhật dữ liệu
+                    </button>
+</div>
+</div>
+<!-- Cảnh báo cần xử lý -->
+<section>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+                    Cảnh báo cần xử lý
+                </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Card 1: Lô đang cô lập -->
+<div class="bg-error-container text-on-error-container p-md rounded-xl shadow-sm border border-error/20 flex flex-col justify-between h-32 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="font-label-lg text-label-lg">Lô đang cô lập</span>
+<span class="material-symbols-outlined bg-error text-on-error rounded-full p-1 text-sm" data-icon="block">block</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-4xl font-bold tracking-tight">3</span>
+<span class="font-label-md text-label-md mb-1 opacity-80">lô hàng</span>
+</div>
+</div>
+<!-- Card 2: Sự không phù hợp -->
+<div class="bg-surface p-md rounded-xl shadow-sm border border-outline-variant flex flex-col justify-between h-32 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="font-label-lg text-label-lg text-on-surface-variant">Sự không phù hợp</span>
+<span class="material-symbols-outlined text-tertiary bg-tertiary-container/30 rounded-full p-1 text-sm" data-icon="report">report</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-4xl font-bold tracking-tight text-on-surface">5</span>
+<span class="font-label-md text-label-md text-error flex items-center mb-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_upward">arrow_upward</span> 2
+                            </span>
+</div>
+</div>
+<!-- Card 3: Mẫu đến hạn hủy -->
+<div class="bg-surface p-md rounded-xl shadow-sm border border-outline-variant flex flex-col justify-between h-32 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="font-label-lg text-label-lg text-on-surface-variant">Mẫu đến hạn hủy</span>
+<span class="material-symbols-outlined text-outline bg-surface-variant rounded-full p-1 text-sm" data-icon="delete_sweep">delete_sweep</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-4xl font-bold tracking-tight text-on-surface">12</span>
+<span class="font-label-md text-label-md text-on-surface-variant mb-1">mẫu lưu</span>
+</div>
+</div>
+<!-- Card 4: Hiệu chuẩn < 30 ngày -->
+<div class="bg-surface p-md rounded-xl shadow-sm border border-outline-variant flex flex-col justify-between h-32 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="font-label-lg text-label-lg text-on-surface-variant">Hiệu chuẩn &lt; 30 ngày</span>
+<span class="material-symbols-outlined text-primary bg-primary-container/30 rounded-full p-1 text-sm" data-icon="build">build</span>
+</div>
+<div class="flex items-end gap-2">
+<span class="text-4xl font-bold tracking-tight text-on-surface">2</span>
+<span class="font-label-md text-label-md text-on-surface-variant mb-1">thiết bị</span>
+</div>
+</div>
+</div>
+</section>
+<!-- KPI 30 ngày qua -->
+<section>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md">KPI 30 ngày qua</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- KPI 1 -->
+<div class="bg-surface p-md rounded-xl shadow-sm border border-outline-variant">
+<div class="flex items-center gap-sm mb-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">% đạt thành phẩm</span>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="text-3xl font-bold text-on-surface">98.5%</span>
+<span class="font-label-md text-label-md text-primary flex items-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span> 0.5%
+                            </span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full mt-3 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 98.5%"></div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface p-md rounded-xl shadow-sm border border-outline-variant">
+<div class="flex items-center gap-sm mb-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="policy">policy</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">% OPRP vượt ngưỡng</span>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="text-3xl font-bold text-on-surface">0.2%</span>
+<span class="font-label-md text-label-md text-primary flex items-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_down">trending_down</span> 0.1%
+                            </span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full mt-3 overflow-hidden">
+<div class="bg-tertiary h-full rounded-full" style="width: 2%"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface p-md rounded-xl shadow-sm border border-outline-variant">
+<div class="flex items-center gap-sm mb-sm">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</div>
+<span class="font-label-lg text-label-lg text-on-surface-variant">TG Mock recall trung bình</span>
+</div>
+<div class="flex items-baseline gap-sm">
+<span class="text-3xl font-bold text-on-surface">1.5h</span>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center">
+                                Mục tiêu: &lt; 2h
+                            </span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full mt-3 overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Ghi nhận hôm nay Chart -->
+<section class="bg-surface p-lg rounded-xl shadow-sm border border-outline-variant">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">Ghi nhận kiểm tra hôm nay</h2>
+<select class="h-10 border-outline-variant rounded bg-surface text-on-surface text-sm focus:ring-primary focus:border-primary">
+<option>Tất cả xưởng</option>
+<option>Xưởng chế biến 1</option>
+<option>Xưởng đóng gói</option>
+</select>
+</div>
+<div class="h-80 w-full relative">
+<canvas id="dailyActivityChart"></canvas>
+</div>
+</section>
+</div>
+</main>
+<script>
+        // Chart.js Configuration for the Bar Chart
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('dailyActivityChart').getContext('2d');
+            
+            // Getting colors from CSS variables to match Tailwind config implicitly
+            const style = getComputedStyle(document.body);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
+                    datasets: [
+                        {
+                            label: 'OPRP',
+                            data: [12, 19, 3, 5, 2, 3, 10],
+                            backgroundColor: '#006b2c', // primary
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Thành phẩm',
+                            data: [5, 15, 20, 10, 25, 15, 5],
+                            backgroundColor: '#00873a', // primary-container
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Dị vật',
+                            data: [0, 1, 0, 0, 2, 0, 0],
+                            backgroundColor: '#c74668', // tertiary-container
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Vệ sinh',
+                            data: [20, 5, 5, 15, 5, 25, 5],
+                            backgroundColor: '#92f5a4', // secondary-container
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            stacked: true,
+                            border: {
+                                display: false
+                            },
+                            grid: {
+                                color: '#e2e8f0'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 8
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>

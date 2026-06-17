@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bảng điều khiển ATTP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        .chart-bar {
+            animation: growUp 0.8s ease-out forwards;
+            transform-origin: bottom;
+            transform: scaleY(0);
+        }
+        @keyframes growUp {
+            to { transform: scaleY(1); }
+        }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#f7fff2",
+                    "background": "#f4fcf0",
+                    "surface-container": "#e9f0e5",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#005323",
+                    "surface-container-high": "#e3eadf",
+                    "surface-container-low": "#eff6ea",
+                    "primary": "#006b2c",
+                    "tertiary": "#a72d51",
+                    "on-surface": "#171d16",
+                    "primary-fixed-dim": "#62df7d",
+                    "primary-container": "#00873a",
+                    "secondary-fixed": "#95f8a7",
+                    "outline-variant": "#bdcaba",
+                    "surface": "#f4fcf0",
+                    "on-primary-fixed-variant": "#005320",
+                    "on-tertiary-container": "#fffbff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#007233",
+                    "secondary-fixed-dim": "#79db8d",
+                    "surface-container-highest": "#dde5d9",
+                    "surface-tint": "#006e2d",
+                    "tertiary-fixed": "#ffd9de",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#002109",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#3f0016",
+                    "inverse-primary": "#62df7d",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#92f5a4",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#d5dcd1",
+                    "on-secondary-fixed": "#00210a",
+                    "surface-variant": "#dde5d9",
+                    "on-background": "#171d16",
+                    "inverse-surface": "#2b322b",
+                    "tertiary-fixed-dim": "#ffb2bf",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#c74668",
+                    "secondary": "#006d30",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f4fcf0",
+                    "on-surface-variant": "#3e4a3d",
+                    "outline": "#6e7b6c",
+                    "inverse-on-surface": "#ecf3e7",
+                    "on-tertiary-fixed-variant": "#8a143c",
+                    "primary-fixed": "#7ffc97"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "sm": "12px",
+                    "xl": "32px",
+                    "gutter": "12px",
+                    "touch-target": "44px",
+                    "container-margin": "16px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "base": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<header class="bg-primary text-on-primary font-headline-md text-headline-md-mobile fixed top-0 left-0 w-full z-50 flex items-center justify-between px-container-margin h-touch-target flat no shadows">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-headline-md text-headline-md-mobile font-bold text-on-primary">ATTP Hoàng Giang</span>
+</div>
+<div class="font-label-lg text-label-lg text-on-primary font-bold hover:bg-primary-container/20 transition-colors duration-200 cursor-pointer px-2 py-1 rounded">
+            Admin
+        </div>
+</header>
+<main class="pt-[60px] pb-[80px] px-container-margin flex flex-col gap-lg max-w-4xl mx-auto">
+<section class="mt-md">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-xs">Bảng điều khiển ATTP</h1>
+<p class="font-body-md text-on-surface-variant">Tổng quan tình trạng an toàn thực phẩm & KPI nhà máy.</p>
+</section>
+<section>
+<div class="flex items-center justify-between mb-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+                    Cảnh báo cần xử lý
+                </h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-sm">
+<div class="bg-error-container text-on-error-container p-sm rounded-xl flex flex-col justify-between h-[100px] shadow-sm">
+<span class="font-label-md text-label-md opacity-90">Lô đang cô lập</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-lg-mobile text-headline-lg-mobile">3</span>
+<span class="material-symbols-outlined opacity-50">inventory_2</span>
+</div>
+</div>
+<div class="bg-error-container text-on-error-container p-sm rounded-xl flex flex-col justify-between h-[100px] shadow-sm">
+<span class="font-label-md text-label-md opacity-90">Sự không phù hợp</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-lg-mobile text-headline-lg-mobile">5</span>
+<span class="material-symbols-outlined opacity-50">assignment_late</span>
+</div>
+</div>
+<div class="bg-surface-container-high text-on-surface p-sm rounded-xl flex flex-col justify-between h-[100px] border border-outline-variant/30 shadow-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Mẫu đến hạn hủy</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">12</span>
+<span class="material-symbols-outlined text-outline">delete</span>
+</div>
+</div>
+<div class="bg-error-container text-on-error-container p-sm rounded-xl flex flex-col justify-between h-[100px] shadow-sm">
+<span class="font-label-md text-label-md opacity-90">Hiệu chuẩn < 30 ngày</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-lg-mobile text-headline-lg-mobile">2</span>
+<span class="material-symbols-outlined opacity-50">build</span>
+</div>
+</div>
+</div>
+</section>
+<section>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">insights</span>
+                KPI 30 ngày qua
+            </h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-sm">
+<div class="bg-surface-container-lowest border border-outline-variant p-sm rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">% đạt thành phẩm</p>
+<p class="font-headline-md text-headline-md text-primary">98.5%</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-sm rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">% OPRP vượt ngưỡng</p>
+<p class="font-headline-md text-headline-md text-primary">0.2%</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-sm rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Mock recall (giờ)</p>
+<p class="font-headline-md text-headline-md text-primary">1.5h</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">timer</span>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-[0px_2px_4px_rgba(15,23,42,0.05)]">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-md">Ghi nhận hôm nay</h2>
+<div class="h-[180px] flex items-end gap-2 md:gap-4 mt-sm border-b border-outline-variant pb-2 relative">
+<div class="absolute left-0 top-0 h-full w-full flex flex-col justify-between pointer-events-none opacity-20">
+<div class="border-t border-outline border-dashed w-full"></div>
+<div class="border-t border-outline border-dashed w-full"></div>
+<div class="border-t border-outline border-dashed w-full"></div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-end h-full z-10 group">
+<div class="w-full bg-primary-container rounded-t-sm chart-bar" style="height: 60%; transition-delay: 0.1s;"></div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-end h-full z-10 group">
+<div class="w-full bg-primary rounded-t-sm chart-bar" style="height: 85%; transition-delay: 0.2s;"></div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-end h-full z-10 group">
+<div class="w-full bg-secondary-container rounded-t-sm chart-bar" style="height: 30%; transition-delay: 0.3s;"></div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-end h-full z-10 group">
+<div class="w-full bg-primary-fixed rounded-t-sm chart-bar" style="height: 45%; transition-delay: 0.4s;"></div>
+</div>
+</div>
+<div class="flex justify-between items-start mt-2 px-1">
+<div class="flex-1 text-center font-label-md text-label-md text-on-surface-variant truncate px-1">OPRP</div>
+<div class="flex-1 text-center font-label-md text-label-md text-on-surface-variant truncate px-1">Thành phẩm</div>
+<div class="flex-1 text-center font-label-md text-label-md text-on-surface-variant truncate px-1">Dị vật</div>
+<div class="flex-1 text-center font-label-md text-label-md text-on-surface-variant truncate px-1">Vệ sinh</div>
+</div>
+</section>
+</main>
+<nav class="bg-surface shadow-[0_-2px_10px_rgba(0,0,0,0.05)] shadow-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-14 px-xs pb-safe docked full-width rounded-t-xl scale-95 active:scale-90 transition-transform">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md rounded-lg p-1 w-20">
+<span class="material-symbols-outlined mb-1 text-[24px]">today</span>
+<span class="truncate w-full text-center">Hôm nay</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md rounded-lg p-1 w-20">
+<span class="material-symbols-outlined mb-1 text-[24px]">fact_check</span>
+<span class="truncate w-full text-center">Truy xuất lô</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 hover:bg-surface-container-high font-label-md text-label-md w-24">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="truncate w-full text-center font-bold">Bảng điều khiển</span>
+</button>
+</nav>
+</body></html>

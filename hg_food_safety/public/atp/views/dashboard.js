@@ -64,7 +64,7 @@ async function drawChart(today) {
     data: { labels: ["OPRP", "Thành phẩm", "Dị vật", "Vệ sinh"],
       datasets: [{ label: "Số bản ghi hôm nay",
         data: [today.oprp_logs, today.finished_checks, today.foreign_body_checks, today.sanitation_logs],
-        backgroundColor: "#16a34a", borderRadius: 6 }] },
+        backgroundColor: "#006b2c", borderRadius: 6 }] },
     options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
   });
 }

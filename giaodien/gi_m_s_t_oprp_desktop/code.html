@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Giám sát OPRP - Hoang Giang ISO 22000</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#ffb2bf",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#62df7d",
+                        "outline": "#6e7b6c",
+                        "surface": "#f4fcf0",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#dde5d9",
+                        "on-primary-fixed": "#002109",
+                        "surface-container": "#e9f0e5",
+                        "on-secondary-container": "#007233",
+                        "surface-container-high": "#e3eadf",
+                        "primary": "#006b2c",
+                        "tertiary-container": "#c74668",
+                        "on-primary-fixed-variant": "#005320",
+                        "surface-bright": "#f4fcf0",
+                        "inverse-on-surface": "#ecf3e7",
+                        "surface-container-low": "#eff6ea",
+                        "on-tertiary-fixed": "#3f0016",
+                        "on-secondary-fixed": "#00210a",
+                        "inverse-surface": "#2b322b",
+                        "tertiary-fixed": "#ffd9de",
+                        "on-background": "#171d16",
+                        "outline-variant": "#bdcaba",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-tertiary-container": "#fffbff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#8a143c",
+                        "secondary-fixed": "#95f8a7",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d5dcd1",
+                        "on-surface": "#171d16",
+                        "primary-container": "#00873a",
+                        "secondary-container": "#92f5a4",
+                        "secondary": "#006d30",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#f7fff2",
+                        "tertiary": "#a72d51",
+                        "secondary-fixed-dim": "#79db8d",
+                        "primary-fixed": "#7ffc97",
+                        "on-surface-variant": "#3e4a3d",
+                        "surface-variant": "#dde5d9",
+                        "on-primary": "#ffffff",
+                        "background": "#f4fcf0",
+                        "primary-fixed-dim": "#62df7d",
+                        "on-secondary-fixed-variant": "#005323",
+                        "surface-tint": "#006e2d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target": "44px",
+                        "xs": "8px",
+                        "container-margin": "16px",
+                        "gutter": "12px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "label-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full pt-16 flex flex-col bg-surface border-r border-outline-variant shadow-sm docked left-0 h-full w-64 z-40 hidden md:flex">
+<div class="px-md py-lg flex flex-col items-center border-b border-outline-variant/30">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-sm">
+<span class="material-symbols-outlined" style="font-size: 32px;">factory</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary">Hoàng Giang</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">ISO 22000 Portal</p>
+</div>
+<div class="flex-1 py-md flex flex-col gap-base px-sm">
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm rounded-lg hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="today">today</span>
+                Hôm nay
+            </a>
+<a class="flex items-center gap-sm text-on-surface-variant px-md py-sm rounded-lg hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Truy xuất lô
+            </a>
+<a class="flex items-center gap-sm bg-secondary-container text-on-secondary-container rounded-lg px-md py-sm active:scale-95 transition-transform font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Bảng điều khiển
+            </a>
+</div>
+<div class="p-sm border-t border-outline-variant/30 mt-auto">
+<a class="flex items-center gap-sm text-error px-md py-sm rounded-lg hover:bg-error-container hover:text-on-error-container transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Đăng xuất
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col ml-0 md:ml-64 w-full h-full relative">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full md:w-[calc(100%-16rem)] z-50 flex justify-between items-center px-md h-touch-target bg-primary text-on-primary docked full-width top-0 shadow-sm">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-on-primary">ATTP Hoàng Giang</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-on-primary/10 transition-colors p-xs rounded-full flex items-center justify-center active:opacity-80 transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-on-primary/10 transition-colors p-xs rounded-full flex items-center justify-center active:opacity-80 transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container border border-on-primary overflow-hidden ml-sm cursor-pointer hover:ring-2 ring-on-primary transition-all">
+<img alt="Quản trị viên" class="w-full h-full object-cover" data-alt="A professional headshot of an Asian male facility manager wearing a pristine white lab coat and a subtle green ID lanyard. The lighting is bright and clean, typical of a modern food safety corporate environment. His expression is confident and focused. The background is a soft, out-of-focus white wall with a hint of natural light, evoking a sterile, organized, and reliable atmosphere suitable for an ISO 22000 compliant facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDS9XBQefQFInW4GlwPcuvpqt2Ga0k5MhYLuhFpzrkPrhn0gRGISQ6mJkR4dySAWie-lw-hb2v6b9XGaSwOTJdpVhE5gR8LuWgMxKmzCWX29Kommwp_5LaGU7KcmEdQg_mEe0KI224KLoeumyu6LGJFqqJ8hMT_VdHMKm56FdSnUf_QS087IW6AGg2v6Ay-WoHMl8iqM3rynECv0fzxF-77nwXN2Q1eBBkqHVdXiynSeKvCZi2KnAdeFzkMEk0yuKV0UQIfUG3CjHTB"/>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto pt-touch-target bg-background p-container-margin md:p-lg">
+<div class="max-w-5xl mx-auto space-y-xl">
+<!-- Header & Breadcrumb -->
+<div class="flex flex-col gap-sm">
+<a class="flex items-center text-primary font-label-md text-label-md hover:underline w-fit" href="#">
+<span class="material-symbols-outlined text-[16px] mr-xs">arrow_back</span>
+                        Quay lại Bảng điều khiển
+                    </a>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Giám sát OPRP</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Ghi nhận và báo cáo kết quả kiểm tra các chương trình tiên quyết hoạt động (OPRP).</p>
+</div>
+<form class="space-y-lg">
+<!-- Thông tin chung -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_4px_rgba(15,23,42,0.05)] p-lg flex flex-col gap-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary flex items-center gap-sm border-b border-outline-variant pb-xs">
+<span class="material-symbols-outlined text-primary">info</span>
+                            Thông tin chung
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface">Ngày kiểm tra <span class="text-error">*</span></label>
+<input class="h-touch-target rounded-lg border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" type="date" value="2023-10-27"/>
+</div>
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface">Ca làm việc <span class="text-error">*</span></label>
+<select class="h-touch-target rounded-lg border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm">
+<option>Sáng (06:00 - 14:00)</option>
+<option>Chiều (14:00 - 22:00)</option>
+<option>Tối (22:00 - 06:00)</option>
+</select>
+</div>
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface">Lô (Batch) <span class="text-error">*</span></label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full h-touch-target rounded-lg border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md pl-10 pr-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Tìm kiếm hoặc nhập mã lô..." type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface">Người giám sát <span class="text-error">*</span></label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">person_search</span>
+<input class="w-full h-touch-target rounded-lg border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md pl-10 pr-sm focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Tìm tên nhân viên..." type="text" value="Nguyễn Văn A"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Chi tiết giám sát -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_4px_rgba(15,23,42,0.05)] p-lg flex flex-col gap-lg">
+<div class="flex justify-between items-center border-b border-outline-variant pb-xs">
+<h3 class="font-headline-sm text-headline-sm text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">rule_settings</span>
+                                Chi tiết giám sát
+                            </h3>
+</div>
+<div class="overflow-x-auto border border-outline-variant rounded-lg">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md uppercase">
+<th class="p-sm font-semibold border-b border-outline-variant w-1/4">OPRP / Công đoạn</th>
+<th class="p-sm font-semibold border-b border-outline-variant w-1/5">Thông số</th>
+<th class="p-sm font-semibold border-b border-outline-variant w-1/5">Giới hạn hành động</th>
+<th class="p-sm font-semibold border-b border-outline-variant w-1/6">Kết quả</th>
+<th class="p-sm font-semibold border-b border-outline-variant w-1/6">Trạng thái</th>
+<th class="p-sm font-semibold border-b border-outline-variant w-12 text-center"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-lowest transition-colors">
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" type="text" value="OPRP 1 - Thanh trùng"/>
+</td>
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" type="text" value="Nhiệt độ"/>
+</td>
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" type="text" value="≥ 85°C"/>
+</td>
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" placeholder="Nhập Kq..." type="text"/>
+</td>
+<td class="p-sm align-top">
+<select class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm">
+<option value="">Chọn...</option>
+<option value="pass">Đạt</option>
+<option value="fail">Không đạt</option>
+</select>
+</td>
+<td class="p-sm align-top text-center">
+<button class="h-10 w-10 text-on-surface-variant hover:text-error hover:bg-error-container rounded flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-lowest transition-colors">
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" type="text" value="OPRP 2 - Đóng gói"/>
+</td>
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" type="text" value="Áp suất"/>
+</td>
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" type="text" value="1.5 - 2.0 bar"/>
+</td>
+<td class="p-sm align-top">
+<input class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm" placeholder="Nhập Kq..." type="text"/>
+</td>
+<td class="p-sm align-top">
+<select class="w-full h-10 rounded border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary px-sm">
+<option value="">Chọn...</option>
+<option value="pass">Đạt</option>
+<option value="fail">Không đạt</option>
+</select>
+</td>
+<td class="p-sm align-top text-center">
+<button class="h-10 w-10 text-on-surface-variant hover:text-error hover:bg-error-container rounded flex items-center justify-center transition-colors" type="button">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<button class="self-start flex items-center gap-xs font-label-md text-label-md text-primary hover:bg-primary-container/20 px-sm py-xs rounded transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                            Thêm dòng
+                        </button>
+</section>
+<!-- Hành động khắc phục -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_4px_rgba(15,23,42,0.05)] p-lg flex flex-col gap-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary flex items-center gap-sm border-b border-outline-variant pb-xs">
+<span class="material-symbols-outlined text-primary">build</span>
+                            Hành động khắc phục
+                        </h3>
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface-variant">Mô tả chi tiết hành động khắc phục (nếu có thông số Không đạt)</label>
+<textarea class="w-full min-h-[120px] rounded-lg border-outline-variant bg-surface-bright text-on-surface font-body-md text-body-md p-sm focus:ring-2 focus:ring-primary focus:border-primary resize-y" placeholder="Ghi chú các biện pháp đã thực hiện để đưa OPRP về trạng thái kiểm soát..."></textarea>
+</div>
+</section>
+<!-- Actions -->
+<div class="flex justify-end pt-md border-t border-outline-variant mt-xl pb-xl">
+<button class="h-touch-target px-xl bg-primary text-on-primary font-label-lg text-label-lg rounded-lg hover:bg-primary/90 shadow-md flex items-center gap-sm transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined">save</span>
+                            Lưu &amp; gửi
+                        </button>
+</div>
+</form>
+</div>
+</main>
+</div>
+</body></html>
