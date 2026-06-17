@@ -4,33 +4,35 @@ import { escapeHtml } from "../lib/format.js";
 export async function render({ container, query }) {
   const batch = query.batch || "";
   container.innerHTML = `
-    <h2 class="app-h2">Truy xuat theo lo</h2>
+    <h2 class="app-h2">Truy xuất theo lô</h2>
     <div class="app-row">
-      <input id="app-batch" class="app-input" placeholder="Nhap ma lo (Batch)" value="${escapeHtml(batch)}">
-      <button id="app-go" class="app-btn">Truy xuat</button>
+      <input id="app-batch" class="app-input" placeholder="Nhập mã lô (Batch)" value="${escapeHtml(batch)}">
+      <button id="app-go" class="app-btn">Truy xuất</button>
     </div>
     <div id="app-trace-result"></div>`;
   const go = () => {
     const b = document.getElementById("app-batch").value.trim();
-    if (b) { location.hash = "#/trace?batch=" + encodeURIComponent(b); }
+    if (b) location.hash = "#/trace?batch=" + encodeURIComponent(b);
   };
   container.querySelector("#app-go").addEventListener("click", go);
+  container.querySelector("#app-batch").addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
   if (batch) await load(batch, container.querySelector("#app-trace-result"));
 }
 
 async function load(batch, target) {
-  target.innerHTML = "Dang tai...";
+  target.innerHTML = '<div class="app-card app-muted">Đang tải...</div>';
   try {
     const d = await call("hg_food_safety.api.trace.by_batch", { batch_no: batch });
+    const hold = (d.batch_status || "").toLowerCase().indexOf("co lap") > -1;
     const sec = (title, rows, fmt) => `
-      <div class="app-tl-sec"><div class="app-tl-title">${escapeHtml(title)} (${(rows || []).length})</div>
-      ${(rows || []).map(fmt).join("") || '<div class="app-tl-empty">- khong co -</div>'}</div>`;
+      <div class="app-tl-sec"><div class="app-tl-title">${escapeHtml(title)} <span class="app-badge">${(rows || []).length}</span></div>
+      ${(rows || []).map(fmt).join("") || '<div class="app-tl-empty">— không có —</div>'}</div>`;
     target.innerHTML = `
-      <div class="app-alert">Trang thai lo: <b>${escapeHtml(d.batch_status || "-")}</b></div>
-      ${sec("Giam sat OPRP", d.oprp, (r) => line(r.name, r.log_date + " / " + r.shift + (r.has_deviation ? " - VUOT" : "")))}
-      ${sec("Kiem di vat", d.foreign_body, (r) => line(r.name, r.log_date + " - " + r.status))}
-      ${sec("Kiem thanh pham", d.finished_inspection, (r) => line(r.name, (r.item_code || "") + " - " + r.status))}
-      ${sec("Luu mau", d.sample_retention, (r) => line(r.name, r.retention_date + " -> " + (r.keep_until || "")))}`;
+      <div class="app-banner ${hold ? "app-banner-red" : "app-banner-ok"}">Trạng thái lô: <b>${escapeHtml(d.batch_status || "—")}</b></div>
+      ${sec("Giám sát OPRP", d.oprp, (r) => line(r.name, r.log_date + " · " + r.shift + (r.has_deviation ? " · VƯỢT" : "")))}
+      ${sec("Kiểm dị vật", d.foreign_body, (r) => line(r.name, r.log_date + " · " + r.status))}
+      ${sec("Kiểm thành phẩm", d.finished_inspection, (r) => line(r.name, (r.item_code || "") + " · " + r.status))}
+      ${sec("Lưu mẫu", d.sample_retention, (r) => line(r.name, r.retention_date + " → " + (r.keep_until || "")))}`;
   } catch (e) {
     target.innerHTML = `<div class="app-alert app-alert-red">${escapeHtml(e.message)}</div>`;
   }
