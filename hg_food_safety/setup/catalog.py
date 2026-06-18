@@ -8,8 +8,32 @@ Ten/ma tai lieu giu nguyen TIENG VIET CO DAU (la noi dung hien thi, khong phai
 fieldname/option). Nhom (doc_category) va trang thai (status) luu ASCII de khop
 options Select. Seed idempotent theo doc_code.
 """
+import os
 import frappe
 from frappe.utils import now_datetime
+
+# Noi dung tai lieu (HTML) trich tu cac file .docx goc trong tai_lieu_iso/,
+# luu trong setup/doc_content/<slug>.html. Map: doc_code -> slug.
+CONTENT_FILES = {
+    "QT.01": "qt_01", "QT.02": "qt_02", "QT.03": "qt_03", "QT.04": "qt_04", "QT.05": "qt_05",
+    "QT.06": "qt_06", "QT.07": "qt_07", "QT.08": "qt_08", "QT.10": "qt_10", "QT.11": "qt_11", "QT.12": "qt_12",
+    "MTATTP": "mtattp", "STATTP": "stattp", "SSOP / PRP": "ssop_prp",
+    "KH.HACCP.01": "kh_haccp_01", "KH.HACCP.02": "kh_haccp_02", "QĐ.01": "qd_01",
+    "KH.OPRP.01": "kh_oprp_01", "KH.KN.01": "kh_kn_01", "KH.SL.01": "kh_sl_01",
+    "BM.PG.01": "bm_pg_01", "BM.02.03": "bm_02_03",
+}
+_CONTENT_DIR = os.path.join(os.path.dirname(__file__), "doc_content")
+
+
+def _load_content(code):
+    slug = CONTENT_FILES.get(code)
+    if not slug:
+        return None
+    try:
+        with open(os.path.join(_CONTENT_DIR, slug + ".html"), encoding="utf-8") as f:
+            return f.read().strip() or None
+    except OSError:
+        return None
 
 # Nhom (khop options doc_category trong Controlled Document)
 G_POLICY = "Chinh sach - Muc tieu"
@@ -116,19 +140,36 @@ CATALOG = [
 
 
 def ensure_documents():
-    """Seed danh muc tai lieu ISO vao Controlled Document (idempotent theo doc_code)."""
+    """Seed danh muc tai lieu ISO vao Controlled Document (idempotent theo doc_code).
+
+    Tai lieu nao co file noi dung (.docx goc) thi nap luon vao truong content;
+    voi ban ghi da ton tai nhung content con trong thi backfill (cap nhat nguoc).
+    """
     user = frappe.session.user or "Administrator"
     for (code, name, cat, dtype, location, retention, summary) in CATALOG:
-        if code and frappe.db.exists("Controlled Document", {"doc_code": code}):
+        content = _load_content(code)
+        existing = frappe.db.get_value("Controlled Document", {"doc_code": code}, "name") if code else None
+        if existing:
+            if content:
+                doc = frappe.get_doc("Controlled Document", existing)
+                if not (doc.content or "").strip():
+                    doc.content = content
+                    doc.append("change_log", {
+                        "changed_on": now_datetime(), "changed_by": user,
+                        "action": "Nhap noi dung", "version": doc.version or "",
+                        "note": "Trich noi dung tu tai lieu goc (.docx)",
+                    })
+                    doc.save(ignore_permissions=True)
             continue
         doc = frappe.get_doc({
             "doctype": "Controlled Document", "doc_name": name, "doc_code": code,
             "doc_category": cat, "doc_type": dtype, "status": "Hieu luc",
             "location": location or None, "retention": retention or None,
-            "summary": summary or None,
+            "summary": summary or None, "content": content,
             "change_log": [{
                 "changed_on": now_datetime(), "changed_by": user,
-                "action": "Nhap danh muc ISO", "version": "", "note": "Khoi tao tu danh muc chuan",
+                "action": "Nhap danh muc ISO", "version": "",
+                "note": "Khoi tao tu danh muc chuan" + (" + noi dung tai lieu" if content else ""),
             }],
         })
         doc.insert(ignore_permissions=True)
