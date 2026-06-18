@@ -12,6 +12,49 @@ ALLOWED_CREATE = {
 ALLOWED_LINK = {"Batch", "Item", "Employee"}
 GROUP_ORDER = ["Hang ngay / Moi ca", "Dinh ky ngan", "Dinh ky 6 thang", "Hang nam", "Khi phat sinh"]
 
+# Nhan hien thi co dau (DB luu ASCII de khop logic period_key / GROUP_ORDER).
+GROUP_VI = {
+    "Hang ngay / Moi ca": "Hằng ngày / Mỗi ca",
+    "Dinh ky ngan": "Định kỳ ngắn",
+    "Dinh ky 6 thang": "Định kỳ 6 tháng",
+    "Hang nam": "Hằng năm",
+    "Khi phat sinh": "Khi phát sinh",
+}
+FREQ_VI = {
+    "Hang ngay": "Hằng ngày", "Moi ca": "Mỗi ca", "15 ngay": "15 ngày",
+    "Hang thang": "Hằng tháng", "Hang quy": "Hằng quý", "6 thang": "6 tháng",
+    "Hang nam": "Hằng năm", "Khi phat sinh": "Khi phát sinh",
+}
+TASK_VI = {
+    "Giam sat OPRP theo ca": "Giám sát OPRP theo ca",
+    "Kiem tra di vat / luoi sang / dau do": "Kiểm tra dị vật / lưới sàng / đầu dò",
+    "Kiem tra thanh pham moi lo": "Kiểm tra thành phẩm mỗi lô",
+    "Lay mau luu cuoi ngay": "Lấy mẫu lưu cuối ngày",
+    "Nhat ky ve sinh dau/cuoi ca": "Nhật ký vệ sinh đầu/cuối ca",
+    "Xa nuoc dau voi + cam quan nuoc": "Xả nước đầu vòi + cảm quan nước",
+    "Ghi nhan hang tai che (rework)": "Ghi nhận hàng tái chế (rework)",
+    "Diet ruoi muoi khu nha xuong": "Diệt ruồi muỗi khu nhà xưởng",
+    "Kiem tra thiet bi PCCC": "Kiểm tra thiết bị PCCC",
+    "Ve sinh dinh ky + diet con trung/chuot": "Vệ sinh định kỳ + diệt côn trùng/chuột",
+    "Giam sat moi truong (swab be mat/khong khi)": "Giám sát môi trường (swab bề mặt/không khí)",
+    "Bao duong dinh ky thiet bi san xuat": "Bảo dưỡng định kỳ thiết bị sản xuất",
+    "Hieu chuan/kiem dinh thiet bi do": "Hiệu chuẩn/kiểm định thiết bị đo",
+    "Ra soat danh muc thuy tinh - nhua gion": "Rà soát danh mục thủy tinh - nhựa giòn",
+    "Kiem nghiem nuoc/san pham dinh ky": "Kiểm nghiệm nước/sản phẩm định kỳ",
+    "Danh gia noi bo toan bo bo phan": "Đánh giá nội bộ toàn bộ bộ phận",
+    "Tham tra he thong HACCP/OPRP": "Thẩm tra hệ thống HACCP/OPRP",
+    "Xac dinh lai rui ro & co hoi": "Xác định lại rủi ro & cơ hội",
+    "Tap huan kien thuc VSATTP": "Tập huấn kiến thức VSATTP",
+    "Kham suc khoe dinh ky cong nhan": "Khám sức khỏe định kỳ công nhân",
+    "Dien tap tinh huong khan cap": "Diễn tập tình huống khẩn cấp",
+    "Dien tap thu hoi (mock recall)": "Diễn tập thu hồi (mock recall)",
+    "Danh gia phong ve thuc pham (TACCP/VACCP)": "Đánh giá phòng vệ thực phẩm (TACCP/VACCP)",
+    "Tham dinh han su dung (shelf-life)": "Thẩm định hạn sử dụng (shelf-life)",
+    "Danh gia & duyet nha cung cap": "Đánh giá & duyệt nhà cung cấp",
+    "Kiem tra chat luong hang nhap": "Kiểm tra chất lượng hàng nhập",
+    "Thu hoi san pham mat an toan": "Thu hồi sản phẩm mất an toàn",
+}
+
 
 def _ensure_today():
     """Tu seed ATTP Task (neu trong) + sinh log den ky -> list luon co viec hien."""
@@ -38,11 +81,13 @@ def today_tasks() -> dict:
     for l in logs:
         form = frappe.db.get_value("ATTP Task", l.task, "linked_form")
         l["linked_form"] = form or ""
+        l["title"] = TASK_VI.get(l.title, l.title)
+        l["frequency"] = FREQ_VI.get(l.frequency, l.frequency)
         groups.setdefault(l.task_group or "Khac", []).append(l)
-    ordered = [{"group": g, "tasks": groups[g]} for g in GROUP_ORDER if g in groups]
+    ordered = [{"group": GROUP_VI.get(g, g), "tasks": groups[g]} for g in GROUP_ORDER if g in groups]
     for g in groups:
         if g not in GROUP_ORDER:
-            ordered.append({"group": g, "tasks": groups[g]})
+            ordered.append({"group": GROUP_VI.get(g, g), "tasks": groups[g]})
     done_today = frappe.db.count("ATTP Task Log", {"status": "Da lam", "done_on": [">=", nowdate() + " 00:00:00"]})
     return {
         "date": nowdate(),
@@ -125,22 +170,24 @@ def _auto_complete_task(doctype, docname):
 # ─────────────── Tai lieu noi bo ───────────────
 @frappe.whitelist()
 def documents() -> list:
-    """Danh sach tai lieu kiem soat (doc online). Moi vai tro FS deu xem duoc."""
+    """Danh muc tai lieu kiem soat (noi bo + ben ngoai). Moi vai tro FS deu xem duoc."""
     require_fs()
     return frappe.get_all("Controlled Document",
-        filters={"doc_type": "Noi bo"},
-        fields=["name", "doc_name", "doc_code", "version", "status", "attachment", "summary", "modified"],
-        order_by="doc_code asc, modified desc")
+        fields=["name", "doc_name", "doc_code", "doc_type", "version", "status",
+                "attachment", "summary", "location", "effective_date", "modified"],
+        order_by="doc_type asc, doc_code asc, modified desc")
 
 
 @frappe.whitelist()
 def create_document(doc_name: str, doc_code: str = None, version: str = None,
-                    attachment: str = None, summary: str = None) -> dict:
-    """Tao tai lieu noi bo (chi quan ly QA). attachment = file_url da upload."""
+                    attachment: str = None, summary: str = None, doc_type: str = "Noi bo") -> dict:
+    """Tao tai lieu trong danh muc (chi quan ly QA). attachment = file_url da upload."""
     _guard()
+    if doc_type not in ("Noi bo", "Ben ngoai"):
+        doc_type = "Noi bo"
     doc = frappe.get_doc({
         "doctype": "Controlled Document", "doc_name": doc_name, "doc_code": doc_code,
-        "doc_type": "Noi bo", "version": version, "status": "Hieu luc",
+        "doc_type": doc_type, "version": version, "status": "Hieu luc",
         "attachment": attachment, "summary": summary,
     })
     doc.insert()

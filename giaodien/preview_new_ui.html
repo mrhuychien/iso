@@ -91,19 +91,26 @@ const VIEWS = {
       <div class="app-tl-empty">— không có —</div></div>`,
 
   documents: () => `
-    <h2 class="app-h2">Tài liệu nội bộ</h2>
+    <h2 class="app-h2">Danh mục tài liệu</h2>
+    <h3 class="app-h3">Tài liệu nội bộ <span class="app-badge">3</span></h3>
     <div class="app-doclist">
-      ${doc("Sổ tay An toàn thực phẩm","STATTP-01","03","Hiện hành",true)}
-      ${doc("Kế hoạch HACCP — Bánh đậu xanh","KH-HACCP-01","02","Hiện hành",true)}
-      ${doc("QT 02 — Thu hồi sản phẩm","QT-02","01","Hiện hành",false)}
+      ${doc("Sổ tay An toàn thực phẩm","STATTP-01","03","Hiệu lực",true)}
+      ${doc("Kế hoạch HACCP — Bánh đậu xanh","KH-HACCP-01","02","Hiệu lực",true)}
+      ${doc("QT 02 — Thu hồi sản phẩm","QT-02","01","Hiệu lực",false)}
     </div>
-    <h3 class="app-h3">Tải tài liệu lên</h3>
+    <h3 class="app-h3">Tài liệu bên ngoài (pháp luật, tiêu chuẩn) <span class="app-badge">2</span></h3>
+    <div class="app-doclist">
+      ${doc("QCVN 8-1:2011/BYT — Giới hạn ô nhiễm độc tố vi nấm","QCVN 8-1","2011","Hiệu lực",true)}
+      ${doc("Nghị định 15/2018/NĐ-CP — Hướng dẫn Luật ATTP","NĐ 15/2018","2018","Hiệu lực",true)}
+    </div>
+    <h3 class="app-h3">Thêm tài liệu vào danh mục</h3>
     <div class="app-form">
       <div class="app-fg"><label class="app-label">Tên tài liệu <span class="app-req">*</span></label><input class="app-input" placeholder="VD: Quy trình vệ sinh CIP"></div>
       <div class="app-fg"><label class="app-label">Mã tài liệu</label><input class="app-input" placeholder="QT-09"></div>
+      <div class="app-fg"><label class="app-label">Loại</label><select class="app-input"><option>Tài liệu nội bộ</option><option>Tài liệu bên ngoài (pháp luật, tiêu chuẩn)</option></select></div>
       <div class="app-fg"><label class="app-label">Phiên bản</label><input class="app-input" placeholder="vd: 01"></div>
-      <div class="app-fg"><label class="app-label">Tệp (PDF/ảnh/Word) <span class="app-req">*</span></label><input class="app-input" type="file"></div>
-      <button class="app-btn app-btn-lg">Tải lên</button>
+      <div class="app-fg"><label class="app-label">Tệp (PDF/ảnh/Word)</label><input class="app-input" type="file"></div>
+      <button class="app-btn app-btn-lg">Thêm vào danh mục</button>
     </div>`,
 
   dashboard: () => `
