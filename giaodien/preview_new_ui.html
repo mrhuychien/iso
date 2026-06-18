@@ -148,15 +148,31 @@ const VIEWS = {
 };
 function doc(name,code,ver,status,att){
   const meta=[code, ver?("v"+ver):"", status].filter(Boolean).join(" · ");
-  const acts=[
-    att?`<a class="app-btn-sm">${sym("visibility")}Đọc</a>`:"",
-    `<button class="app-btn-sm app-btn-ghost">${sym("history")}2</button>`,
-    `<button class="app-btn-sm app-btn-ghost">${sym("edit")}</button>`,
-  ].join("");
-  return `<div class="app-doc"><div class="app-doc-ic">${sym("description")}</div>
+  const read=att?`<a class="app-btn-sm" onclick="event.stopPropagation()">${sym("visibility")}</a>`:"";
+  const data=encodeURIComponent(JSON.stringify({name,code,ver,status,att}));
+  return `<div class="app-doc app-doc-click" onclick="PVdetail('${data}')"><div class="app-doc-ic">${sym("description")}</div>
     <div class="app-doc-main"><div class="app-doc-name">${name}</div><div class="app-doc-meta">${meta}</div></div>
-    <div class="app-doc-act">${acts}</div></div>`;
+    <div class="app-doc-act">${read}<span class="material-symbols-outlined app-doc-chev">chevron_right</span></div></div>`;
 }
+function PVkv(l,v){return v?`<div class="app-kv"><span class="app-kv-l">${l}</span><span class="app-kv-v">${v}</span></div>`:"";}
+window.PVdetail=function(data){
+  const d=JSON.parse(decodeURIComponent(data));
+  const ov=document.createElement("div");ov.className="app-modal-ov";
+  ov.innerHTML=`<div class="app-modal"><div class="app-modal-head"><span>Chi tiết tài liệu</span><button class="app-modal-x">×</button></div>
+    <div class="app-modal-body">
+      <div class="app-detail-head"><div class="app-detail-title">${d.name}</div>
+        ${d.code?`<div class="app-detail-code">${d.code}</div>`:""}
+        <div class="app-detail-tags"><span class="app-tag">Quy trình (QT)</span><span class="app-tag">Nội bộ</span><span class="app-tag app-tag-ok">${d.status}</span></div></div>
+      <div class="app-kvlist">${PVkv("Phiên bản",d.ver?("v"+d.ver):"")}${PVkv("Nơi lưu","Ban ISO")}${PVkv("Thời gian lưu","Lâu dài")}${PVkv("Cập nhật cuối","2026-06-18 09:12")}${PVkv("Số lần cập nhật","2")}</div>
+      <div class="app-detail-sum"><div class="app-kv-l" style="margin-bottom:6px">Tóm tắt / Ghi chú</div>Tài liệu thuộc hệ thống ISO 22000 — quản lý bởi Ban ISO.</div>
+      <div class="app-detail-act">${d.att?`<a class="app-btn">${sym("visibility")}Đọc tệp</a>`:`<span class="app-alert" style="margin:0;flex:1">Tài liệu chưa đính kèm tệp.</span>`}
+        <button class="app-btn-sm app-btn-ghost">${sym("history")}Lịch sử (2)</button>
+        <button class="app-btn-sm app-btn-ghost">${sym("edit")}Sửa</button></div>
+    </div></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener("click",e=>{if(e.target===ov)ov.remove();});
+  ov.querySelector(".app-modal-x").addEventListener("click",()=>ov.remove());
+};
 function bar(label,val,color){
   const h = Math.round(val/15*160)+10;
   return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;justify-content:flex-end;height:100%;">

@@ -65,10 +65,14 @@ export async function render({ container }) {
     ${catalog}
     ${adder}`;
 
+  container.querySelectorAll("[data-view]").forEach((b) => {
+    b.addEventListener("click", () => openDetail(b.dataset.view, container));
+    b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(b.dataset.view, container); } });
+  });
   container.querySelectorAll("[data-hist]").forEach((b) =>
-    b.addEventListener("click", () => openHistory(b.dataset.hist)));
+    b.addEventListener("click", (e) => { e.stopPropagation(); openHistory(b.dataset.hist); }));
   container.querySelectorAll("[data-edit]").forEach((b) =>
-    b.addEventListener("click", () => openEditor(b.dataset.edit, container)));
+    b.addEventListener("click", (e) => { e.stopPropagation(); openEditor(b.dataset.edit, container); }));
   if (isMgr()) container.querySelector("#a-go").addEventListener("click", () => doAdd(container));
 }
 
@@ -76,18 +80,57 @@ function docRow(d) {
   const status = STATUS_VI[d.status] || d.status || "";
   const meta = [d.doc_code, d.version ? "v" + d.version : "", status, d.location]
     .filter(Boolean).map(escapeHtml).join(" · ");
-  const actions = [];
-  if (d.attachment) actions.push(`<a class="app-btn-sm" href="${escapeHtml(d.attachment)}" target="_blank" rel="noopener"><span class="material-symbols-outlined" style="font-size:18px">visibility</span>Đọc</a>`);
-  if (Number(d.change_count) > 0) actions.push(`<button class="app-btn-sm app-btn-ghost" data-hist="${escapeHtml(d.name)}"><span class="material-symbols-outlined" style="font-size:18px">history</span>${escapeHtml(String(d.change_count))}</button>`);
-  if (isMgr()) actions.push(`<button class="app-btn-sm app-btn-ghost" data-edit="${escapeHtml(d.name)}"><span class="material-symbols-outlined" style="font-size:18px">edit</span></button>`);
-  if (!d.attachment && !isMgr()) actions.push('<span class="app-doc-noatt">chưa có tệp</span>');
-  return `<div class="app-doc">
+  const read = d.attachment
+    ? `<a class="app-btn-sm" href="${escapeHtml(d.attachment)}" target="_blank" rel="noopener" title="Mở tệp"><span class="material-symbols-outlined" style="font-size:18px">visibility</span></a>`
+    : "";
+  return `<div class="app-doc app-doc-click" data-view="${escapeHtml(d.name)}" role="button" tabindex="0">
     <div class="app-doc-ic"><span class="material-symbols-outlined">description</span></div>
     <div class="app-doc-main">
       <div class="app-doc-name">${escapeHtml(d.doc_name || d.name)}</div>
       <div class="app-doc-meta">${meta}</div>
     </div>
-    <div class="app-doc-act">${actions.join("")}</div></div>`;
+    <div class="app-doc-act">${read}<span class="material-symbols-outlined app-doc-chev">chevron_right</span></div></div>`;
+}
+
+function kv(label, value) {
+  if (!value) return "";
+  return `<div class="app-kv"><span class="app-kv-l">${escapeHtml(label)}</span><span class="app-kv-v">${escapeHtml(value)}</span></div>`;
+}
+
+function openDetail(name, container) {
+  const d = DOCS.find((x) => x.name === name);
+  if (!d) return;
+  const tags = [
+    d.doc_category ? `<span class="app-tag">${escapeHtml(CAT_VI[d.doc_category] || d.doc_category)}</span>` : "",
+    `<span class="app-tag">${escapeHtml(TYPE_VI[d.doc_type] || d.doc_type || "")}</span>`,
+    `<span class="app-tag app-tag-${d.status === "Hieu luc" ? "ok" : "muted"}">${escapeHtml(STATUS_VI[d.status] || d.status || "")}</span>`,
+  ].join("");
+  const body = `
+    <div class="app-detail-head">
+      <div class="app-detail-title">${escapeHtml(d.doc_name || d.name)}</div>
+      ${d.doc_code ? `<div class="app-detail-code">${escapeHtml(d.doc_code)}</div>` : ""}
+      <div class="app-detail-tags">${tags}</div>
+    </div>
+    <div class="app-kvlist">
+      ${kv("Phiên bản", d.version)}
+      ${kv("Nơi lưu", d.location)}
+      ${kv("Thời gian lưu", d.retention)}
+      ${kv("Ngày hiệu lực", d.effective_date)}
+      ${kv("Cập nhật cuối", (d.modified || "").replace("T", " ").slice(0, 16))}
+      ${kv("Số lần cập nhật", String(d.change_count || 0))}
+    </div>
+    ${d.summary ? `<div class="app-detail-sum"><div class="app-kv-l" style="margin-bottom:6px">Tóm tắt / Ghi chú</div>${escapeHtml(d.summary)}</div>` : ""}
+    <div class="app-detail-act">
+      ${d.attachment
+        ? `<a class="app-btn" href="${escapeHtml(d.attachment)}" target="_blank" rel="noopener"><span class="material-symbols-outlined" style="font-size:19px">visibility</span>Đọc tệp</a>`
+        : `<span class="app-alert" style="margin:0;flex:1">Tài liệu chưa đính kèm tệp.</span>`}
+      <button class="app-btn-sm app-btn-ghost" data-d-hist><span class="material-symbols-outlined" style="font-size:18px">history</span>Lịch sử (${escapeHtml(String(d.change_count || 0))})</button>
+      ${isMgr() ? '<button class="app-btn-sm app-btn-ghost" data-d-edit><span class="material-symbols-outlined" style="font-size:18px">edit</span>Sửa</button>' : ""}
+    </div>`;
+  const { ov, close } = modal("Chi tiết tài liệu", body);
+  ov.querySelector("[data-d-hist]").addEventListener("click", () => openHistory(name));
+  const eb = ov.querySelector("[data-d-edit]");
+  if (eb) eb.addEventListener("click", () => { close(); openEditor(name, container); });
 }
 
 /* ---------- Modal helpers ---------- */
