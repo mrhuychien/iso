@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-ray mức code — app iso22000_fsms</title>
+<style>
+  :root{--ink:#1a2332;--muted:#5b6573;--line:#e2e6ec;--bg:#fff;--accent:#0f6e4f;--red:#b3261e;--amber:#9a6700;--green:#0f6e4f;--chip:#f3f5f8;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.6;max-width:980px;margin:0 auto;padding:40px 28px;background:var(--bg);}
+  h1{font-size:26px;margin:0 0 4px;line-height:1.25}
+  .sub{color:var(--muted);margin:0 0 24px;font-size:14px}
+  h2{font-size:19px;margin:34px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+  h3{font-size:15px;margin:20px 0 6px}
+  p{margin:8px 0}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--chip);font-weight:600}
+  code{background:var(--chip);padding:1px 5px;border-radius:4px;font-size:12.5px;font-family:"SF Mono",Menlo,Consolas,monospace}
+  pre{background:#0f1722;color:#e6edf3;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:12.5px;line-height:1.5}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff;letter-spacing:.3px}
+  .t-absent{background:var(--red)}.t-partial{background:var(--amber)}.t-present{background:var(--green)}
+  .box{border:1px solid var(--line);border-left:4px solid var(--accent);background:#f8faf9;padding:14px 18px;border-radius:6px;margin:16px 0}
+  .box.warn{border-left-color:var(--amber);background:#fffaf0}
+  .box.crit{border-left-color:var(--red);background:#fdf3f2}
+  .muted{color:var(--muted)}
+  ul{margin:8px 0;padding-left:22px}
+  li{margin:4px 0}
+  .kpi{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .kpi div{flex:1;min-width:150px;border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .kpi .n{font-size:22px;font-weight:700}
+  .kpi .l{font-size:12px;color:var(--muted)}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+
+<h1>X-ray mức code — app <code>iso22000_fsms</code></h1>
+<p class="sub">Báo cáo handover · Repo <code>github.com/mrhuychien/iso22000_fsms</code> · nhánh <code>main</code> · commit <code>39597f8</code> · ngày 14/06/2026</p>
+
+<div class="box">
+<strong>Tóm tắt một đoạn.</strong> App là một hệ FSMS ISO 22000:2018 <em>khá bài bản về khung quản lý</em>: 18 module nghiệp vụ, wiring sự kiện (doc_events) và scheduler đầy đủ, chuỗi auto-create đúng tinh thần ISO (đánh giá→NCR, thu hồi→truy xuất, CCP vượt ngưỡng→leo thang), phân quyền dòng (row-level) cho NCR/Rủi ro được escape đúng cách, không phát hiện lỗ SQL injection hay endpoint cho khách (guest). <strong>Nhưng đúng như anh cảm nhận, phần đặc thù an toàn thực phẩm FMCG còn thiếu</strong>: allergen, EMP, phụ gia/nhãn, food defense đều <em>vắng ở mức code</em>, và PRP/SSOP mới làm được vệ sinh công nhân + vệ sinh khu vực. Ngoài ra có 1 nợ kỹ thuật đáng chú ý: <strong>bộ validator workflow đang rỗng</strong> (hook quảng cáo "OR-logic approval" thực chất chưa làm gì).</p>
+</div>
+
+<div class="kpi">
+  <div><div class="n">18</div><div class="l">module nghiệp vụ (+1 module cha)</div></div>
+  <div><div class="n">22</div><div class="l">doc_events đã đấu nối</div></div>
+  <div><div class="n">12</div><div class="l">test module (theo chuỗi nghiệp vụ)</div></div>
+  <div><div class="n">5/5</div><div class="l">khoảng trống FMCG được xác nhận ở mức code</div></div>
+</div>
+
+<h2>1. Inventory module &amp; DocType</h2>
+<p>File <code>iso22000_fsms/modules.txt</code> liệt kê 19 entry — 18 module chức năng + 1 module cha <code>ISO 22000 FSMS</code>:</p>
+<p class="muted" style="font-size:13px">FSMS Core · Document Control · Audit · NCR · Recall · Emergency · Verification · Context Risk · Equipment · Supplier · Production · PRP · Sample · HACCP · Management Review · Training · Communication · Traceability.</p>
+
+<h3>Mâu thuẫn số liệu trong README (cần dọn)</h3>
+<table>
+<tr><th>Chỉ số</th><th>Nơi A</th><th>Nơi B</th><th>Ghi chú</th></tr>
+<tr><td>Số DocType</td><td>123 (bảng overview)</td><td>75 = 47 doctype + 28 child (tham chiếu blueprint)</td><td>Blueprint tự khai 47+28; con số 123 chưa khớp</td></tr>
+<tr><td>Fixtures (records)</td><td>47 (overview)</td><td>~205 (06_fixtures_plan.md)</td><td>Chưa mở được file fixtures_plan (bị GitHub chặn 429) để chốt 205 vs 255</td></tr>
+</table>
+<p class="muted">Đề nghị: sửa README cho nhất quán, lấy con số từ <code>bench --site … list-doctypes</code> hoặc đếm trực tiếp file <code>doctype/*/*.json</code> làm chuẩn.</p>
+
+<h2>2. HOOKS MAP — đấu nối sự kiện</h2>
+<p>Đọc đầy đủ <code>hooks.py</code> (171 dòng). Bảng <code>doc_events</code>:</p>
+<table>
+<tr><th>DocType</th><th>Event</th><th>Handler</th></tr>
+<tr><td rowspan="5">FSMS NCR</td><td>validate</td><td>fsms_ncr.api.validate_ncr</td></tr>
+<tr><td>before_save</td><td>fsms_ncr.api.set_signatures</td></tr>
+<tr><td>on_submit</td><td>fsms_ncr.api.notify_assignees</td></tr>
+<tr><td>on_update_after_submit</td><td>fsms_ncr.api.handle_state_changes</td></tr>
+<tr><td>on_cancel</td><td>fsms_ncr.api.audit_cancellation</td></tr>
+<tr><td>FSMS Audit Execution</td><td>on_submit</td><td>fsms_audit.api.create_ncr_from_findings</td></tr>
+<tr><td>FSMS Audit Finding</td><td>validate</td><td>fsms_audit.api.validate_finding</td></tr>
+<tr><td>FSMS Recall Event</td><td>on_update_after_submit / on_submit</td><td>handle_recall_state_change / create_traceability_trace</td></tr>
+<tr><td>FSMS Customer Complaint</td><td>on_submit</td><td>fsms_communication.api.handle_complaint</td></tr>
+<tr><td>FSMS CCP Monitoring Log</td><td>validate / on_submit</td><td>check_ccp_limits / escalate_if_breach</td></tr>
+<tr><td>FSMS Material Inspection Log</td><td>on_submit</td><td>fsms_supplier.api.escalate_rejected_material</td></tr>
+<tr><td>FSMS Calibration Record</td><td>on_submit</td><td>fsms_equipment.api.escalate_failed_calibration</td></tr>
+<tr><td>FSMS HACCP Plan</td><td>on_update_after_submit</td><td>fsms_haccp.api.sync_to_item_on_publish</td></tr>
+<tr><td>FSMS Document Change Request</td><td>on_update_after_submit</td><td>fsms_document_control.api.publish_document</td></tr>
+<tr><td>FSMS Supplier Evaluation</td><td>on_submit</td><td>fsms_supplier.api.update_supplier_profile</td></tr>
+<tr><td>FSMS Training Session</td><td>on_submit</td><td>fsms_training.api.update_employee_competency</td></tr>
+<tr><td>Work Order (ERPNext)</td><td>on_submit</td><td>fsms_production.api.create_production_order_link</td></tr>
+<tr><td>Purchase Receipt (ERPNext)</td><td>on_submit</td><td>fsms_supplier.api.auto_create_inspection_log</td></tr>
+<tr><td>Batch (ERPNext)</td><td>after_insert</td><td>fsms_traceability.api.register_batch</td></tr>
+<tr><td>Item (ERPNext)</td><td>before_save</td><td>fsms_haccp.api.sync_haccp_plan_link</td></tr>
+</table>
+
+<h3>Chuỗi auto-create (đã xác minh trong source)</h3>
+<ul>
+<li>Audit Execution submit → tạo NCR từ findings.</li>
+<li>Recall Event submit → tạo <code>FSMS Traceability Trace</code>.</li>
+<li>NCR <code>on_update_after_submit</code>: khi <code>workflow_state == "Chuyển tiếp"</code> và chưa reissue → <strong>tự tạo NCR mới ("re-issued")</strong> qua <code>new.insert(ignore_permissions=True)</code> và back-link.</li>
+<li>Purchase Receipt submit → tự tạo inspection log; CCP/Calibration/Material Inspection submit → handler leo thang.</li>
+</ul>
+
+<h3>Scheduler</h3>
+<p><strong>daily:</strong> NCR quá hạn, thiết bị tới hạn hiệu chuẩn, mẫu tới hạn hủy, kiểm tra khẩn cấp tới hạn. <strong>weekly:</strong> tài liệu tới hạn review, nhắc kickoff kế hoạch đánh giá, digest tuân thủ đào tạo. <strong>monthly:</strong> nhắc review rủi ro, kiểm tra review năm của HACCP plan, nhắc diễn tập truy xuất. <strong>cron <code>0 8 1 12 *</code>:</strong> nhắc đánh giá cuối năm (08:00 ngày 1/12).</p>
+
+<h3>Overrides &amp; fixtures</h3>
+<ul>
+<li><code>override_whitelisted_methods</code>: <code>frappe.model.workflow.apply_workflow</code> → <code>workflow_validation.apply_workflow_with_validation</code>. Không có <code>override_doctype_class</code>.</li>
+<li><code>extend_bootinfo</code>: <code>boot.boot_fsms_session</code>. <code>jinja.methods</code>: <code>format_vnd</code>, <code>format_vn_date</code>, <code>signature_or_blank</code>.</li>
+<li><strong>fixtures:</strong> Roles <code>FSMS%</code> + 4 role trưởng bộ phận; Custom Fields <code>fsms_%</code>; Property Setters (Core/Traceability/Supplier/Recall); toàn bộ Workflow State/Action Master; Workflows <code>FSMS%</code>; Notification/Print Format/Dashboard/Number Card/Workspace lọc theo module; Email Template <code>FSMS%</code>; và seed single-doctype (Document Category, NCR Source, Risk Score Reference, Supplier Category, Emergency Scenario).</li>
+</ul>
+
+<h2>3. PERMISSION MAP — phân quyền</h2>
+<ul>
+<li><code>permission_query_conditions</code>: <strong>FSMS NCR</strong> → <code>fsms_ncr.permissions.get_query_conditions</code>; <strong>FSMS Risk Register</strong> → <code>fsms_context_risk.permissions.get_query_conditions</code>.</li>
+<li><code>has_permission</code>: <strong>FSMS NCR</strong> → <code>fsms_ncr.permissions.has_permission</code> (kiểm tra bằng ORM thuần).</li>
+<li>Phạm vi dòng: user thường chỉ thấy NCR thuộc phòng ban (User Permission) của mình hoặc do mình tạo. <code>PRIVILEGED_ROLES = {FSMS Manager, FSMS Director, FSMS Internal Auditor, System Manager}</code> thấy toàn bộ.</li>
+</ul>
+<div class="box">
+<strong>Đánh giá an toàn:</strong> WHERE clause dựng bằng f-string nhưng <em>mọi giá trị do người dùng kiểm soát đều qua <code>frappe.db.escape()</code></em> — đây là idiom đúng của Frappe cho <code>permission_query_conditions</code> (vốn phải trả về chuỗi, không thể tham số hóa). <strong>Không phải lỗ injection.</strong>
+<pre>return f"`tabFSMS NCR`.owner = {frappe.db.escape(user)}"
+dept_list = ", ".join(frappe.db.escape(d) for d in departments)</pre>
+</div>
+
+<h2>4. Bảo mật whitelisted method</h2>
+<table>
+<tr><th>Method</th><th>Kết luận</th><th>Bằng chứng</th></tr>
+<tr><td><code>api.ping</code></td><td><span class="tag t-present">An toàn</span></td><td>Trả dict tĩnh, không input/DB.</td></tr>
+<tr><td><code>api.ncr_on_time_closure_rate</code></td><td><span class="tag t-present">An toàn</span></td><td>SQL tham số hóa <code>%s</code>, cutoff do server tính <code>add_days(today(), -365)</code>.</td></tr>
+<tr><td><code>api.audit_findings_closure_rate</code></td><td><span class="tag t-present">An toàn</span></td><td>Tham số hóa, cutoff server-side.</td></tr>
+<tr><td><code>workflow_validation.apply_workflow_with_validation</code></td><td><span class="tag t-present">An toàn</span></td><td>Ủy quyền cho core <code>apply_workflow</code> (core tự enforce quyền chuyển trạng thái).</td></tr>
+<tr><td><code>fsms_ncr.api.create_ncr_from_source</code></td><td><span class="tag t-present">An toàn — có check quyền</span></td><td><code>if not frappe.has_permission("FSMS NCR", ptype="create"): frappe.throw(..., PermissionError)</code>; dùng ORM, không SQL thô.</td></tr>
+</table>
+<p class="muted"><code>insert(ignore_permissions=True)</code> chỉ xuất hiện trong handler submit/update phía server (không whitelist) → chấp nhận được. <strong>Không tìm thấy <code>allow_guest=True</code></strong> trong các file đã đọc.</p>
+<div class="box warn">
+<strong>Giới hạn của lần quét này:</strong> GitHub chặn rate-limit (HTTP 429) nên chưa quét <em>hết</em> <code>api.py</code>/<code>permissions.py</code> của cả 20 thư mục module. Kết luận bảo mật là <em>đại diện và chắc chắn cho phần đã đọc</em> (top-level api.py, fsms_ncr, fsms_traceability, fsms_recall, permissions.py), chưa phải quét vét cạn. Khi shell hồi phục, nên <code>grep -rn "@frappe.whitelist\|allow_guest" apps/iso22000_fsms</code> để chốt 100%.</p>
+</div>
+
+<h2>5. Workflow — phát hiện quan trọng</h2>
+<div class="box crit">
+<strong>Bộ validator workflow đang RỖNG.</strong> <code>workflow_validation.py</code> (24 dòng) chỉ là wrapper; registry <code>FSMS_WORKFLOW_VALIDATORS</code> rỗng (chỉ có 1 dòng comment mẫu). Nghĩa là logic "OR-logic approval" mà hook quảng cáo <em>chưa được hiện thực</em> — nó chỉ gọi thẳng core <code>apply_workflow</code>. Đây là hook "chết". Mọi ràng buộc duyệt hiện dựa hoàn toàn vào định nghĩa Workflow trong fixtures.</div>
+<pre>FSMS_WORKFLOW_VALIDATORS: dict[str, str] = {
+    # "FSMS NCR": "iso22000_fsms.fsms_ncr.api.validate_workflow_transition",
+}</pre>
+<p>State machine không nằm ở file này — nó được khai báo qua fixtures <code>Workflow FSMS%</code> (README nêu 28 workflow). Cần xác nhận từng workflow có đủ trạng thái/transition khi shell hồi phục.</p>
+
+<h2>6. Độ phủ test</h2>
+<p>Thư mục <code>tests/</code> có <strong>12 test module</strong>, tổ chức theo <em>chuỗi nghiệp vụ</em> thay vì theo từng DocType — bám đúng các đường rủi ro cao nhất:</p>
+<p class="muted" style="font-size:13px">audit_to_ncr_chain · calibration_breach · complaint_cascade · haccp_ccp_breach · ncr_workflow · or_logic_approval · recall_fast_track · risk_register · sample_retention · supplier_evaluation · traceability · utils.</p>
+<p>Đánh giá: <strong>phủ vừa phải các đường critical</strong>, nhưng nhiều module chưa có test riêng (document control/<code>publish_document</code>, equipment ngoài calibration, training competency, production order link, emergency inspection, management review, verification, PRP). Chưa đọc thân test nên chiều sâu assertion chưa kiểm.</p>
+
+<h2>7. Năm khoảng trống FMCG — xác nhận ở MỨC CODE</h2>
+<p>Đối chiếu trực tiếp trên <code>docs/design/02_doctype_blueprint.md</code> (tìm cả file, không phải xem một phần):</p>
+<table>
+<tr><th>Mảng</th><th>Kết luận</th><th>Bằng chứng code</th></tr>
+<tr><td>A. Allergen</td><td><span class="tag t-absent">VẮNG</span></td><td><code>[Aa]llergen</code> = 0 match. Không có ma trận allergen / DocType nhiễm chéo. "Cross-contam" chỉ là 1 giá trị enum <code>PRP7</code>.</td></tr>
+<tr><td>B. PRP/SSOP đầy đủ (ISO/TS 22002-1)</td><td><span class="tag t-partial">MỘT PHẦN</span></td><td>11 domain PRP bị gộp vào 1 Select <code>prp_code</code> trên child <code>FSMS PRP Item</code>. Chỉ có DocType vận hành cho vệ sinh công nhân + vệ sinh khu/thiết bị. Pest, hóa chất/SDS, thủy tinh-nhựa giòn, chất thải, nước/tiện ích, rework <strong>chỉ tồn tại dưới dạng nhãn enum</strong>, không có DocType riêng.</td></tr>
+<tr><td>C. Giám sát môi trường (EMP)</td><td><span class="tag t-absent">VẮNG</span></td><td><code>Environmental Monitoring|EMP|swab</code> = 0. Không có DocType swab bề mặt/không khí khu đóng gói.</td></tr>
+<tr><td>D. Phụ gia/phẩm màu &amp; nhãn/quy cách</td><td><span class="tag t-absent">VẮNG</span></td><td><code>additive|colorant|24/2019|111/2021</code> = 0. Không có register phụ gia (TT 24/2019), không có kiểm soát nhãn/quy cách (NĐ 111/2021). 59 hit "label" chỉ là từ tiếng Anh trong mô tả field (key JSON <code>"label":</code> = 0).</td></tr>
+<tr><td>E. Food defense (TACCP) / fraud (VACCP)</td><td><span class="tag t-absent">VẮNG</span></td><td><code>TACCP|VACCP|Food Defense|Food Fraud|FSSC</code> = 0. Không có đánh giá đe dọa/lỗ hổng — cần cho FSSC 22000.</td></tr>
+</table>
+<div class="box">
+<strong>Điểm hay:</strong> đúng 5 mảng còn thiếu này trùng khớp với bộ tài liệu đã soạn trước đó (QT 09 allergen, QT 10 dị vật/hóa chất/rework, KH.KN.01 kiểm nghiệm + EMP, bảng định mức phụ gia) → có thể chuyển thẳng thành DocType khi build.</p>
+</div>
+
+<h2>8. TECH DEBT — tổng hợp</h2>
+<table>
+<tr><th>Hạng mục</th><th>Mức</th><th>Khuyến nghị</th></tr>
+<tr><td>Validator workflow rỗng (hook chết)</td><td><span class="tag t-absent">Cao</span></td><td>Hiện thực OR-logic approval hoặc bỏ wrapper nếu không dùng; thêm test cho transition bị chặn.</td></tr>
+<tr><td>Số liệu README mâu thuẫn (123 vs 75; fixtures 47 vs 205)</td><td><span class="tag t-partial">Trung bình</span></td><td>Đếm thực từ bench/file JSON, sửa README về 1 nguồn sự thật.</td></tr>
+<tr><td>Độ phủ test thưa ở nhiều module</td><td><span class="tag t-partial">Trung bình</span></td><td>Bổ sung test cho document control, training, production link, emergency, management review, PRP.</td></tr>
+<tr><td>Chưa quét vét cạn whitelisted method 20 module</td><td><span class="tag t-partial">Cần xác minh</span></td><td>Khi shell hồi: grep toàn repo <code>@frappe.whitelist</code> + <code>allow_guest</code>.</td></tr>
+<tr><td>5 mảng FMCG còn thiếu (allergen/PRP/EMP/phụ gia-nhãn/food defense)</td><td><span class="tag t-absent">Cao (về độ phủ ISO/FSSC)</span></td><td>Lập backlog build — xem mục 9.</td></tr>
+</table>
+
+<h2>9. RUNBOOK &amp; bước tiếp theo</h2>
+<p><strong>Khi shell (sandbox) hồi phục</strong>, để quét vét cạn phần còn lại:</p>
+<pre>git clone https://github.com/mrhuychien/iso22000_fsms
+cd iso22000_fsms
+grep -rn "@frappe.whitelist\|allow_guest" .          # quét hết API
+find . -path "*/doctype/*/*.json" | wc -l            # đếm DocType thật
+grep -rln "ignore_permissions" .                     # rà bypass quyền
+ls iso22000_fsms/tests/                               # đối chiếu test</pre>
+<p><strong>Backlog build đề xuất</strong> (thứ tự ưu tiên), mỗi mảng → 1-2 DocType mới + fixtures + doc_events:</p>
+<ol>
+<li><strong>Allergen</strong>: ma trận allergen trên Item + DocType nhiễm chéo/đánh giá rủi ro allergen.</li>
+<li><strong>PRP đầy đủ</strong>: tách thành DocType vận hành riêng cho Pest Control, Chemical/SDS, Glass &amp; Brittle Plastic, Waste, Water/Utilities, Rework (thay vì enum trên PRP Item).</li>
+<li><strong>EMP</strong>: kế hoạch + log swab bề mặt/không khí, gắn khu đóng gói.</li>
+<li><strong>Phụ gia/nhãn</strong>: register phụ gia (TT 24/2019) + kiểm soát nhãn/quy cách (NĐ 111/2021, ghi nhãn allergen).</li>
+<li><strong>Food defense</strong>: DocType TACCP/VACCP cho FSSC 22000.</li>
+</ol>
+<p>Sau khi chốt backlog, chuyển sang quy trình build có kiểm soát (thiết kế DocType → fixtures → doc_events → test).</p>
+
+<footer>
+Phương pháp: do shell sandbox đang kẹt (không clone được) và <code>raw.githubusercontent.com</code>/<code>api.github.com</code> bị chặn allowlist, X-ray này đọc trực tiếp nội dung file nhúng trong trang <code>github.com/blob</code> (qua 2 subagent). Các kết luận "0 match" được kiểm trên toàn file blueprint. Phần chưa đọc được nêu rõ ở mục 4 &amp; 8.
+</footer>
+
+</body>
+</html>

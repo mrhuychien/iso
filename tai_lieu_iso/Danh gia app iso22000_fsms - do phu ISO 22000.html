@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<title>Đánh giá app iso22000_fsms - Độ phủ ISO 22000</title>
+<style>
+body{font-family:Arial,sans-serif;font-size:11pt;color:#000;max-width:1080px;margin:24px auto;padding:0 16px;line-height:1.45}
+h1{font-size:15pt;color:#1F4E78;text-align:center}
+h2{font-size:12.5pt;color:#1F4E78;border-bottom:1px solid #ccc;padding-bottom:2px;margin-top:20px}
+.muted{color:#555;font-style:italic;font-size:9.5pt}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:9.5pt}
+th,td{border:1px solid #bbb;padding:5px 7px;vertical-align:top}
+th{background:#1F4E78;color:#fff}
+.ok{background:#E2EFDA}.warn{background:#FFF2CC}.gap{background:#FCE4D6}
+ul{margin:6px 0 6px 18px}
+</style></head><body>
+<h1>ĐÁNH GIÁ APP "iso22000_fsms" — ĐỘ PHỦ THEO ISO 22000:2018</h1>
+<p class="muted">Ngày: 14/06/2026 · Người đánh giá: Ban ISO (hỗ trợ AI) · Nguồn: README + chỉ mục thiết kế (docs/design) trên GitHub. Đánh giá ở mức kiến trúc/độ phủ; cần xác minh thêm ở mức code (clone repo).</p>
+
+<h2>1. Nhận định nhanh (TL;DR)</h2>
+<p>App được thiết kế <b>bài bản và rộng</b>: 18 module phủ gần như toàn bộ điều khoản ISO 22000:2018 (tài liệu, đánh giá nội bộ, NCR/CAR, thu hồi, khẩn cấp, thẩm tra, bối cảnh/rủi ro, thiết bị, NCC, sản xuất, PRP, lưu mẫu, HACCP, xem xét lãnh đạo, đào tạo, truyền thông, truy xuất). Đây <b>không phải</b> hệ thống "thiếu số hóa" về mặt khung quản lý — phần khung rất tốt.</p>
+<p>Cảm giác "chưa đủ" của anh có cơ sở, nhưng nằm ở <b>phần đặc thù an toàn thực phẩm FMCG</b> (allergen, PRP đầy đủ theo ISO/TS 22002-1, giám sát môi trường, kiểm soát phụ gia, nhãn) và ở <b>chiều sâu vận hành/dữ liệu</b> — chứ không phải ở khung ISO. Mức độ phức tạp: <b>Cao</b>.</p>
+
+<h2>2. Ma trận độ phủ ISO 22000:2018</h2>
+<table>
+<tr><th>Điều khoản</th><th>Nội dung</th><th>Module trong app</th><th>Trạng thái</th></tr>
+<tr class="ok"><td>4</td><td>Bối cảnh & bên quan tâm</td><td>fsms_context_risk</td><td>Có</td></tr>
+<tr class="ok"><td>5</td><td>Lãnh đạo, chính sách</td><td>fsms_core (Policy)</td><td>Có</td></tr>
+<tr class="ok"><td>6.1 / 6.2</td><td>Rủi ro–cơ hội / Mục tiêu</td><td>fsms_context_risk, fsms_core (Objective)</td><td>Có</td></tr>
+<tr class="ok"><td>7.1.5</td><td>Thiết bị đo & hiệu chuẩn</td><td>fsms_equipment</td><td>Có</td></tr>
+<tr class="ok"><td>7.1.6</td><td>Kiểm soát nhà cung cấp</td><td>fsms_supplier</td><td>Có</td></tr>
+<tr class="ok"><td>7.2</td><td>Năng lực, đào tạo</td><td>fsms_training (+Competency Matrix)</td><td>Có</td></tr>
+<tr class="ok"><td>7.4</td><td>Trao đổi thông tin & khiếu nại</td><td>fsms_communication</td><td>Có</td></tr>
+<tr class="ok"><td>7.5</td><td>Kiểm soát thông tin dạng văn bản</td><td>fsms_document_control</td><td>Có</td></tr>
+<tr class="warn"><td>8.2</td><td>Chương trình tiên quyết (PRP)</td><td>fsms_prp (chỉ vệ sinh CN + khu vực)</td><td>Một phần ⚠</td></tr>
+<tr class="ok"><td>8.3</td><td>Truy xuất nguồn gốc</td><td>fsms_traceability</td><td>Có</td></tr>
+<tr class="ok"><td>8.4</td><td>Chuẩn bị & ứng phó khẩn cấp</td><td>fsms_emergency (+diễn tập)</td><td>Có</td></tr>
+<tr class="ok"><td>8.5.1–8.5.4</td><td>Phân tích mối nguy, CCP/OPRP, giám sát</td><td>fsms_haccp</td><td>Có (mạnh)</td></tr>
+<tr class="gap"><td>8.5.1.2</td><td>Kiểm soát dị ứng nguyên (allergen)</td><td>(không thấy module riêng)</td><td>Thiếu ✗</td></tr>
+<tr class="warn"><td>8.5.3</td><td>Thẩm định biện pháp kiểm soát & hạn dùng</td><td>(chưa rõ — verify)</td><td>Cần xác minh ⚠</td></tr>
+<tr class="ok"><td>8.7 / 8.8</td><td>Kiểm soát giám sát–đo lường / Thẩm tra</td><td>fsms_equipment, fsms_verification</td><td>Có</td></tr>
+<tr class="ok"><td>8.9</td><td>Sự không phù hợp, khắc phục, CAR</td><td>fsms_ncr (7 trạng thái — tâm điểm)</td><td>Có (mạnh)</td></tr>
+<tr class="ok"><td>8.9.5</td><td>Thu hồi/triệu hồi</td><td>fsms_recall (+mass balance)</td><td>Có</td></tr>
+<tr class="warn"><td>9.1</td><td>Theo dõi, đo lường, phân tích</td><td>verification + dashboard (thiếu giám sát môi trường)</td><td>Một phần ⚠</td></tr>
+<tr class="ok"><td>9.2</td><td>Đánh giá nội bộ</td><td>fsms_audit</td><td>Có</td></tr>
+<tr class="ok"><td>9.3</td><td>Xem xét của lãnh đạo</td><td>fsms_management_review</td><td>Có</td></tr>
+<tr class="ok"><td>10</td><td>Cải tiến</td><td>fsms_ncr</td><td>Có</td></tr>
+</table>
+
+<h2>3. Khoảng trống cần bổ sung (ưu tiên cao → thấp)</h2>
+<table>
+<tr><th>#</th><th>Khoảng trống</th><th>Vì sao quan trọng</th><th>Đề xuất bổ sung (DocType/Module)</th><th>Ưu tiên</th></tr>
+<tr class="gap"><td>A</td><td>Kiểm soát dị ứng nguyên (allergen)</td><td>Lạc/đậu/dừa là allergen; bắt buộc cho xuất khẩu; ISO 8.5.1.2</td><td>Module fsms_allergen: Ma trận allergen (theo Item), kiểm soát nhiễm chéo, vệ sinh chuyển đổi, kiểm soát nhãn</td><td>Cao</td></tr>
+<tr class="gap"><td>B</td><td>PRP đầy đủ theo ISO/TS 22002-1</td><td>fsms_prp mới có vệ sinh CN + khu vực; thiếu nhiều SSOP bắt buộc</td><td>Bổ sung: kiểm soát động vật gây hại, hóa chất+SDS, thủy tinh–nhựa giòn, chất thải, nước, hàng tái chế (rework), bảo trì vệ sinh</td><td>Cao</td></tr>
+<tr class="warn"><td>C</td><td>Chương trình giám sát môi trường (EMP)</td><td>Thực phẩm ăn liền; swab bề mặt/không khí; ISO 9.1</td><td>DocType "Giám sát môi trường" (vị trí, chỉ tiêu, ngưỡng cảnh báo/hành động)</td><td>Cao–TB</td></tr>
+<tr class="warn"><td>D</td><td>Kiểm soát phụ gia/phẩm màu</td><td>Tuân thủ TT 24/2019/TT-BYT (danh mục + ML)</td><td>DocType "Định mức phụ gia" (INS, nhóm, ML, sản phẩm, COA)</td><td>TB</td></tr>
+<tr class="warn"><td>E</td><td>Quy cách sản phẩm & kiểm soát nhãn</td><td>Ghi nhãn allergen theo NĐ 111/2021; nhãn xuất khẩu</td><td>DocType "Product Spec/Label" + duyệt nhãn</td><td>TB</td></tr>
+<tr class="warn"><td>F</td><td>Phòng vệ thực phẩm (TACCP) & gian lận (VACCP)</td><td>Yêu cầu của FSSC 22000; rủi ro pha trộn dầu/đường/phẩm màu</td><td>DocType "Vulnerability/Threat Assessment"</td><td>TB</td></tr>
+<tr class="warn"><td>G</td><td>Thẩm định hạn dùng (shelf-life) & biện pháp kiểm soát</td><td>ISO 8.5.3; cơ sở cho 270 ngày/12 tháng</td><td>DocType "Shelf-life Study / Validation"</td><td>TB</td></tr>
+<tr class="warn"><td>H</td><td>OPRP aflatoxin gắn vào kiểm tra NL nhập</td><td>Đỗ/lạc nguy cơ aflatoxin cao; cần COA theo lô</td><td>Verify wiring trong fsms_supplier + Quality Inspection</td><td>Cần xác minh</td></tr>
+<tr><td>I</td><td>Tích hợp truy xuất nguồn gốc quốc gia (verigoods.vn)</td><td>Lộ trình bắt buộc 2026–2027</td><td>Tích hợp xuất dữ liệu lô</td><td>Tương lai</td></tr>
+</table>
+
+<h2>4. Rủi ro kỹ thuật / nợ tài liệu (cần làm sạch)</h2>
+<ul>
+<li><b>Số liệu README chưa nhất quán:</b> phần 1 ghi "123 DocType" nhưng blueprint ghi "47 doctype + 28 child"; fixtures ghi 47 / 205 / 255 records ở các chỗ khác nhau. Cần đối chiếu lại thực tế cài đặt.</li>
+<li><b>Độ phủ test thấp:</b> chỉ 5 module test cho hệ thống rất lớn — rủi ro hồi quy khi nâng cấp.</li>
+<li><b>48 "Custom Permission read-only" trên DocType core ERPNext:</b> cần rà để tránh xung đột khi nâng cấp ERPNext.</li>
+<li><b>Cần kiểm chứng blueprint ↔ implementation:</b> app có thật sự install/migrate sạch và DocType khớp thiết kế không (chạy bench migrate + run-tests trên staging).</li>
+<li><b>Cần xác minh ở mức code</b> (chưa đọc được do GitHub render JS + chưa clone được): hooks.py (auto-create chain), workflow_validation.py, các whitelisted method (kiểm tra có frappe.has_permission), fixtures có đủ Custom Field/Role/Workflow không.</li>
+</ul>
+
+<h2>5. Kết luận & bước tiếp theo</h2>
+<p>App đã phủ <b>khung quản lý ISO 22000 ở mức tốt</b>. Để "đủ" cho một hệ thống ATTP FMCG vận hành thực tế (và sẵn sàng FSSC 22000/xuất khẩu), cần bổ sung <b>4–5 mảng đặc thù</b>: <b>allergen, PRP đầy đủ, giám sát môi trường, kiểm soát phụ gia/nhãn, food defense/fraud</b> — đúng các tài liệu em vừa soạn cho anh (QT 09 allergen, QT 10 dị vật/hóa chất/rework, KH.KN.01 kiểm nghiệm/EMP, bảng định mức phụ gia) → có thể đưa thẳng thành DocType.</p>
+<p>Đề xuất: (1) chạy <b>X-ray sâu ở mức code</b> (clone repo) để xác minh các điểm mục 3H/4; (2) lập <b>backlog build</b> các module còn thiếu và chuyển sang quy trình build có kiểm soát.</p>
+</body></html>
