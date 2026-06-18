@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATTP Hoàng Giang — Giao diện mới (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" rel="stylesheet">
+<!-- NOTE: This is a static PREVIEW of the new portal UI (mock data). The live styles
+     come from hg_food_safety/public/atp/shell.css — kept in sync with this file. -->
+<link rel="stylesheet" href="../hg_food_safety/public/atp/shell.css">
+<style>html,body{margin:0;}</style>
+</head>
+<body>
+<div id="app-root" class="app-root"></div>
+
+<script>
+const NAV = [
+  { route: "", label: "Hôm nay", icon: "today" },
+  { route: "trace", label: "Truy xuất lô", icon: "search" },
+  { route: "documents", label: "Tài liệu", icon: "folder_open" },
+  { route: "dashboard", label: "Bảng điều khiển", icon: "dashboard" },
+];
+const USER = "Nguyễn Văn KCS";
+const sym = (n) => `<span class="material-symbols-outlined">${n}</span>`;
+
+function shell() {
+  return `
+  <header class="app-header">
+    <div class="app-brand">
+      <span class="app-brand-badge">${sym("health_and_safety")}</span>
+      <span class="app-brand-txt">
+        <span class="app-brand-name">ATTP Hoàng Giang</span>
+        <span class="app-brand-sub">Hệ thống An toàn thực phẩm · ISO 22000</span>
+      </span>
+    </div>
+    <nav class="app-nav">${NAV.map(n=>`<a class="app-nav-item" data-route="${n.route}" href="#/${n.route}">${sym(n.icon)}<span>${n.label}</span></a>`).join("")}</nav>
+    <span class="app-user"><span class="app-user-av">N</span><span class="app-user-name">${USER}</span></span>
+  </header>
+  <main id="app-main" class="app-main"></main>
+  <nav class="app-bottomnav">${NAV.map(n=>`<a class="app-tab" data-route="${n.route}" href="#/${n.route}"><span class="app-tab-ic">${sym(n.icon)}</span><span>${n.label}</span></a>`).join("")}</nav>`;
+}
+
+function stat(label,val,tone,icon){
+  const ic = icon?`<div class="app-stat-ic">${sym(icon)}</div>`:"";
+  return `<div class="app-stat ${tone==="red"?"app-stat-red":""}">${ic}<div class="app-stat-val">${val}</div><div class="app-stat-label">${label}</div></div>`;
+}
+function task(title,freq,late,form){
+  const chip = `<span class="app-chip ${late?"app-chip-red":"app-chip-gray"}">${late?"Trễ":"Chờ"}</span>`;
+  const act = form?`<a class="app-btn-sm" href="#/">Ghi</a>`:`<button class="app-btn-sm">Đánh dấu đã làm</button>`;
+  return `<div class="app-task"><div class="app-task-main"><div class="app-task-title">${title}</div>
+    <div class="app-task-meta">${chip}<span class="app-task-freq">${freq}</span></div></div><div class="app-task-act">${act}</div></div>`;
+}
+
+const VIEWS = {
+  "": () => `
+    <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
+    <h2 class="app-h2">Công việc cần làm</h2>
+    <div class="app-grid">
+      ${stat("Cần làm",7,"","pending_actions")}
+      ${stat("Trễ hạn",2,"red","schedule")}
+      ${stat("Đã làm hôm nay",12,"","task_alt")}
+    </div>
+    <h3 class="app-h3">Đầu ca</h3>
+    <div class="app-tasklist">
+      ${task("Giám sát OPRP — công đoạn rang/sấy","Mỗi ca",false,true)}
+      ${task("Kiểm dị vật / đầu dò kim loại","Mỗi ca",true,true)}
+      ${task("Kiểm soát nước sản xuất","Hằng ngày",false,true)}
+    </div>
+    <h3 class="app-h3">Vệ sinh & lưu mẫu</h3>
+    <div class="app-tasklist">
+      ${task("Nhật ký vệ sinh nhà xưởng","Hằng ngày",false,true)}
+      ${task("Lưu mẫu thành phẩm","Theo lô",true,true)}
+    </div>`,
+
+  trace: () => `
+    <h2 class="app-h2">Truy xuất theo lô</h2>
+    <div class="app-row">
+      <input class="app-input" placeholder="Nhập mã lô (Batch)" value="HG-20260616-01">
+      <button class="app-btn">${sym("search")}Truy xuất</button>
+    </div>
+    <div class="app-banner app-banner-red">Trạng thái lô: <b>&nbsp;Cô lập</b></div>
+    <div class="app-tl-sec"><div class="app-tl-title">Giám sát OPRP <span class="app-badge">2</span></div>
+      <div class="app-tl-row"><span class="app-tl-name">OPRP-2026-0042</span><span class="app-tl-detail">2026-06-16 · Sáng · VƯỢT</span></div>
+      <div class="app-tl-row"><span class="app-tl-name">OPRP-2026-0041</span><span class="app-tl-detail">2026-06-16 · Tối</span></div></div>
+    <div class="app-tl-sec"><div class="app-tl-title">Kiểm dị vật <span class="app-badge">1</span></div>
+      <div class="app-tl-row"><span class="app-tl-name">FBC-2026-0098</span><span class="app-tl-detail">2026-06-16 · Đạt</span></div></div>
+    <div class="app-tl-sec"><div class="app-tl-title">Lưu mẫu <span class="app-badge">0</span></div>
+      <div class="app-tl-empty">— không có —</div></div>`,
+
+  documents: () => `
+    <h2 class="app-h2">Tài liệu nội bộ</h2>
+    <div class="app-doclist">
+      ${doc("Sổ tay An toàn thực phẩm","STATTP-01","03","Hiện hành",true)}
+      ${doc("Kế hoạch HACCP — Bánh đậu xanh","KH-HACCP-01","02","Hiện hành",true)}
+      ${doc("QT 02 — Thu hồi sản phẩm","QT-02","01","Hiện hành",false)}
+    </div>
+    <h3 class="app-h3">Tải tài liệu lên</h3>
+    <div class="app-form">
+      <div class="app-fg"><label class="app-label">Tên tài liệu <span class="app-req">*</span></label><input class="app-input" placeholder="VD: Quy trình vệ sinh CIP"></div>
+      <div class="app-fg"><label class="app-label">Mã tài liệu</label><input class="app-input" placeholder="QT-09"></div>
+      <div class="app-fg"><label class="app-label">Phiên bản</label><input class="app-input" placeholder="vd: 01"></div>
+      <div class="app-fg"><label class="app-label">Tệp (PDF/ảnh/Word) <span class="app-req">*</span></label><input class="app-input" type="file"></div>
+      <button class="app-btn app-btn-lg">Tải lên</button>
+    </div>`,
+
+  dashboard: () => `
+    <h2 class="app-h2">Bảng điều khiển ATTP</h2>
+    <h3 class="app-h3">Cảnh báo</h3>
+    <div class="app-grid">
+      ${stat("Lô đang cô lập",2,"red","block")}
+      ${stat("Sự không phù hợp",3,"","report_problem")}
+      ${stat("Mẫu đến hạn hủy",5,"","science")}
+      ${stat("Hiệu chuẩn < 30 ngày",1,"","tune")}
+    </div>
+    <h3 class="app-h3">KPI 30 ngày</h3>
+    <div class="app-grid">
+      ${stat("% đạt thành phẩm","98.6%","","verified")}
+      ${stat("% OPRP vượt","2.1%","","trending_up")}
+      ${stat("Mock recall (giờ)","3.5","","timer")}
+    </div>
+    <h3 class="app-h3">Ghi nhận hôm nay</h3>
+    <div class="app-chart-wrap"><div style="display:flex;align-items:flex-end;gap:18px;height:200px;padding:8px 4px;">
+      ${bar("OPRP",12,"#00692c")}${bar("Thành phẩm",8,"#00692c")}${bar("Dị vật",15,"#00692c")}${bar("Vệ sinh",6,"#00692c")}
+    </div></div>`,
+};
+function doc(name,code,ver,status,att){
+  return `<div class="app-doc"><div class="app-doc-ic">${sym("description")}</div>
+    <div class="app-doc-main"><div class="app-doc-name">${name}</div><div class="app-doc-meta">${code} · v${ver} · ${status}</div></div>
+    ${att?`<a class="app-btn-sm">Đọc</a>`:`<span class="app-doc-noatt">chưa có tệp</span>`}</div>`;
+}
+function bar(label,val,color){
+  const h = Math.round(val/15*160)+10;
+  return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;justify-content:flex-end;height:100%;">
+    <div style="font-size:13px;font-weight:700;color:#13201a;">${val}</div>
+    <div style="width:100%;max-width:56px;height:${h}px;background:${color};border-radius:8px;"></div>
+    <div style="font-size:12px;color:#647467;font-weight:500;">${label}</div></div>`;
+}
+
+function route(){
+  const r = (location.hash||"#/").replace(/^#\/?/,"");
+  const key = VIEWS[r]?r:"";
+  document.getElementById("app-main").innerHTML = VIEWS[key]();
+  document.querySelectorAll(".app-tab,.app-nav-item").forEach(a=>a.classList.toggle("app-active",a.getAttribute("data-route")===r));
+  window.scrollTo(0,0);
+}
+document.getElementById("app-root").innerHTML = shell();
+window.addEventListener("hashchange",route);
+route();
+</script>
+</body>
+</html>

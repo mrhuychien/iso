@@ -19,16 +19,16 @@ export async function render({ container }) {
       <h2 class="app-h2">Bảng điều khiển ATTP</h2>
       <h3 class="app-h3">Cảnh báo</h3>
       <div class="app-grid">
-        ${stat("Lô đang cô lập", a.batches_on_hold, a.batches_on_hold ? "red" : "")}
-        ${stat("Sự không phù hợp", a.open_non_conformance)}
-        ${stat("Mẫu đến hạn hủy", a.samples_due_disposal)}
-        ${stat("Hiệu chuẩn < 30 ngày", a.calibration_due_30d)}
+        ${stat("Lô đang cô lập", a.batches_on_hold, a.batches_on_hold ? "red" : "", "block")}
+        ${stat("Sự không phù hợp", a.open_non_conformance, "", "report_problem")}
+        ${stat("Mẫu đến hạn hủy", a.samples_due_disposal, "", "science")}
+        ${stat("Hiệu chuẩn < 30 ngày", a.calibration_due_30d, "", "tune")}
       </div>
       <h3 class="app-h3">KPI 30 ngày</h3>
       <div class="app-grid">
-        ${stat("% đạt thành phẩm", k.finished_pass_rate === null ? "—" : pct(k.finished_pass_rate))}
-        ${stat("% OPRP vượt", k.oprp_deviation_rate === null ? "—" : pct(k.oprp_deviation_rate))}
-        ${stat("Mock recall (giờ)", k.mock_recall ? (k.mock_recall.avg_trace_hours ?? "—") : "—")}
+        ${stat("% đạt thành phẩm", k.finished_pass_rate === null ? "—" : pct(k.finished_pass_rate), "", "verified")}
+        ${stat("% OPRP vượt", k.oprp_deviation_rate === null ? "—" : pct(k.oprp_deviation_rate), "", "trending_up")}
+        ${stat("Mock recall (giờ)", k.mock_recall ? (k.mock_recall.avg_trace_hours ?? "—") : "—", "", "timer")}
       </div>
       <h3 class="app-h3">Ghi nhận hôm nay</h3>
       <div class="app-chart-wrap"><canvas id="app-today-chart"></canvas></div>`;
@@ -38,9 +38,10 @@ export async function render({ container }) {
   }
 }
 
-function stat(label, val, tone) {
+function stat(label, val, tone, icon) {
   const v = typeof val === "number" ? formatNumber(val) : escapeHtml(String(val));
-  return `<div class="app-stat ${tone === "red" ? "app-stat-red" : ""}">
+  const ic = icon ? `<div class="app-stat-ic"><span class="material-symbols-outlined">${icon}</span></div>` : "";
+  return `<div class="app-stat ${tone === "red" ? "app-stat-red" : ""}">${ic}
     <div class="app-stat-val">${v}</div><div class="app-stat-label">${escapeHtml(label)}</div></div>`;
 }
 
@@ -64,7 +65,9 @@ async function drawChart(today) {
     data: { labels: ["OPRP", "Thành phẩm", "Dị vật", "Vệ sinh"],
       datasets: [{ label: "Số bản ghi hôm nay",
         data: [today.oprp_logs, today.finished_checks, today.foreign_body_checks, today.sanitation_logs],
-        backgroundColor: "#006b2c", borderRadius: 6 }] },
-    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+        backgroundColor: "#00692c", borderRadius: 8, maxBarThickness: 64 }] },
+    options: { responsive: true, plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#eef3f0" } },
+        x: { grid: { display: false } } } },
   });
 }

@@ -16,9 +16,9 @@ export async function render({ container }) {
     ${hold ? `<div class="app-banner app-banner-red"><span class="material-symbols-outlined">warning</span><span><b>${formatNumber(hold)}</b> lô đang bị cô lập — cần xử lý</span></div>` : ""}
     <h2 class="app-h2">Công việc cần làm</h2>
     <div class="app-grid">
-      ${stat("Cần làm", d.open_count)}
-      ${stat("Trễ hạn", d.overdue_count, d.overdue_count ? "red" : "")}
-      ${stat("Đã làm hôm nay", d.done_today)}
+      ${stat("Cần làm", d.open_count, "", "pending_actions")}
+      ${stat("Trễ hạn", d.overdue_count, d.overdue_count ? "red" : "", "schedule")}
+      ${stat("Đã làm hôm nay", d.done_today, "", "task_alt")}
     </div>
     ${groups || '<div class="app-alert app-alert-ok">Không còn công việc nào đang chờ. 👍</div>'}`;
 
@@ -42,7 +42,8 @@ function taskRow(t) {
     <div class="app-task-act">${action}</div></div>`;
 }
 
-function stat(label, val, tone) {
-  return `<div class="app-stat ${tone === "red" ? "app-stat-red" : ""}">
+function stat(label, val, tone, icon) {
+  const ic = icon ? `<div class="app-stat-ic"><span class="material-symbols-outlined">${icon}</span></div>` : "";
+  return `<div class="app-stat ${tone === "red" ? "app-stat-red" : ""}">${ic}
     <div class="app-stat-val">${formatNumber(val)}</div><div class="app-stat-label">${escapeHtml(label)}</div></div>`;
 }
