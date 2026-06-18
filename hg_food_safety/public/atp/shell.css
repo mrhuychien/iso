@@ -243,10 +243,11 @@ select.app-input{appearance:none;cursor:pointer;padding-right:40px;
 /* Modal */
 .app-modal-ov{position:fixed;inset:0;z-index:100;background:rgba(16,32,24,.5);backdrop-filter:blur(2px);
   display:flex;align-items:flex-end;justify-content:center;padding:0;}
-.app-modal{background:var(--surface);width:100%;max-width:560px;max-height:92vh;overflow:auto;
+.app-modal{background:var(--surface,#ffffff);color:var(--ink,#13201a);width:100%;max-width:560px;max-height:92vh;overflow:auto;
   border-radius:20px 20px 0 0;box-shadow:var(--sh-3);}
+.app-modal-wide{max-width:760px;}
 .app-modal-head{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:16px 20px;border-bottom:1px solid var(--line);background:var(--surface);font-size:17px;font-weight:750;z-index:1;}
+  padding:16px 20px;border-bottom:1px solid var(--line,#e4eae6);background:var(--surface,#ffffff);font-size:17px;font-weight:750;z-index:1;}
 .app-modal-x{border:none;background:var(--surface-2);width:34px;height:34px;border-radius:50%;font-size:22px;line-height:1;
   color:var(--muted);cursor:pointer;}
 .app-modal-x:hover{background:var(--surface-3);color:var(--ink);}
@@ -292,3 +293,46 @@ select.app-input{appearance:none;cursor:pointer;padding-right:40px;
   .app-brand-sub{display:none;}
   .app-user-name{display:none;}
 }
+
+/* ---------- Document content / approval / editor ---------- */
+.app-chip-warn{background:var(--warn-bg);color:var(--warn-ink);border:1px solid var(--warn-line);}
+.app-tag-warn{background:var(--warn-bg);color:var(--warn-ink);border-color:var(--warn-line);}
+.app-btn-sm-solid{color:#fff !important;}
+.app-link-strong{color:var(--pri) !important;font-weight:700;text-decoration:none;margin-left:6px;white-space:nowrap;}
+.app-link-strong:hover{text-decoration:underline;}
+
+/* Rendered document body */
+.app-prose{border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;background:var(--surface);font-size:15px;line-height:1.65;color:var(--ink);}
+.app-prose h1,.app-prose h2,.app-prose h3{letter-spacing:-.01em;line-height:1.25;margin:16px 0 8px;}
+.app-prose h2{font-size:19px;font-weight:750;}
+.app-prose h3{font-size:16px;font-weight:700;}
+.app-prose p{margin:0 0 10px;}
+.app-prose ul,.app-prose ol{margin:0 0 10px;padding-left:22px;}
+.app-prose li{margin:3px 0;}
+.app-prose table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px;}
+.app-prose th,.app-prose td{border:1px solid var(--line-2);padding:7px 9px;text-align:left;}
+.app-prose img{max-width:100%;height:auto;border-radius:8px;}
+.app-prose a{color:var(--pri);}
+
+/* Approval area */
+.app-approve{margin-top:18px;border-radius:var(--r);padding:14px 16px;font-size:14px;border:1px solid var(--line);}
+.app-approve-ok{display:flex;align-items:flex-start;gap:10px;background:var(--ok-bg);border-color:#bfe6cc;color:var(--ok-ink);}
+.app-approve-ok .material-symbols-outlined{color:var(--pri);}
+.app-approve-warn{background:var(--warn-bg);border-color:var(--warn-line);color:var(--warn-ink);display:flex;flex-direction:column;gap:10px;}
+.app-approve-warn .material-symbols-outlined{vertical-align:middle;font-size:20px;}
+.app-approve-h{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.app-approve-warn .app-input{background:#fff;}
+
+/* WYSIWYG editor */
+.app-rte{border:1.5px solid var(--line-2);border-radius:var(--r);overflow:hidden;background:var(--surface);}
+.app-rte:focus-within{border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,105,44,.14);}
+.app-rte-tb{display:flex;align-items:center;gap:3px;flex-wrap:wrap;padding:7px 8px;background:var(--surface-2);border-bottom:1px solid var(--line);}
+.app-rte-tb button{min-width:32px;height:32px;padding:0 9px;border:1px solid transparent;background:transparent;border-radius:8px;
+  cursor:pointer;font-size:14px;color:var(--ink-2);font-family:inherit;line-height:1;}
+.app-rte-tb button:hover{background:var(--surface);border-color:var(--line-2);}
+.app-rte-sep{width:1px;height:20px;background:var(--line-2);margin:0 4px;}
+.app-rte-area{min-height:220px;max-height:48vh;overflow:auto;padding:14px 16px;font-size:15px;line-height:1.65;color:var(--ink);outline:none;}
+.app-rte-area:empty:before{content:"Soạn nội dung tài liệu...";color:var(--faint);}
+.app-rte-area h2{font-size:19px;font-weight:750;margin:14px 0 6px;}
+.app-rte-area h3{font-size:16px;font-weight:700;margin:12px 0 6px;}
+.app-rte-area ul,.app-rte-area ol{padding-left:22px;}

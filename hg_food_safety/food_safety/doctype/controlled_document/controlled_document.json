@@ -12,11 +12,18 @@
   "version",
   "effective_date",
   "status",
+  "approval_status",
   "superseded_by",
   "location",
   "retention",
+  "content_sec",
+  "content",
   "summary",
+  "files_sec",
   "attachment",
+  "signed_pdf",
+  "approved_by",
+  "approved_on",
   "change_log_sec",
   "change_log"
  ],
@@ -73,6 +80,13 @@
    "default": "Hieu luc"
   },
   {
+   "fieldname": "approval_status",
+   "fieldtype": "Select",
+   "label": "Trang thai duyet",
+   "options": "Ban nhap\nCho duyet\nDa duyet",
+   "default": "Da duyet"
+  },
+  {
    "fieldname": "superseded_by",
    "fieldtype": "Data",
    "label": "Van ban thay the"
@@ -88,14 +102,44 @@
    "label": "Thoi gian luu"
   },
   {
+   "fieldname": "content_sec",
+   "fieldtype": "Section Break",
+   "label": "Noi dung tai lieu"
+  },
+  {
+   "fieldname": "content",
+   "fieldtype": "Text Editor",
+   "label": "Noi dung"
+  },
+  {
    "fieldname": "summary",
    "fieldtype": "Small Text",
    "label": "Tom tat"
   },
   {
+   "fieldname": "files_sec",
+   "fieldtype": "Section Break",
+   "label": "Tep dinh kem"
+  },
+  {
    "fieldname": "attachment",
    "fieldtype": "Attach",
-   "label": "Tep tai lieu"
+   "label": "Tep tai lieu (ban thao/tham khao)"
+  },
+  {
+   "fieldname": "signed_pdf",
+   "fieldtype": "Attach",
+   "label": "Ban PDF da ky (giam doc)"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Data",
+   "label": "Nguoi phe duyet"
+  },
+  {
+   "fieldname": "approved_on",
+   "fieldtype": "Datetime",
+   "label": "Ngay phe duyet"
   },
   {
    "fieldname": "change_log_sec",

@@ -181,11 +181,29 @@ def documents() -> list:
     require_fs()
     rows = frappe.get_all("Controlled Document",
         fields=["name", "doc_name", "doc_code", "doc_category", "doc_type", "version", "status",
-                "attachment", "summary", "location", "retention", "effective_date", "modified"],
+                "approval_status", "attachment", "signed_pdf", "summary", "location", "retention",
+                "effective_date", "modified"],
         order_by="doc_code asc, modified desc")
     for r in rows:
         r["change_count"] = frappe.db.count("Controlled Document Change", {"parent": r["name"]})
     return rows
+
+
+@frappe.whitelist()
+def document_get(name: str) -> dict:
+    """Chi tiet day du mot tai lieu (gom noi dung). Vai tro FS deu xem duoc."""
+    require_fs()
+    d = frappe.get_doc("Controlled Document", name)
+    return {
+        "name": d.name, "doc_name": d.doc_name, "doc_code": d.doc_code,
+        "doc_category": d.doc_category, "doc_type": d.doc_type, "version": d.version,
+        "status": d.status, "approval_status": d.approval_status or "Da duyet",
+        "location": d.location, "retention": d.retention, "effective_date": str(d.effective_date or ""),
+        "summary": d.summary, "content": d.content, "attachment": d.attachment,
+        "signed_pdf": d.signed_pdf, "approved_by": d.approved_by,
+        "approved_on": str(d.approved_on or ""), "modified": str(d.modified or ""),
+        "change_count": frappe.db.count("Controlled Document Change", {"parent": d.name}),
+    }
 
 
 @frappe.whitelist()
@@ -224,17 +242,24 @@ def create_document(doc_name: str, doc_code: str = None, doc_category: str = Non
     return {"name": doc.name}
 
 
+FIELD_VI = {
+    "doc_name": "Ten", "doc_code": "Ma", "version": "Phien ban", "summary": "Tom tat",
+    "location": "Noi luu", "retention": "Thoi gian luu", "attachment": "Tep dinh kem",
+    "content": "Noi dung", "doc_category": "Nhom", "doc_type": "Loai", "status": "Tinh trang",
+}
+
+
 @frappe.whitelist()
 def update_document(name: str, doc_name: str = None, doc_code: str = None, doc_category: str = None,
                     doc_type: str = None, version: str = None, status: str = None,
                     attachment: str = None, summary: str = None, location: str = None,
-                    retention: str = None, note: str = None) -> dict:
-    """Cap nhat tai lieu trong danh muc (chi quan ly QA) + ghi log thay doi cac truong."""
+                    retention: str = None, content: str = None, note: str = None) -> dict:
+    """Cap nhat/soan tai lieu (chi quan ly QA) + ghi log thay doi. Sua xong -> Cho duyet."""
     _guard()
     doc = frappe.get_doc("Controlled Document", name)
     changes = []
     fields = {
-        "doc_name": doc_name, "doc_code": doc_code, "version": version,
+        "doc_name": doc_name, "doc_code": doc_code, "version": version, "content": content,
         "summary": summary, "location": location, "retention": retention, "attachment": attachment,
     }
     if doc_category in DOC_CATS:
@@ -246,8 +271,29 @@ def update_document(name: str, doc_name: str = None, doc_code: str = None, doc_c
     for f, v in fields.items():
         if v is not None and (doc.get(f) or "") != v:
             doc.set(f, v)
-            changes.append(frappe.unscrub(f))
-    summary_txt = ", ".join(changes) if changes else "Khong doi truong"
-    _add_change(doc, "Cap nhat", (note + " — " if note else "") + "Thay doi: " + summary_txt)
+            changes.append(FIELD_VI.get(f, f))
+    if not changes:
+        return {"name": doc.name, "changed": []}
+    # Co thay doi -> can phe duyet lai
+    doc.approval_status = "Cho duyet"
+    doc.signed_pdf = None
+    summary_txt = ", ".join(changes)
+    _add_change(doc, "Cap nhat", (note + " — " if note else "") + "Sua: " + summary_txt + " (cho duyet)")
     doc.save(ignore_permissions=True)
-    return {"name": doc.name, "changed": changes}
+    return {"name": doc.name, "changed": changes, "approval_status": doc.approval_status}
+
+
+@frappe.whitelist()
+def approve_document(name: str, signed_pdf: str, note: str = None) -> dict:
+    """Phe duyet ban sua: bat buoc dinh kem ban PDF da ky (giam doc). Chi quan ly QA."""
+    _guard()
+    if not signed_pdf:
+        frappe.throw(_("Can dinh kem ban PDF da ky cua giam doc de phe duyet"))
+    doc = frappe.get_doc("Controlled Document", name)
+    doc.approval_status = "Da duyet"
+    doc.signed_pdf = signed_pdf
+    doc.approved_by = frappe.session.user
+    doc.approved_on = now_datetime()
+    _add_change(doc, "Phe duyet", (note + " — " if note else "") + "Da phe duyet + tai ban ky (giam doc)")
+    doc.save(ignore_permissions=True)
+    return {"name": doc.name, "approval_status": doc.approval_status, "signed_pdf": doc.signed_pdf}

@@ -155,23 +155,58 @@ function doc(name,code,ver,status,att){
     <div class="app-doc-act">${read}<span class="material-symbols-outlined app-doc-chev">chevron_right</span></div></div>`;
 }
 function PVkv(l,v){return v?`<div class="app-kv"><span class="app-kv-l">${l}</span><span class="app-kv-v">${v}</span></div>`:"";}
-window.PVdetail=function(data){
-  const d=JSON.parse(decodeURIComponent(data));
+function PVmodal(title,bodyHtml,wide){
+  const host=document.querySelector(".app-root")||document.body;
   const ov=document.createElement("div");ov.className="app-modal-ov";
-  ov.innerHTML=`<div class="app-modal"><div class="app-modal-head"><span>Chi tiết tài liệu</span><button class="app-modal-x">×</button></div>
-    <div class="app-modal-body">
-      <div class="app-detail-head"><div class="app-detail-title">${d.name}</div>
-        ${d.code?`<div class="app-detail-code">${d.code}</div>`:""}
-        <div class="app-detail-tags"><span class="app-tag">Quy trình (QT)</span><span class="app-tag">Nội bộ</span><span class="app-tag app-tag-ok">${d.status}</span></div></div>
-      <div class="app-kvlist">${PVkv("Phiên bản",d.ver?("v"+d.ver):"")}${PVkv("Nơi lưu","Ban ISO")}${PVkv("Thời gian lưu","Lâu dài")}${PVkv("Cập nhật cuối","2026-06-18 09:12")}${PVkv("Số lần cập nhật","2")}</div>
-      <div class="app-detail-sum"><div class="app-kv-l" style="margin-bottom:6px">Tóm tắt / Ghi chú</div>Tài liệu thuộc hệ thống ISO 22000 — quản lý bởi Ban ISO.</div>
-      <div class="app-detail-act">${d.att?`<a class="app-btn">${sym("visibility")}Đọc tệp</a>`:`<span class="app-alert" style="margin:0;flex:1">Tài liệu chưa đính kèm tệp.</span>`}
-        <button class="app-btn-sm app-btn-ghost">${sym("history")}Lịch sử (2)</button>
-        <button class="app-btn-sm app-btn-ghost">${sym("edit")}Sửa</button></div>
-    </div></div>`;
-  document.body.appendChild(ov);
+  ov.innerHTML=`<div class="app-modal${wide?" app-modal-wide":""}"><div class="app-modal-head"><span>${title}</span><button class="app-modal-x">×</button></div><div class="app-modal-body">${bodyHtml}</div></div>`;
+  host.appendChild(ov);
   ov.addEventListener("click",e=>{if(e.target===ov)ov.remove();});
   ov.querySelector(".app-modal-x").addEventListener("click",()=>ov.remove());
+  return ov;
+}
+const SAMPLE_HTML=`<h2>1. Mục đích</h2><p>Quy định trình tự <b>thu hồi sản phẩm</b> mất an toàn nhằm bảo vệ người tiêu dùng và tuân thủ ISO 22000.</p><h3>2. Phạm vi</h3><ul><li>Áp dụng cho toàn bộ thành phẩm bánh đậu xanh, bột đậu.</li><li>Liên quan: QT.05, KH.OPRP.01.</li></ul><h3>3. Trách nhiệm</h3><p>Đội ATTP chủ trì; Giám đốc phê duyệt quyết định thu hồi.</p>`;
+window.PVdetail=function(data){
+  const d=JSON.parse(decodeURIComponent(data));
+  PVmodal("Chi tiết tài liệu",`
+      <div class="app-detail-head"><div class="app-detail-title">${d.name}</div>
+        ${d.code?`<div class="app-detail-code">${d.code}</div>`:""}
+        <div class="app-detail-tags"><span class="app-tag">Quy trình (QT)</span><span class="app-tag">Nội bộ</span><span class="app-tag app-tag-ok">${d.status}</span><span class="app-tag app-tag-ok">Đã duyệt</span></div></div>
+      <div class="app-kvlist">${PVkv("Phiên bản",d.ver?("v"+d.ver):"")}${PVkv("Nơi lưu","Ban ISO")}${PVkv("Thời gian lưu","Lâu dài")}${PVkv("Cập nhật cuối","2026-06-18 09:12")}${PVkv("Số lần cập nhật","2")}</div>
+      <div class="app-h3" style="margin:20px 0 10px">Nội dung tài liệu</div>
+      <div class="app-prose">${SAMPLE_HTML}</div>
+      <div class="app-approve app-approve-ok">${sym("verified")}<div>Đã phê duyệt bởi giamdoc@hg · 2026-06-18 09:12 <a class="app-link-strong" onclick="event.preventDefault()" href="#">Xem bản PDF đã ký →</a></div></div>
+      <div class="app-detail-act">
+        <button class="app-btn-sm app-btn-ghost">${sym("history")}Lịch sử (2)</button>
+        <button class="app-btn app-btn-sm-solid" onclick="PVedit()">${sym("edit")}Sửa nội dung</button></div>`,true);
+};
+window.PVedit=function(){
+  const ov=PVmodal("Sửa tài liệu",`
+    <div class="app-form" style="box-shadow:none;border:none;padding:0">
+      <div class="app-fg"><label class="app-label">Tên tài liệu</label><input class="app-input" value="QT Thu hồi sản phẩm"></div>
+      <div class="app-fg"><label class="app-label">Nội dung tài liệu (soạn thảo)</label>
+        <div class="app-rte">
+          <div class="app-rte-tb">
+            <button type="button" data-cmd="bold"><b>B</b></button>
+            <button type="button" data-cmd="italic"><i>I</i></button>
+            <button type="button" data-cmd="underline"><u>U</u></button>
+            <span class="app-rte-sep"></span>
+            <button type="button" data-cmd="formatBlock" data-val="H2">H2</button>
+            <button type="button" data-cmd="formatBlock" data-val="H3">H3</button>
+            <button type="button" data-cmd="formatBlock" data-val="P">¶</button>
+            <span class="app-rte-sep"></span>
+            <button type="button" data-cmd="insertUnorderedList">•</button>
+            <button type="button" data-cmd="insertOrderedList">1.</button>
+            <span class="app-rte-sep"></span>
+            <button type="button" data-cmd="removeFormat">✕</button>
+          </div>
+          <div class="app-rte-area" contenteditable="true">${SAMPLE_HTML}</div>
+        </div></div>
+      <div class="app-fg"><label class="app-label">Lý do / ghi chú cập nhật</label><input class="app-input" placeholder="VD: cập nhật theo VBHN 09/2024"></div>
+      <div class="app-alert" style="margin:0">Sau khi lưu, tài liệu chuyển trạng thái <b>Chờ duyệt</b>. Giám đốc/QA phê duyệt bằng cách tải bản PDF có chữ ký.</div>
+      <button class="app-btn app-btn-lg">Lưu bản sửa</button>
+    </div>`,true);
+  const area=ov.querySelector(".app-rte-area");
+  ov.querySelectorAll(".app-rte-tb button").forEach(b=>b.addEventListener("click",e=>{e.preventDefault();area.focus();document.execCommand(b.dataset.cmd,false,b.dataset.val||null);}));
 };
 function bar(label,val,color){
   const h = Math.round(val/15*160)+10;
