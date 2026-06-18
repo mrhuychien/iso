@@ -168,27 +168,86 @@ def _auto_complete_task(doctype, docname):
 
 
 # ─────────────── Tai lieu noi bo ───────────────
+DOC_TYPES = ("Noi bo", "Ben ngoai")
+DOC_STATUS = ("Hieu luc", "Da thay the", "Het hieu luc")
+DOC_CATS = ("Chinh sach - Muc tieu", "So tay - PRP/SSOP", "Ke hoach (HACCP/OPRP/KN/SL)",
+            "Quy trinh (QT)", "Quy dinh (QD)", "Bieu mau - Ho so (BM)",
+            "Danh muc - Dinh muc", "Tai lieu ben ngoai")
+
+
 @frappe.whitelist()
 def documents() -> list:
-    """Danh muc tai lieu kiem soat (noi bo + ben ngoai). Moi vai tro FS deu xem duoc."""
+    """Danh muc tai lieu kiem soat (noi bo + ben ngoai), kem so lan cap nhat. Vai tro FS deu xem duoc."""
     require_fs()
-    return frappe.get_all("Controlled Document",
-        fields=["name", "doc_name", "doc_code", "doc_type", "version", "status",
-                "attachment", "summary", "location", "effective_date", "modified"],
-        order_by="doc_type asc, doc_code asc, modified desc")
+    rows = frappe.get_all("Controlled Document",
+        fields=["name", "doc_name", "doc_code", "doc_category", "doc_type", "version", "status",
+                "attachment", "summary", "location", "retention", "effective_date", "modified"],
+        order_by="doc_code asc, modified desc")
+    for r in rows:
+        r["change_count"] = frappe.db.count("Controlled Document Change", {"parent": r["name"]})
+    return rows
 
 
 @frappe.whitelist()
-def create_document(doc_name: str, doc_code: str = None, version: str = None,
-                    attachment: str = None, summary: str = None, doc_type: str = "Noi bo") -> dict:
-    """Tao tai lieu trong danh muc (chi quan ly QA). attachment = file_url da upload."""
+def document_history(name: str) -> list:
+    """Lich su cap nhat cua mot tai lieu (moi -> cu)."""
+    require_fs()
+    return frappe.get_all("Controlled Document Change",
+        filters={"parent": name, "parenttype": "Controlled Document"},
+        fields=["changed_on", "changed_by", "action", "version", "note"],
+        order_by="changed_on desc, idx desc")
+
+
+def _add_change(doc, action, note=None):
+    doc.append("change_log", {
+        "changed_on": now_datetime(), "changed_by": frappe.session.user,
+        "action": action, "version": doc.version or "", "note": note or "",
+    })
+
+
+@frappe.whitelist()
+def create_document(doc_name: str, doc_code: str = None, doc_category: str = None,
+                    doc_type: str = "Noi bo", version: str = None, status: str = "Hieu luc",
+                    attachment: str = None, summary: str = None, location: str = None,
+                    retention: str = None) -> dict:
+    """Them tai lieu vao danh muc (chi quan ly QA). attachment = file_url da upload."""
     _guard()
-    if doc_type not in ("Noi bo", "Ben ngoai"):
-        doc_type = "Noi bo"
     doc = frappe.get_doc({
         "doctype": "Controlled Document", "doc_name": doc_name, "doc_code": doc_code,
-        "doc_type": doc_type, "version": version, "status": "Hieu luc",
-        "attachment": attachment, "summary": summary,
+        "doc_category": doc_category if doc_category in DOC_CATS else None,
+        "doc_type": doc_type if doc_type in DOC_TYPES else "Noi bo",
+        "version": version, "status": status if status in DOC_STATUS else "Hieu luc",
+        "attachment": attachment, "summary": summary, "location": location, "retention": retention,
     })
+    _add_change(doc, "Tao moi")
     doc.insert()
     return {"name": doc.name}
+
+
+@frappe.whitelist()
+def update_document(name: str, doc_name: str = None, doc_code: str = None, doc_category: str = None,
+                    doc_type: str = None, version: str = None, status: str = None,
+                    attachment: str = None, summary: str = None, location: str = None,
+                    retention: str = None, note: str = None) -> dict:
+    """Cap nhat tai lieu trong danh muc (chi quan ly QA) + ghi log thay doi cac truong."""
+    _guard()
+    doc = frappe.get_doc("Controlled Document", name)
+    changes = []
+    fields = {
+        "doc_name": doc_name, "doc_code": doc_code, "version": version,
+        "summary": summary, "location": location, "retention": retention, "attachment": attachment,
+    }
+    if doc_category in DOC_CATS:
+        fields["doc_category"] = doc_category
+    if doc_type in DOC_TYPES:
+        fields["doc_type"] = doc_type
+    if status in DOC_STATUS:
+        fields["status"] = status
+    for f, v in fields.items():
+        if v is not None and (doc.get(f) or "") != v:
+            doc.set(f, v)
+            changes.append(frappe.unscrub(f))
+    summary_txt = ", ".join(changes) if changes else "Khong doi truong"
+    _add_change(doc, "Cap nhat", (note + " — " if note else "") + "Thay doi: " + summary_txt)
+    doc.save(ignore_permissions=True)
+    return {"name": doc.name, "changed": changes}

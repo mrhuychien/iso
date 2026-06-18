@@ -6,6 +6,7 @@
  "field_order": [
   "doc_name",
   "doc_code",
+  "doc_category",
   "doc_type",
   "cb1",
   "version",
@@ -15,7 +16,9 @@
   "location",
   "retention",
   "summary",
-  "attachment"
+  "attachment",
+  "change_log_sec",
+  "change_log"
  ],
  "fields": [
   {
@@ -29,6 +32,13 @@
    "fieldname": "doc_code",
    "fieldtype": "Data",
    "label": "Ma tai lieu",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "doc_category",
+   "fieldtype": "Select",
+   "label": "Nhom tai lieu",
+   "options": "Chinh sach - Muc tieu\nSo tay - PRP/SSOP\nKe hoach (HACCP/OPRP/KN/SL)\nQuy trinh (QT)\nQuy dinh (QD)\nBieu mau - Ho so (BM)\nDanh muc - Dinh muc\nTai lieu ben ngoai",
    "in_list_view": 1
   },
   {
@@ -86,6 +96,17 @@
    "fieldname": "attachment",
    "fieldtype": "Attach",
    "label": "Tep tai lieu"
+  },
+  {
+   "fieldname": "change_log_sec",
+   "fieldtype": "Section Break",
+   "label": "Lich su cap nhat"
+  },
+  {
+   "fieldname": "change_log",
+   "fieldtype": "Table",
+   "label": "Lich su cap nhat",
+   "options": "Controlled Document Change"
   }
  ],
  "links": [],

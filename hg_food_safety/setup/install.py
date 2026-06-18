@@ -20,6 +20,7 @@ def run_all():
     ensure_custom_fields()
     ensure_workflows()
     ensure_tasks()
+    ensure_documents()
     frappe.db.commit()
 
 
@@ -62,6 +63,11 @@ def ensure_custom_fields():
 def ensure_workflows():
     from hg_food_safety.patches.v0_1_0.create_workflows import execute as _wf
     _wf()
+
+
+def ensure_documents():
+    from hg_food_safety.setup.catalog import ensure_documents as _seed
+    _seed()
 
 
 SEED_TASKS = [

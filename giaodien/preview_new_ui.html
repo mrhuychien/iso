@@ -92,24 +92,37 @@ const VIEWS = {
 
   documents: () => `
     <h2 class="app-h2">Danh mục tài liệu</h2>
-    <h3 class="app-h3">Tài liệu nội bộ <span class="app-badge">3</span></h3>
+    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">84 tài liệu — ISO 22000</div>
+    <h3 class="app-h3">Chính sách & Mục tiêu <span class="app-badge">2</span></h3>
     <div class="app-doclist">
-      ${doc("Sổ tay An toàn thực phẩm","STATTP-01","03","Hiệu lực",true)}
-      ${doc("Kế hoạch HACCP — Bánh đậu xanh","KH-HACCP-01","02","Hiệu lực",true)}
-      ${doc("QT 02 — Thu hồi sản phẩm","QT-02","01","Hiệu lực",false)}
+      ${doc("Chính sách an toàn thực phẩm","CSATTP","01","Hiệu lực",false)}
+      ${doc("Mục tiêu an toàn thực phẩm","MTATTP","01","Hiệu lực",true)}
     </div>
-    <h3 class="app-h3">Tài liệu bên ngoài (pháp luật, tiêu chuẩn) <span class="app-badge">2</span></h3>
+    <h3 class="app-h3">Quy trình (QT) <span class="app-badge">11</span></h3>
     <div class="app-doclist">
-      ${doc("QCVN 8-1:2011/BYT — Giới hạn ô nhiễm độc tố vi nấm","QCVN 8-1","2011","Hiệu lực",true)}
-      ${doc("Nghị định 15/2018/NĐ-CP — Hướng dẫn Luật ATTP","NĐ 15/2018","2018","Hiệu lực",true)}
+      ${doc("QT Quản lý chung hệ thống ATTP","QT.01","02","Hiệu lực",true)}
+      ${doc("QT Thu hồi sản phẩm","QT.02","01","Hiệu lực",true)}
+    </div>
+    <h3 class="app-h3">Biểu mẫu & Hồ sơ (BM) <span class="app-badge">47</span></h3>
+    <div class="app-doclist">
+      ${doc("Sổ kiểm tra dị vật / lưới sàng / đầu dò","BM.10.01","01","Hiệu lực",true)}
+      ${doc("Biểu mẫu diễn tập thu hồi (mock recall)","BM.02.03","01","Hiệu lực",false)}
+    </div>
+    <h3 class="app-h3">Tài liệu bên ngoài (pháp luật, tiêu chuẩn) <span class="app-badge">14</span></h3>
+    <div class="app-doclist">
+      ${doc("QCVN giới hạn ô nhiễm độc tố vi nấm (aflatoxin)","QCVN 8-1:2011/BYT","","Hiệu lực",true)}
+      ${doc("NĐ quy định chi tiết thi hành Luật ATTP","15/2018/NĐ-CP","","Hiệu lực",false)}
     </div>
     <h3 class="app-h3">Thêm tài liệu vào danh mục</h3>
     <div class="app-form">
       <div class="app-fg"><label class="app-label">Tên tài liệu <span class="app-req">*</span></label><input class="app-input" placeholder="VD: Quy trình vệ sinh CIP"></div>
-      <div class="app-fg"><label class="app-label">Mã tài liệu</label><input class="app-input" placeholder="QT-09"></div>
-      <div class="app-fg"><label class="app-label">Loại</label><select class="app-input"><option>Tài liệu nội bộ</option><option>Tài liệu bên ngoài (pháp luật, tiêu chuẩn)</option></select></div>
-      <div class="app-fg"><label class="app-label">Phiên bản</label><input class="app-input" placeholder="vd: 01"></div>
-      <div class="app-fg"><label class="app-label">Tệp (PDF/ảnh/Word)</label><input class="app-input" type="file"></div>
+      <div class="app-row" style="margin:0">
+        <div class="app-fg" style="flex:1"><label class="app-label">Mã tài liệu</label><input class="app-input" placeholder="QT.09"></div>
+        <div class="app-fg" style="flex:1"><label class="app-label">Phiên bản</label><input class="app-input" placeholder="vd: 01"></div>
+      </div>
+      <div class="app-fg"><label class="app-label">Nhóm tài liệu</label><select class="app-input"><option>Biểu mẫu & Hồ sơ (BM)</option><option>Quy trình (QT)</option><option>Kế hoạch (HACCP/OPRP/KN/SL)</option><option>Tài liệu bên ngoài (pháp luật, tiêu chuẩn)</option></select></div>
+      <div class="app-fg"><label class="app-label">Loại</label><select class="app-input"><option>Nội bộ</option><option>Bên ngoài</option></select></div>
+      <div class="app-fg"><label class="app-label">Tệp (PDF/ảnh/Word) — tùy chọn</label><input class="app-input" type="file"></div>
       <button class="app-btn app-btn-lg">Thêm vào danh mục</button>
     </div>`,
 
@@ -134,9 +147,15 @@ const VIEWS = {
     </div></div>`,
 };
 function doc(name,code,ver,status,att){
+  const meta=[code, ver?("v"+ver):"", status].filter(Boolean).join(" · ");
+  const acts=[
+    att?`<a class="app-btn-sm">${sym("visibility")}Đọc</a>`:"",
+    `<button class="app-btn-sm app-btn-ghost">${sym("history")}2</button>`,
+    `<button class="app-btn-sm app-btn-ghost">${sym("edit")}</button>`,
+  ].join("");
   return `<div class="app-doc"><div class="app-doc-ic">${sym("description")}</div>
-    <div class="app-doc-main"><div class="app-doc-name">${name}</div><div class="app-doc-meta">${code} · v${ver} · ${status}</div></div>
-    ${att?`<a class="app-btn-sm">Đọc</a>`:`<span class="app-doc-noatt">chưa có tệp</span>`}</div>`;
+    <div class="app-doc-main"><div class="app-doc-name">${name}</div><div class="app-doc-meta">${meta}</div></div>
+    <div class="app-doc-act">${acts}</div></div>`;
 }
 function bar(label,val,color){
   const h = Math.round(val/15*160)+10;
