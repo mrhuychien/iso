@@ -60,14 +60,16 @@ async function drawChart(today) {
   const el = document.getElementById("app-today-chart");
   if (!el) return;
   if (chartRef) { chartRef.destroy(); chartRef = null; }
+  const root = document.querySelector(".app-root");
+  const accent = (root && getComputedStyle(root).getPropertyValue("--app-season-1").trim()) || "#3b82f6";
   chartRef = new Chart(el, {
     type: "bar",
     data: { labels: ["OPRP", "Thành phẩm", "Dị vật", "Vệ sinh"],
       datasets: [{ label: "Số bản ghi hôm nay",
         data: [today.oprp_logs, today.finished_checks, today.foreign_body_checks, today.sanitation_logs],
-        backgroundColor: "#00692c", borderRadius: 8, maxBarThickness: 64 }] },
+        backgroundColor: accent, borderRadius: 8, maxBarThickness: 64 }] },
     options: { responsive: true, plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#eef3f0" } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: "#eef2f7" } },
         x: { grid: { display: false } } } },
   });
 }

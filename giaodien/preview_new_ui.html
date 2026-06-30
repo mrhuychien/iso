@@ -19,26 +19,31 @@
 <script>
 const NAV = [
   { route: "", label: "Hôm nay", icon: "today" },
-  { route: "trace", label: "Truy xuất lô", icon: "search" },
+  { route: "trace", label: "Truy xuất", icon: "search" },
   { route: "documents", label: "Tài liệu", icon: "folder_open" },
-  { route: "dashboard", label: "Bảng điều khiển", icon: "dashboard" },
+  { route: "dashboard", label: "Bảng ĐK", icon: "dashboard" },
 ];
 const USER = "Nguyễn Văn KCS";
 const sym = (n) => `<span class="material-symbols-outlined">${n}</span>`;
+const SEASONS=[{key:"spring",emoji:"🌸",label:"Xuân"},{key:"summer",emoji:"☀️",label:"Hạ"},{key:"autumn",emoji:"🍂",label:"Thu"},{key:"winter",emoji:"❄️",label:"Đông"}];
+function applySeason(k){const r=document.getElementById("app-root");SEASONS.forEach(s=>r.classList.remove("app-"+s.key));r.classList.add("app-"+k);const b=document.getElementById("app-season-btn");if(b)b.querySelector(".app-emoji").textContent=(SEASONS.find(s=>s.key===k)||SEASONS[0]).emoji;}
 
 function shell() {
   return `
-  <header class="app-header">
-    <div class="app-brand">
+  <header class="app-header"><div class="app-header-inner">
+    <a class="app-brand" href="#/">
       <span class="app-brand-badge">${sym("health_and_safety")}</span>
       <span class="app-brand-txt">
         <span class="app-brand-name">ATTP Hoàng Giang</span>
-        <span class="app-brand-sub">Hệ thống An toàn thực phẩm · ISO 22000</span>
+        <span class="app-brand-sub">An toàn thực phẩm · ISO 22000</span>
       </span>
+    </a>
+    <div class="app-header-actions">
+      <button class="app-icon-btn" title="Làm mới">${sym("refresh")}</button>
+      <button class="app-icon-btn" id="app-season-btn" title="Đổi mùa"><span class="app-emoji">🌸</span></button>
+      <button class="app-icon-btn" title="Tài khoản">${sym("account_circle")}</button>
     </div>
-    <nav class="app-nav">${NAV.map(n=>`<a class="app-nav-item" data-route="${n.route}" href="#/${n.route}">${sym(n.icon)}<span>${n.label}</span></a>`).join("")}</nav>
-    <span class="app-user"><span class="app-user-av">N</span><span class="app-user-name">${USER}</span></span>
-  </header>
+  </div></header>
   <main id="app-main" class="app-main"></main>
   <nav class="app-bottomnav">${NAV.map(n=>`<a class="app-tab" data-route="${n.route}" href="#/${n.route}"><span class="app-tab-ic">${sym(n.icon)}</span><span>${n.label}</span></a>`).join("")}</nav>`;
 }
@@ -143,7 +148,7 @@ const VIEWS = {
     </div>
     <h3 class="app-h3">Ghi nhận hôm nay</h3>
     <div class="app-chart-wrap"><div style="display:flex;align-items:flex-end;gap:18px;height:200px;padding:8px 4px;">
-      ${bar("OPRP",12,"#00692c")}${bar("Thành phẩm",8,"#00692c")}${bar("Dị vật",15,"#00692c")}${bar("Vệ sinh",6,"#00692c")}
+      ${bar("OPRP",12,"var(--app-season-1)")}${bar("Thành phẩm",8,"var(--app-season-1)")}${bar("Dị vật",15,"var(--app-season-1)")}${bar("Vệ sinh",6,"var(--app-season-1)")}
     </div></div>`,
 };
 function doc(name,code,ver,status,att){
@@ -211,19 +216,26 @@ window.PVedit=function(){
 function bar(label,val,color){
   const h = Math.round(val/15*160)+10;
   return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;justify-content:flex-end;height:100%;">
-    <div style="font-size:13px;font-weight:700;color:#13201a;">${val}</div>
+    <div style="font-size:13px;font-weight:800;color:#0f172a;">${val}</div>
     <div style="width:100%;max-width:56px;height:${h}px;background:${color};border-radius:8px;"></div>
-    <div style="font-size:12px;color:#647467;font-weight:500;">${label}</div></div>`;
+    <div style="font-size:12px;color:#94a3b8;font-weight:600;">${label}</div></div>`;
 }
 
+function PVseason(){
+  const cur=(document.getElementById("app-root").className.match(/app-(spring|summer|autumn|winter)/)||[])[1]||"spring";
+  const ov=PVmodal("Giao diện theo mùa",`<div class="app-season-grid">${SEASONS.map(s=>`<button class="app-season-opt ${s.key===cur?"app-active":""}" data-season="${s.key}"><span class="app-emoji">${s.emoji}</span><span>${s.label}</span></button>`).join("")}</div>`);
+  ov.querySelectorAll("[data-season]").forEach(b=>b.addEventListener("click",()=>{applySeason(b.dataset.season);ov.remove();}));
+}
 function route(){
   const r = (location.hash||"#/").replace(/^#\/?/,"");
   const key = VIEWS[r]?r:"";
   document.getElementById("app-main").innerHTML = VIEWS[key]();
-  document.querySelectorAll(".app-tab,.app-nav-item").forEach(a=>a.classList.toggle("app-active",a.getAttribute("data-route")===r));
+  document.querySelectorAll(".app-tab").forEach(a=>a.classList.toggle("app-active",a.getAttribute("data-route")===r));
   window.scrollTo(0,0);
 }
 document.getElementById("app-root").innerHTML = shell();
+applySeason("spring");
+document.getElementById("app-season-btn").addEventListener("click",PVseason);
 window.addEventListener("hashchange",route);
 route();
 </script>
