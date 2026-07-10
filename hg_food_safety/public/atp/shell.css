@@ -86,6 +86,10 @@ body{background:#f8fafc;}
 .app-brand-name{font-size:1.02rem;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .app-brand-sub{font-size:.7rem;font-weight:600;color:var(--app-text-3);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
 .app-header-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.app-role-chip{display:inline-flex;align-items:center;font-size:.68rem;font-weight:800;letter-spacing:.04em;
+  padding:4px 10px;border-radius:50px;margin-right:4px;text-transform:uppercase;}
+.app-role-qc{background:#dbeafe;color:#1e40af;}
+.app-role-qa{background:#ede9fe;color:#5b21b6;}
 .app-icon-btn{width:40px;height:40px;border:none;background:transparent;border-radius:10px;color:var(--app-text-2);
   font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease,transform .06s;}
 .app-icon-btn:hover{background:var(--app-surface-2);}

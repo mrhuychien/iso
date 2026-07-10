@@ -60,9 +60,13 @@ export async function render({ container }) {
       <div id="a-msg"></div>
     </div>` : "";
 
+  const title = isMgr() ? "Danh mục tài liệu" : "Hồ sơ & Biểu mẫu";
+  const sub = isMgr()
+    ? `${DOCS.length} tài liệu — toàn bộ hệ thống ISO 22000`
+    : `${DOCS.length} tài liệu tác nghiệp — quy trình, kế hoạch & biểu mẫu KCS`;
   container.innerHTML = `
-    <h2 class="app-h2">Danh mục tài liệu</h2>
-    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">${DOCS.length} tài liệu — ISO 22000</div>
+    <h2 class="app-h2">${title}</h2>
+    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">${escapeHtml(sub)}</div>
     ${catalog}
     ${adder}`;
 

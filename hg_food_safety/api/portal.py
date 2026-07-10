@@ -68,33 +68,55 @@ def _ensure_today():
         frappe.log_error(title="today_tasks ensure")
 
 
+def _fs_role():
+    """Vai tro dang dung app: QA (quan ly) hoac QC (KCS)."""
+    return "QA" if is_manager() else "QC"
+
+
+def _task_visible(scope, role):
+    return (scope or "Chung") in ("Chung", role)
+
+
 @frappe.whitelist()
 def today_tasks() -> dict:
-    """Cong viec dang cho/tre (checklist theo lich cong viec ATTP), gom theo nhom."""
+    """Cong viec dang cho/tre theo VAI TRO dang dung (QC vs QA), gom theo nhom."""
     require_fs()
     _ensure_today()
+    role = _fs_role()
     logs = frappe.get_all("ATTP Task Log",
         filters={"status": ["in", ["Cho lam", "Tre"]]},
         fields=["name", "task", "title", "task_group", "frequency", "status", "period_date"],
         order_by="period_date asc")
+    cache = {}
+    def task_info(task):
+        if task not in cache:
+            cache[task] = frappe.db.get_value("ATTP Task", task, ["linked_form", "role_scope"], as_dict=True) or {}
+        return cache[task]
     groups = {}
+    visible = []
     for l in logs:
-        form = frappe.db.get_value("ATTP Task", l.task, "linked_form")
-        l["linked_form"] = form or ""
+        info = task_info(l.task)
+        if not _task_visible(info.get("role_scope"), role):
+            continue
+        l["linked_form"] = info.get("linked_form") or ""
         l["title"] = TASK_VI.get(l.title, l.title)
         l["frequency"] = FREQ_VI.get(l.frequency, l.frequency)
         groups.setdefault(l.task_group or "Khac", []).append(l)
+        visible.append(l)
     ordered = [{"group": GROUP_VI.get(g, g), "tasks": groups[g]} for g in GROUP_ORDER if g in groups]
     for g in groups:
         if g not in GROUP_ORDER:
             ordered.append({"group": GROUP_VI.get(g, g), "tasks": groups[g]})
-    done_today = frappe.db.count("ATTP Task Log", {"status": "Da lam", "done_on": [">=", nowdate() + " 00:00:00"]})
+    done_logs = frappe.get_all("ATTP Task Log",
+        filters={"status": "Da lam", "done_on": [">=", nowdate() + " 00:00:00"]}, fields=["task"])
+    done_today = sum(1 for d in done_logs if _task_visible(task_info(d.task).get("role_scope"), role))
     return {
         "date": nowdate(),
+        "role": role,
         "is_manager": is_manager(),
         "groups": ordered,
-        "open_count": len(logs),
-        "overdue_count": sum(1 for l in logs if l.status == "Tre"),
+        "open_count": len(visible),
+        "overdue_count": sum(1 for l in visible if l.status == "Tre"),
         "done_today": done_today,
         "batches_on_hold": frappe.db.count("Batch", {"custom_qc_hold": 1}) if frappe.db.has_column("Batch", "custom_qc_hold") else 0,
     }
@@ -173,6 +195,9 @@ DOC_STATUS = ("Hieu luc", "Da thay the", "Het hieu luc")
 DOC_CATS = ("Chinh sach - Muc tieu", "So tay - PRP/SSOP", "Ke hoach (HACCP/OPRP/KN/SL)",
             "Quy trinh (QT)", "Quy dinh (QD)", "Bieu mau - Ho so (BM)",
             "Danh muc - Dinh muc", "Tai lieu ben ngoai")
+# Nhom tai lieu KCS (QC) duoc thay tren portal (tac nghiep). QA thay tat ca.
+QC_DOC_CATS = {"Quy trinh (QT)", "Ke hoach (HACCP/OPRP/KN/SL)", "Quy dinh (QD)",
+               "Bieu mau - Ho so (BM)", "Danh muc - Dinh muc"}
 
 
 @frappe.whitelist()
@@ -184,6 +209,9 @@ def documents() -> list:
                 "approval_status", "attachment", "signed_pdf", "summary", "location", "retention",
                 "effective_date", "modified"],
         order_by="doc_code asc, modified desc")
+    if not is_manager():
+        # KCS (QC): chi thay ho so/bieu mau + quy trinh/ke hoach can dung khi tac nghiep
+        rows = [r for r in rows if r.get("doc_category") in QC_DOC_CATS]
     for r in rows:
         r["change_count"] = frappe.db.count("Controlled Document Change", {"parent": r["name"]})
     return rows

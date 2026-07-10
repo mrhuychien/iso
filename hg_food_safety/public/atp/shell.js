@@ -57,7 +57,12 @@ function sym(name) { return `<span class="material-symbols-outlined">${name}</sp
 
 function renderShell() {
   const root = document.getElementById("app-root");
-  const nav = NAV.slice();
+  const roleLabel = ctx.isManager ? "QA" : "KCS";
+  const nav = [
+    { route: "", label: "Hôm nay", icon: "today" },
+    { route: "trace", label: "Truy xuất", icon: "search" },
+    { route: "documents", label: ctx.isManager ? "Tài liệu" : "Hồ sơ", icon: "folder_open" },
+  ];
   if (ctx.isManager) nav.push({ route: "dashboard", label: "Bảng ĐK", icon: "dashboard" });
   const season = SEASONS.find((s) => s.key === currentSeason()) || SEASONS[0];
   root.innerHTML = `
@@ -71,6 +76,7 @@ function renderShell() {
           </span>
         </a>
         <div class="app-header-actions">
+          <span class="app-role-chip app-role-${roleLabel === "QA" ? "qa" : "qc"}">${roleLabel}</span>
           <button class="app-icon-btn" id="app-refresh" aria-label="Làm mới" title="Làm mới">${sym("refresh")}</button>
           <button class="app-icon-btn" id="app-season-btn" aria-label="Đổi mùa" title="Đổi mùa giao diện"><span class="app-emoji">${season.emoji}</span></button>
           <button class="app-icon-btn" id="app-acct-btn" aria-label="Tài khoản" title="Tài khoản">${sym("account_circle")}</button>

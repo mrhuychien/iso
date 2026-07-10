@@ -17,18 +17,19 @@
 <div id="app-root" class="app-root"></div>
 
 <script>
-const NAV = [
-  { route: "", label: "Hôm nay", icon: "today" },
-  { route: "trace", label: "Truy xuất", icon: "search" },
-  { route: "documents", label: "Tài liệu", icon: "folder_open" },
-  { route: "dashboard", label: "Bảng ĐK", icon: "dashboard" },
-];
-const USER = "Nguyễn Văn KCS";
+let ROLE = "KCS";  // preview: bấm chip vai trò trên header để đổi KCS <-> QA
 const sym = (n) => `<span class="material-symbols-outlined">${n}</span>`;
 const SEASONS=[{key:"spring",emoji:"🌸",label:"Xuân"},{key:"summer",emoji:"☀️",label:"Hạ"},{key:"autumn",emoji:"🍂",label:"Thu"},{key:"winter",emoji:"❄️",label:"Đông"}];
 function applySeason(k){const r=document.getElementById("app-root");SEASONS.forEach(s=>r.classList.remove("app-"+s.key));r.classList.add("app-"+k);const b=document.getElementById("app-season-btn");if(b)b.querySelector(".app-emoji").textContent=(SEASONS.find(s=>s.key===k)||SEASONS[0]).emoji;}
+function navFor(role){
+  const nav=[{route:"",label:"Hôm nay",icon:"today"},{route:"trace",label:"Truy xuất",icon:"search"},
+    {route:"documents",label:role==="QA"?"Tài liệu":"Hồ sơ",icon:"folder_open"}];
+  if(role==="QA")nav.push({route:"dashboard",label:"Bảng ĐK",icon:"dashboard"});
+  return nav;
+}
 
 function shell() {
+  const nav=navFor(ROLE);
   return `
   <header class="app-header"><div class="app-header-inner">
     <a class="app-brand" href="#/">
@@ -39,13 +40,14 @@ function shell() {
       </span>
     </a>
     <div class="app-header-actions">
+      <span class="app-role-chip app-role-${ROLE==="QA"?"qa":"qc"}" id="app-role-chip" title="Bấm để đổi vai trò (preview)" style="cursor:pointer">${ROLE}</span>
       <button class="app-icon-btn" title="Làm mới">${sym("refresh")}</button>
       <button class="app-icon-btn" id="app-season-btn" title="Đổi mùa"><span class="app-emoji">🌸</span></button>
       <button class="app-icon-btn" title="Tài khoản">${sym("account_circle")}</button>
     </div>
   </div></header>
   <main id="app-main" class="app-main"></main>
-  <nav class="app-bottomnav">${NAV.map(n=>`<a class="app-tab" data-route="${n.route}" href="#/${n.route}"><span class="app-tab-ic">${sym(n.icon)}</span><span>${n.label}</span></a>`).join("")}</nav>`;
+  <nav class="app-bottomnav">${nav.map(n=>`<a class="app-tab" data-route="${n.route}" href="#/${n.route}"><span class="app-tab-ic">${sym(n.icon)}</span><span>${n.label}</span></a>`).join("")}</nav>`;
 }
 
 function stat(label,val,tone,icon){
@@ -60,24 +62,42 @@ function task(title,freq,late,form){
 }
 
 const VIEWS = {
-  "": () => `
+  "": () => ROLE === "QA" ? `
     <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
-    <h2 class="app-h2">Công việc cần làm</h2>
+    <h2 class="app-h2">Công việc QA — quản lý & giám sát</h2>
+    <div class="app-grid">
+      ${stat("Cần làm",5,"","pending_actions")}
+      ${stat("Trễ hạn",1,"red","schedule")}
+      ${stat("Đã làm hôm nay",3,"","task_alt")}
+    </div>
+    <h3 class="app-h3">Hằng năm</h3>
+    <div class="app-tasklist">
+      ${task("Đánh giá nội bộ toàn bộ bộ phận","Hằng năm",false,false)}
+      ${task("Thẩm tra hệ thống HACCP/OPRP","Hằng năm",true,false)}
+      ${task("Diễn tập thu hồi (mock recall)","Hằng năm",false,false)}
+    </div>
+    <h3 class="app-h3">Định kỳ 6 tháng</h3>
+    <div class="app-tasklist">
+      ${task("Hiệu chuẩn/kiểm định thiết bị đo","6 tháng",false,false)}
+      ${task("Bảo dưỡng định kỳ thiết bị sản xuất","6 tháng",false,false)}
+    </div>` : `
+    <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
+    <h2 class="app-h2">Công việc KCS hôm nay</h2>
     <div class="app-grid">
       ${stat("Cần làm",7,"","pending_actions")}
       ${stat("Trễ hạn",2,"red","schedule")}
       ${stat("Đã làm hôm nay",12,"","task_alt")}
     </div>
-    <h3 class="app-h3">Đầu ca</h3>
+    <h3 class="app-h3">Hằng ngày / Mỗi ca</h3>
     <div class="app-tasklist">
-      ${task("Giám sát OPRP — công đoạn rang/sấy","Mỗi ca",false,true)}
-      ${task("Kiểm dị vật / đầu dò kim loại","Mỗi ca",true,true)}
-      ${task("Kiểm soát nước sản xuất","Hằng ngày",false,true)}
+      ${task("Giám sát OPRP theo ca","Mỗi ca",false,true)}
+      ${task("Kiểm tra dị vật / lưới sàng / đầu dò","Mỗi ca",true,true)}
+      ${task("Xả nước đầu vòi + cảm quan nước","Hằng ngày",false,true)}
     </div>
     <h3 class="app-h3">Vệ sinh & lưu mẫu</h3>
     <div class="app-tasklist">
-      ${task("Nhật ký vệ sinh nhà xưởng","Hằng ngày",false,true)}
-      ${task("Lưu mẫu thành phẩm","Theo lô",true,true)}
+      ${task("Nhật ký vệ sinh đầu/cuối ca","Hằng ngày",false,true)}
+      ${task("Lấy mẫu lưu cuối ngày","Hằng ngày",true,true)}
     </div>`,
 
   trace: () => `
@@ -95,28 +115,26 @@ const VIEWS = {
     <div class="app-tl-sec"><div class="app-tl-title">Lưu mẫu <span class="app-badge">0</span></div>
       <div class="app-tl-empty">— không có —</div></div>`,
 
-  documents: () => `
+  documents: () => ROLE === "QA" ? `
     <h2 class="app-h2">Danh mục tài liệu</h2>
-    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">84 tài liệu — ISO 22000</div>
+    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">84 tài liệu — toàn bộ hệ thống ISO 22000</div>
     <h3 class="app-h3">Chính sách & Mục tiêu <span class="app-badge">2</span></h3>
     <div class="app-doclist">
       ${doc("Chính sách an toàn thực phẩm","CSATTP","01","Hiệu lực",false)}
       ${doc("Mục tiêu an toàn thực phẩm","MTATTP","01","Hiệu lực",true)}
+    </div>
+    <h3 class="app-h3">Sổ tay & PRP/SSOP <span class="app-badge">2</span></h3>
+    <div class="app-doclist">
+      ${doc("Sổ tay an toàn thực phẩm","STATTP","03","Hiệu lực",true)}
     </div>
     <h3 class="app-h3">Quy trình (QT) <span class="app-badge">11</span></h3>
     <div class="app-doclist">
       ${doc("QT Quản lý chung hệ thống ATTP","QT.01","02","Hiệu lực",true)}
       ${doc("QT Thu hồi sản phẩm","QT.02","01","Hiệu lực",true)}
     </div>
-    <h3 class="app-h3">Biểu mẫu & Hồ sơ (BM) <span class="app-badge">47</span></h3>
-    <div class="app-doclist">
-      ${doc("Sổ kiểm tra dị vật / lưới sàng / đầu dò","BM.10.01","01","Hiệu lực",true)}
-      ${doc("Biểu mẫu diễn tập thu hồi (mock recall)","BM.02.03","01","Hiệu lực",false)}
-    </div>
     <h3 class="app-h3">Tài liệu bên ngoài (pháp luật, tiêu chuẩn) <span class="app-badge">14</span></h3>
     <div class="app-doclist">
       ${doc("QCVN giới hạn ô nhiễm độc tố vi nấm (aflatoxin)","QCVN 8-1:2011/BYT","","Hiệu lực",true)}
-      ${doc("NĐ quy định chi tiết thi hành Luật ATTP","15/2018/NĐ-CP","","Hiệu lực",false)}
     </div>
     <h3 class="app-h3">Thêm tài liệu vào danh mục</h3>
     <div class="app-form">
@@ -129,6 +147,22 @@ const VIEWS = {
       <div class="app-fg"><label class="app-label">Loại</label><select class="app-input"><option>Nội bộ</option><option>Bên ngoài</option></select></div>
       <div class="app-fg"><label class="app-label">Tệp (PDF/ảnh/Word) — tùy chọn</label><input class="app-input" type="file"></div>
       <button class="app-btn app-btn-lg">Thêm vào danh mục</button>
+    </div>` : `
+    <h2 class="app-h2">Hồ sơ & Biểu mẫu</h2>
+    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">62 tài liệu tác nghiệp — quy trình, kế hoạch & biểu mẫu KCS</div>
+    <h3 class="app-h3">Quy trình (QT) <span class="app-badge">11</span></h3>
+    <div class="app-doclist">
+      ${doc("QT Kiểm soát dị vật, thủy tinh–nhựa giòn","QT.10","01","Hiệu lực",true)}
+      ${doc("QT Thu hồi sản phẩm","QT.02","01","Hiệu lực",true)}
+    </div>
+    <h3 class="app-h3">Kế hoạch (HACCP/OPRP/KN/SL) <span class="app-badge">5</span></h3>
+    <div class="app-doclist">
+      ${doc("Kế hoạch OPRP & xác định CCP/OPRP","KH.OPRP.01","01","Hiệu lực",true)}
+    </div>
+    <h3 class="app-h3">Biểu mẫu & Hồ sơ (BM) <span class="app-badge">47</span></h3>
+    <div class="app-doclist">
+      ${doc("Sổ kiểm tra dị vật / lưới sàng / đầu dò","BM.10.01","01","Hiệu lực",true)}
+      ${doc("Sổ theo dõi lưu mẫu","SLM","01","Hiệu lực",false)}
     </div>`,
 
   dashboard: () => `
@@ -227,15 +261,23 @@ function PVseason(){
   ov.querySelectorAll("[data-season]").forEach(b=>b.addEventListener("click",()=>{applySeason(b.dataset.season);ov.remove();}));
 }
 function route(){
-  const r = (location.hash||"#/").replace(/^#\/?/,"");
+  let r = (location.hash||"#/").replace(/^#\/?/,"");
+  if(r==="dashboard"&&ROLE!=="QA")r="";      // KCS không có Bảng ĐK
   const key = VIEWS[r]?r:"";
   document.getElementById("app-main").innerHTML = VIEWS[key]();
   document.querySelectorAll(".app-tab").forEach(a=>a.classList.toggle("app-active",a.getAttribute("data-route")===r));
   window.scrollTo(0,0);
 }
-document.getElementById("app-root").innerHTML = shell();
-applySeason("spring");
-document.getElementById("app-season-btn").addEventListener("click",PVseason);
+function mountShell(){
+  const cur=(document.getElementById("app-root").className.match(/app-(spring|summer|autumn|winter)/)||[])[1]||"spring";
+  document.getElementById("app-root").innerHTML = shell();
+  applySeason(cur);
+  document.getElementById("app-season-btn").addEventListener("click",PVseason);
+  document.getElementById("app-role-chip").addEventListener("click",()=>{
+    ROLE = ROLE==="KCS"?"QA":"KCS"; location.hash="#/"; mountShell(); route();
+  });
+}
+mountShell();
 window.addEventListener("hashchange",route);
 route();
 </script>

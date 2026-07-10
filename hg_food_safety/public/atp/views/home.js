@@ -8,13 +8,14 @@ export async function render({ container }) {
   catch (e) { container.innerHTML = `<div class="app-alert app-alert-red">${escapeHtml(e.message)}</div>`; return; }
 
   const hold = d.batches_on_hold || 0;
+  const title = d.role === "QA" ? "Công việc QA — quản lý & giám sát" : "Công việc KCS hôm nay";
   const groups = (d.groups || []).map((g) => `
     <h3 class="app-h3">${escapeHtml(g.group)}</h3>
     <div class="app-tasklist">${g.tasks.map(taskRow).join("")}</div>`).join("");
 
   container.innerHTML = `
     ${hold ? `<div class="app-banner app-banner-red"><span class="material-symbols-outlined">warning</span><span><b>${formatNumber(hold)}</b> lô đang bị cô lập — cần xử lý</span></div>` : ""}
-    <h2 class="app-h2">Công việc cần làm</h2>
+    <h2 class="app-h2">${escapeHtml(title)}</h2>
     <div class="app-grid">
       ${stat("Cần làm", d.open_count, "", "pending_actions")}
       ${stat("Trễ hạn", d.overdue_count, d.overdue_count ? "red" : "", "schedule")}
