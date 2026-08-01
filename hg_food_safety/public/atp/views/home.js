@@ -8,26 +8,52 @@ export async function render({ container }) {
   catch (e) { container.innerHTML = `<div class="app-alert app-alert-red">${escapeHtml(e.message)}</div>`; return; }
 
   const hold = d.batches_on_hold || 0;
-  const groups = (d.groups || []).map((g) => `
-    <h3 class="app-h3"><span class="material-symbols-outlined app-h3-ic">${escapeHtml(g.icon || "task_alt")}</span>
-      ${escapeHtml(g.group)} <span class="app-badge">${g.tasks.length}</span></h3>
-    <div class="app-tasklist">${g.tasks.map(taskRow).join("")}</div>`).join("");
-
   const overdue = d.overdue_count || 0;
   const sub = `${formatNumber(d.open_count)} việc cần làm${overdue ? ` · <b class="app-sub-late">${formatNumber(overdue)} trễ hạn</b>` : ""}`;
 
-  container.innerHTML = `
-    ${hold ? `<div class="app-banner app-banner-red"><span class="material-symbols-outlined">warning</span><span><b>${formatNumber(hold)}</b> lô đang bị cô lập — cần xử lý</span></div>` : ""}
-    <h2 class="app-h2">Công việc cần làm</h2>
-    ${d.open_count ? `<div class="app-muted" style="margin:-8px 0 6px;font-size:13px">${sub}</div>` : ""}
-    ${groups || '<div class="app-alert app-alert-ok">Không còn công việc nào đang chờ. 👍</div>'}`;
+  const paint = () => {
+    const mode = getMode();
+    const list = (mode === "freq" ? d.groups_freq : d.groups) || [];
+    const groups = list.map((g) => `
+      <h3 class="app-h3"><span class="material-symbols-outlined app-h3-ic">${escapeHtml(g.icon || "task_alt")}</span>
+        ${escapeHtml(g.group)} <span class="app-badge">${g.tasks.length}</span></h3>
+      <div class="app-tasklist">${g.tasks.map(taskRow).join("")}</div>`).join("");
 
-  container.querySelectorAll("[data-done]").forEach((b) =>
-    b.addEventListener("click", async () => {
-      b.disabled = true; b.textContent = "Đang lưu...";
-      try { await call("hg_food_safety.api.portal.mark_task_done", { log: b.dataset.done }); render({ container }); }
-      catch (e) { b.disabled = false; b.textContent = "Đánh dấu đã làm"; alert(e.message); }
-    }));
+    container.innerHTML = `
+      ${hold ? `<div class="app-banner app-banner-red"><span class="material-symbols-outlined">warning</span><span><b>${formatNumber(hold)}</b> lô đang bị cô lập — cần xử lý</span></div>` : ""}
+      <h2 class="app-h2">Công việc cần làm</h2>
+      ${d.open_count ? `<div class="app-listbar">
+        <span class="app-muted">${sub}</span>
+        <div class="app-seg" role="group" aria-label="Cách sắp xếp">
+          ${segBtn("domain", mode, "category", "Danh mục")}
+          ${segBtn("freq", mode, "event_repeat", "Tần suất")}
+        </div></div>` : ""}
+      ${groups || '<div class="app-alert app-alert-ok">Không còn công việc nào đang chờ. 👍</div>'}`;
+
+    container.querySelectorAll("[data-mode]").forEach((b) =>
+      b.addEventListener("click", () => { setMode(b.dataset.mode); paint(); }));
+
+    container.querySelectorAll("[data-done]").forEach((b) =>
+      b.addEventListener("click", async () => {
+        b.disabled = true; b.textContent = "Đang lưu...";
+        try { await call("hg_food_safety.api.portal.mark_task_done", { log: b.dataset.done }); render({ container }); }
+        catch (e) { b.disabled = false; b.textContent = "Đánh dấu đã làm"; alert(e.message); }
+      }));
+  };
+  paint();
+}
+
+const MODE_KEY = "atp_task_view";
+function getMode() {
+  try { return localStorage.getItem(MODE_KEY) === "freq" ? "freq" : "domain"; }
+  catch (e) { return "domain"; }
+}
+function setMode(m) {
+  try { localStorage.setItem(MODE_KEY, m); } catch (e) { /* private mode */ }
+}
+function segBtn(mode, cur, icon, label) {
+  return `<button class="app-seg-btn ${cur === mode ? "is-on" : ""}" data-mode="${mode}"
+    aria-pressed="${cur === mode}"><span class="material-symbols-outlined">${icon}</span>${escapeHtml(label)}</button>`;
 }
 
 function taskRow(t) {

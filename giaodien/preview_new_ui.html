@@ -64,56 +64,78 @@ function task(title,freq,late,form){
     <div class="app-task-meta">${chip}<span class="app-task-freq">${freq}</span></div></div><div class="app-task-act">${act}</div></div>`;
 }
 
+// ---- Mock cong viec: {ten, tan suat, tre, co bieu mau, danh muc} ----
+// Thu tu khop DOMAIN_ORDER trong hg_food_safety/api/portal.py
+const DOMAINS=[
+  ["hygiene","cleaning_services","Kiểm soát hiện trường & vệ sinh"],
+  ["process","precision_manufacturing","Kiểm soát quá trình sản xuất"],
+  ["product","inventory","Kiểm soát thành phẩm & lưu mẫu"],
+  ["water","water_drop","Kiểm soát nước & môi trường"],
+  ["equip","build","Thiết bị & hiệu chuẩn"],
+  ["recall","sync_problem","Thu hồi & truy xuất"],
+  ["system","folder_managed","Hệ thống & tài liệu"],
+];
+const FREQS=[
+  ["Mỗi ca","schedule"],["Hằng ngày","today"],["15 ngày","date_range"],
+  ["Hằng tháng","calendar_month"],["Hằng quý","event_repeat"],
+  ["6 tháng","calendar_view_month"],["Hằng năm","event"],["Khi phát sinh","bolt"],
+];
+const TASKS_KCS=[
+  ["Giám sát OPRP theo ca","Mỗi ca",false,true,"process"],
+  ["Kiểm tra dị vật / lưới sàng / đầu dò","Mỗi ca",true,true,"process"],
+  ["Kiểm tra khối lượng, hình dạng viên bánh (≥3 lần/ca/máy)","Mỗi ca",false,false,"process"],
+  ["Kiểm tra độ kín mối hàn nilon khi đóng gói (≥2 lần/ca)","Mỗi ca",false,false,"process"],
+  ["Nhật ký vệ sinh đầu/cuối ca","Hằng ngày",false,true,"hygiene"],
+  ["Kiểm tra vệ sinh cá nhân, sức khỏe, bảo hộ công nhân","Hằng ngày",false,false,"hygiene"],
+  ["Kiểm soát lây nhiễm chéo trong sản xuất","Hằng ngày",true,false,"hygiene"],
+  ["Thu gom, xử lý chất thải trong và sau sản xuất","Hằng ngày",false,false,"hygiene"],
+  ["Kiểm tra thành phẩm mỗi lô","Hằng ngày",false,false,"product"],
+  ["Lấy mẫu lưu cuối ngày","Hằng ngày",true,true,"product"],
+  ["Xả nước đầu vòi + cảm quan nước","Hằng ngày",false,true,"water"],
+  ["Kiểm tra tình trạng thiết bị sản xuất","Hằng ngày",false,false,"equip"],
+];
+const TASKS_QA=[
+  ["Đánh giá nội bộ toàn bộ bộ phận","Hằng năm",false,false,"system"],
+  ["Thẩm tra hệ thống HACCP/OPRP","Hằng năm",true,false,"system"],
+  ["Họp xem xét của lãnh đạo","Hằng năm",false,false,"system"],
+  ["Hiệu chuẩn/kiểm định thiết bị đo","6 tháng",false,false,"equip"],
+  ["Bảo dưỡng định kỳ thiết bị sản xuất","6 tháng",false,false,"equip"],
+  ["Diễn tập thu hồi (mock recall)","Hằng năm",false,false,"recall"],
+];
+let TASKMODE = "domain";   // "domain" | "freq"
+window.PVmode = (m) => { TASKMODE = m; route(); };
+
+function taskGroups(list){
+  // Gom theo danh muc hoac theo tan suat, giu dung thu tu nhu backend
+  const keys = TASKMODE==="freq" ? FREQS.map(f=>f[0]) : DOMAINS.map(d=>d[0]);
+  const meta = TASKMODE==="freq"
+    ? Object.fromEntries(FREQS.map(f=>[f[0],{icon:f[1],label:f[0]}]))
+    : Object.fromEntries(DOMAINS.map(d=>[d[0],{icon:d[1],label:d[2]}]));
+  const pick = (t) => TASKMODE==="freq" ? t[1] : t[4];
+  const buckets={};
+  list.forEach(t=>{ (buckets[pick(t)]=buckets[pick(t)]||[]).push(t); });
+  return keys.filter(k=>buckets[k]).map(k=>
+    dom(meta[k].icon, meta[k].label, buckets[k].length) +
+    `<div class="app-tasklist">${buckets[k].map(t=>task(t[0],t[1],t[2],t[3])).join("")}</div>`
+  ).join("");
+}
+function listbar(n,late){
+  const b=(m,ic,lb)=>`<button class="app-seg-btn ${TASKMODE===m?"is-on":""}" aria-pressed="${TASKMODE===m}"
+    onclick="PVmode('${m}')">${sym(ic)}${lb}</button>`;
+  return `<div class="app-listbar"><span class="app-muted">${n} việc cần làm · <b class="app-sub-late">${late} trễ hạn</b></span>
+    <div class="app-seg">${b("domain","category","Danh mục")}${b("freq","event_repeat","Tần suất")}</div></div>`;
+}
+function homeView(){
+  const list = ROLE==="QA" ? TASKS_QA : TASKS_KCS;
+  return `
+    <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
+    <h2 class="app-h2">Công việc cần làm</h2>
+    ${listbar(list.length, list.filter(t=>t[2]).length)}
+    ${taskGroups(list)}`;
+}
+
 const VIEWS = {
-  "": () => ROLE === "QA" ? `
-    <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
-    <h2 class="app-h2">Công việc cần làm</h2>
-    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">6 việc cần làm · <b class="app-sub-late">1 trễ hạn</b></div>
-    ${dom("folder_managed","Hệ thống & tài liệu",3)}
-    <div class="app-tasklist">
-      ${task("Đánh giá nội bộ toàn bộ bộ phận","Hằng năm",false,false)}
-      ${task("Thẩm tra hệ thống HACCP/OPRP","Hằng năm",true,false)}
-      ${task("Họp xem xét của lãnh đạo","Hằng năm",false,false)}
-    </div>
-    ${dom("build","Thiết bị & hiệu chuẩn",2)}
-    <div class="app-tasklist">
-      ${task("Hiệu chuẩn/kiểm định thiết bị đo","6 tháng",false,false)}
-      ${task("Bảo dưỡng định kỳ thiết bị sản xuất","6 tháng",false,false)}
-    </div>
-    ${dom("sync_problem","Thu hồi & truy xuất",1)}
-    <div class="app-tasklist">
-      ${task("Diễn tập thu hồi (mock recall)","Hằng năm",false,false)}
-    </div>` : `
-    <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
-    <h2 class="app-h2">Công việc cần làm</h2>
-    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">12 việc cần làm · <b class="app-sub-late">2 trễ hạn</b></div>
-    ${dom("precision_manufacturing","Kiểm soát quá trình sản xuất",4)}
-    <div class="app-tasklist">
-      ${task("Giám sát OPRP theo ca","Mỗi ca",false,true)}
-      ${task("Kiểm tra dị vật / lưới sàng / đầu dò","Mỗi ca",true,true)}
-      ${task("Kiểm tra khối lượng, hình dạng viên bánh (≥3 lần/ca/máy)","Mỗi ca",false,false)}
-      ${task("Kiểm tra độ kín mối hàn nilon khi đóng gói (≥2 lần/ca)","Mỗi ca",false,false)}
-    </div>
-    ${dom("cleaning_services","Kiểm soát hiện trường & vệ sinh",4)}
-    <div class="app-tasklist">
-      ${task("Nhật ký vệ sinh đầu/cuối ca","Hằng ngày",false,true)}
-      ${task("Kiểm tra vệ sinh cá nhân, sức khỏe, bảo hộ công nhân","Hằng ngày",false,false)}
-      ${task("Kiểm soát lây nhiễm chéo trong sản xuất","Hằng ngày",true,false)}
-      ${task("Thu gom, xử lý chất thải trong và sau sản xuất","Hằng ngày",false,false)}
-    </div>
-    ${dom("inventory","Kiểm soát thành phẩm & lưu mẫu",2)}
-    <div class="app-tasklist">
-      ${task("Kiểm tra thành phẩm mỗi lô","Hằng ngày",false,false)}
-      ${task("Lấy mẫu lưu cuối ngày","Hằng ngày",true,true)}
-    </div>
-    ${dom("water_drop","Kiểm soát nước & môi trường",1)}
-    <div class="app-tasklist">
-      ${task("Xả nước đầu vòi + cảm quan nước","Hằng ngày",false,true)}
-    </div>
-    ${dom("build","Thiết bị & hiệu chuẩn",1)}
-    <div class="app-tasklist">
-      ${task("Kiểm tra tình trạng thiết bị sản xuất","Hằng ngày",false,false)}
-    </div>`,
+  "": homeView,
 
   trace: () => `
     <h2 class="app-h2">Truy xuất theo lô</h2>

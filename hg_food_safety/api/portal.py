@@ -58,6 +58,15 @@ FREQ_VI = {
     "Hang thang": "Hằng tháng", "Hang quy": "Hằng quý", "6 thang": "6 tháng",
     "Hang nam": "Hằng năm", "Khi phat sinh": "Khi phát sinh",
 }
+# Thu tu hien thi khi gom theo TAN SUAT: chu ky ngan (gap nhat) len truoc.
+FREQ_ORDER = ["Moi ca", "Hang ngay", "15 ngay", "Hang thang",
+              "Hang quy", "6 thang", "Hang nam", "Khi phat sinh"]
+FREQ_ICON = {
+    "Moi ca": "schedule", "Hang ngay": "today", "15 ngay": "date_range",
+    "Hang thang": "calendar_month", "Hang quy": "event_repeat",
+    "6 thang": "calendar_view_month", "Hang nam": "event",
+    "Khi phat sinh": "bolt",
+}
 TASK_VI = {
     "Giam sat OPRP theo ca": "Giám sát OPRP theo ca",
     "Kiem tra di vat / luoi sang / dau do": "Kiểm tra dị vật / lưới sàng / đầu dò",
@@ -172,19 +181,26 @@ def today_tasks() -> dict:
             if l.status == "Tre":
                 cur["status"] = "Tre"
 
-    groups = {}
+    by_domain, by_freq = {}, {}
     visible = []
     for l in per_task.values():
+        freq_raw = l.frequency
         l["title"] = TASK_VI.get(l.title, l.title)
-        l["frequency"] = FREQ_VI.get(l.frequency, l.frequency)
+        l["frequency"] = FREQ_VI.get(freq_raw, freq_raw)
         l["task_group"] = GROUP_VI.get(l.task_group, l.task_group)
-        groups.setdefault(l.pop("_domain"), []).append(l)
+        by_domain.setdefault(l.pop("_domain"), []).append(l)
+        by_freq.setdefault(freq_raw or "Khac", []).append(l)
         visible.append(l)
-    ordered = [{"group": DOMAIN_VI.get(d, d), "icon": DOMAIN_ICON.get(d, "task_alt"), "tasks": groups[d]}
-               for d in DOMAIN_ORDER if d in groups]
-    for d in groups:
-        if d not in DOMAIN_ORDER:
-            ordered.append({"group": DOMAIN_VI.get(d, "Khác"), "icon": "task_alt", "tasks": groups[d]})
+
+    def _order(buckets, keys, label, icons, fallback_label):
+        out = [{"group": label.get(k, k), "icon": icons.get(k, "task_alt"), "tasks": buckets[k]}
+               for k in keys if k in buckets]
+        out += [{"group": label.get(k, fallback_label), "icon": "task_alt", "tasks": buckets[k]}
+                for k in buckets if k not in keys]
+        return out
+
+    ordered = _order(by_domain, DOMAIN_ORDER, DOMAIN_VI, DOMAIN_ICON, "Khác")
+    ordered_freq = _order(by_freq, FREQ_ORDER, FREQ_VI, FREQ_ICON, "Khác")
     done_logs = frappe.get_all("ATTP Task Log",
         filters={"status": "Da lam", "done_on": [">=", nowdate() + " 00:00:00"]}, fields=["task"])
     done_today = sum(1 for d in done_logs if _task_visible(task_info(d.task).get("role_scope"), role))
@@ -193,6 +209,7 @@ def today_tasks() -> dict:
         "role": role,
         "is_manager": is_manager(),
         "groups": ordered,
+        "groups_freq": ordered_freq,
         "open_count": len(visible),
         "overdue_count": sum(1 for l in visible if l.status == "Tre"),
         "done_today": done_today,
