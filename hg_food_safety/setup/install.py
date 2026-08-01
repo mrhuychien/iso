@@ -130,17 +130,94 @@ SEED_TASKS = [
 ]
 
 
+# Danh muc kiem soat (nghiep vu) cho tung cong viec -> nhom tren portal.
+D_NL = "Kiem soat nguyen lieu - NCC"
+D_HT = "Kiem soat hien truong - ve sinh"
+D_SX = "Kiem soat qua trinh san xuat"
+D_TP = "Kiem soat thanh pham - luu mau"
+D_NM = "Kiem soat nuoc - moi truong"
+D_TB = "Thiet bi - hieu chuan"
+D_AT = "An toan - ung pho su co"
+D_TH = "Thu hoi - truy xuat"
+D_CN = "Con nguoi - dao tao"
+D_HS = "He thong - tai lieu"
+
+TASK_DOMAIN = {
+    # Nguyen lieu & nha cung cap
+    "Danh gia & duyet nha cung cap": D_NL,
+    "Kiem tra chat luong hang nhap": D_NL,
+    # Hien truong & ve sinh
+    "Nhat ky ve sinh dau/cuoi ca": D_HT,
+    "Kiem tra ve sinh ca nhan - suc khoe - bao ho cong nhan": D_HT,
+    "Kiem soat lay nhiem cheo trong san xuat": D_HT,
+    "Thu gom - xu ly chat thai trong va sau san xuat": D_HT,
+    "Diet ruoi muoi khu nha xuong": D_HT,
+    "Ve sinh dinh ky + diet con trung/chuot": D_HT,
+    "Diet chuot toan bo khu vuc nha xuong": D_HT,
+    "Ve sinh tran nha - quat thong gio - bong den - tu dien": D_HT,
+    # Qua trinh san xuat
+    "Giam sat OPRP theo ca": D_SX,
+    "Kiem tra di vat / luoi sang / dau do": D_SX,
+    "Kiem tra khoi luong - hinh dang vien banh (>=3 lan/ca/may)": D_SX,
+    "Kiem tra do kin moi han nilon khi dong goi (>=2 lan/ca)": D_SX,
+    "Ghi nhan hang tai che (rework)": D_SX,
+    "Ra soat danh muc thuy tinh - nhua gion": D_SX,
+    # Thanh pham & luu mau
+    "Kiem tra thanh pham moi lo": D_TP,
+    "Lay mau luu cuoi ngay": D_TP,
+    "Tham dinh han su dung (shelf-life)": D_TP,
+    # Nuoc & moi truong
+    "Xa nuoc dau voi + cam quan nuoc": D_NM,
+    "Lay ket qua kiem nghiem chat luong nuoc tu nha cung cap": D_NM,
+    "Giam sat moi truong (swab be mat/khong khi)": D_NM,
+    "Kiem nghiem nuoc/san pham dinh ky": D_NM,
+    "Thau rua - ve sinh be nuoc": D_NM,
+    # Thiet bi & hieu chuan
+    "Kiem tra tinh trang thiet bi san xuat": D_TB,
+    "Bao duong dinh ky thiet bi san xuat": D_TB,
+    "Hieu chuan/kiem dinh thiet bi do": D_TB,
+    "Sua chua thiet bi khi co su co": D_TB,
+    # An toan & ung pho su co
+    "Kiem tra thiet bi PCCC": D_AT,
+    "Theo doi tinh hinh phat sinh dich benh": D_AT,
+    "Dien tap tinh huong khan cap": D_AT,
+    "Ung pho tinh huong khan cap (hoa hoan - bao lu - dich benh)": D_AT,
+    "Danh gia phong ve thuc pham (TACCP/VACCP)": D_AT,
+    # Thu hoi & truy xuat
+    "Dien tap thu hoi (mock recall)": D_TH,
+    "Thu hoi san pham mat an toan": D_TH,
+    "Xu ly san pham khach hang tra ve": D_TH,
+    # Con nguoi & dao tao
+    "Tap huan kien thuc VSATTP": D_CN,
+    "Kham suc khoe dinh ky cong nhan": D_CN,
+    # He thong & tai lieu
+    "Danh gia noi bo toan bo bo phan": D_HS,
+    "Tham tra he thong HACCP/OPRP": D_HS,
+    "Xac dinh lai rui ro & co hoi": D_HS,
+    "Cap nhat boi canh to chuc": D_HS,
+    "Hop xem xet cua lanh dao": D_HS,
+    "Cap nhat muc tieu ATTP nam va ke hoach thuc hien": D_HS,
+    "Ra soat ho so het han luu - lap bien ban huy": D_HS,
+    "Cap nhat danh muc tai lieu noi bo/ben ngoai/ho so": D_HS,
+    "Sua doi - ban hanh tai lieu": D_HS,
+    "Kiem soat su khong phu hop & hanh dong khac phuc": D_HS,
+}
+
+
 def ensure_tasks():
     for (title, group, freq, resp, form, dt, proc, scope) in SEED_TASKS:
+        domain = TASK_DOMAIN.get(title)
         existing = frappe.db.get_value("ATTP Task", {"title": title}, "name")
         if existing:
-            # Backfill vai tro phu trach cho ban ghi da co (khi con trong)
+            # Backfill vai tro / danh muc cho ban ghi da co (khi con trong)
             if not frappe.db.get_value("ATTP Task", existing, "role_scope"):
                 frappe.db.set_value("ATTP Task", existing, "role_scope", scope)
+            if domain and not frappe.db.get_value("ATTP Task", existing, "task_domain"):
+                frappe.db.set_value("ATTP Task", existing, "task_domain", domain)
             continue
         frappe.get_doc({
             "doctype": "ATTP Task", "title": title, "task_group": group,
             "frequency": freq, "responsible": resp, "linked_form": form,
             "linked_doctype": dt or None, "procedure_ref": proc, "active": 1,
-            "role_scope": scope,
+            "role_scope": scope, "task_domain": domain,
         }).insert(ignore_permissions=True)

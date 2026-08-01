@@ -10,7 +10,8 @@ export async function render({ container }) {
   const hold = d.batches_on_hold || 0;
   const title = d.role === "QA" ? "Công việc QA — quản lý & giám sát" : "Công việc KCS hôm nay";
   const groups = (d.groups || []).map((g) => `
-    <h3 class="app-h3">${escapeHtml(g.group)}</h3>
+    <h3 class="app-h3"><span class="material-symbols-outlined app-h3-ic">${escapeHtml(g.icon || "task_alt")}</span>
+      ${escapeHtml(g.group)} <span class="app-badge">${g.tasks.length}</span></h3>
     <div class="app-tasklist">${g.tasks.map(taskRow).join("")}</div>`).join("");
 
   container.innerHTML = `

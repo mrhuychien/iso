@@ -12,6 +12,39 @@ ALLOWED_CREATE = {
 ALLOWED_LINK = {"Batch", "Item", "Employee"}
 GROUP_ORDER = ["Hang ngay / Moi ca", "Dinh ky ngan", "Dinh ky 6 thang", "Hang nam", "Khi phat sinh"]
 
+# Danh muc kiem soat (nghiep vu) — thu tu hien thi tren portal
+DOMAIN_ORDER = [
+    "Kiem soat nguyen lieu - NCC", "Kiem soat hien truong - ve sinh",
+    "Kiem soat qua trinh san xuat", "Kiem soat thanh pham - luu mau",
+    "Kiem soat nuoc - moi truong", "Thiet bi - hieu chuan",
+    "An toan - ung pho su co", "Thu hoi - truy xuat",
+    "Con nguoi - dao tao", "He thong - tai lieu",
+]
+DOMAIN_VI = {
+    "Kiem soat nguyen lieu - NCC": "Kiểm soát nguyên liệu & nhà cung cấp",
+    "Kiem soat hien truong - ve sinh": "Kiểm soát hiện trường & vệ sinh",
+    "Kiem soat qua trinh san xuat": "Kiểm soát quá trình sản xuất",
+    "Kiem soat thanh pham - luu mau": "Kiểm soát thành phẩm & lưu mẫu",
+    "Kiem soat nuoc - moi truong": "Kiểm soát nước & môi trường",
+    "Thiet bi - hieu chuan": "Thiết bị & hiệu chuẩn",
+    "An toan - ung pho su co": "An toàn & ứng phó sự cố",
+    "Thu hoi - truy xuat": "Thu hồi & truy xuất",
+    "Con nguoi - dao tao": "Con người & đào tạo",
+    "He thong - tai lieu": "Hệ thống & tài liệu",
+}
+DOMAIN_ICON = {
+    "Kiem soat nguyen lieu - NCC": "inventory_2",
+    "Kiem soat hien truong - ve sinh": "cleaning_services",
+    "Kiem soat qua trinh san xuat": "precision_manufacturing",
+    "Kiem soat thanh pham - luu mau": "inventory",
+    "Kiem soat nuoc - moi truong": "water_drop",
+    "Thiet bi - hieu chuan": "build",
+    "An toan - ung pho su co": "local_fire_department",
+    "Thu hoi - truy xuat": "sync_problem",
+    "Con nguoi - dao tao": "groups",
+    "He thong - tai lieu": "folder_managed",
+}
+
 # Nhan hien thi co dau (DB luu ASCII de khop logic period_key / GROUP_ORDER).
 GROUP_VI = {
     "Hang ngay / Moi ca": "Hằng ngày / Mỗi ca",
@@ -112,7 +145,8 @@ def today_tasks() -> dict:
     cache = {}
     def task_info(task):
         if task not in cache:
-            cache[task] = frappe.db.get_value("ATTP Task", task, ["linked_form", "role_scope"], as_dict=True) or {}
+            cache[task] = frappe.db.get_value(
+                "ATTP Task", task, ["linked_form", "role_scope", "task_domain"], as_dict=True) or {}
         return cache[task]
     groups = {}
     visible = []
@@ -123,12 +157,14 @@ def today_tasks() -> dict:
         l["linked_form"] = info.get("linked_form") or ""
         l["title"] = TASK_VI.get(l.title, l.title)
         l["frequency"] = FREQ_VI.get(l.frequency, l.frequency)
-        groups.setdefault(l.task_group or "Khac", []).append(l)
+        l["task_group"] = GROUP_VI.get(l.task_group, l.task_group)
+        groups.setdefault(info.get("task_domain") or "Khac", []).append(l)
         visible.append(l)
-    ordered = [{"group": GROUP_VI.get(g, g), "tasks": groups[g]} for g in GROUP_ORDER if g in groups]
-    for g in groups:
-        if g not in GROUP_ORDER:
-            ordered.append({"group": GROUP_VI.get(g, g), "tasks": groups[g]})
+    ordered = [{"group": DOMAIN_VI.get(d, d), "icon": DOMAIN_ICON.get(d, "task_alt"), "tasks": groups[d]}
+               for d in DOMAIN_ORDER if d in groups]
+    for d in groups:
+        if d not in DOMAIN_ORDER:
+            ordered.append({"group": DOMAIN_VI.get(d, "Khác"), "icon": "task_alt", "tasks": groups[d]})
     done_logs = frappe.get_all("ATTP Task Log",
         filters={"status": "Da lam", "done_on": [">=", nowdate() + " 00:00:00"]}, fields=["task"])
     done_today = sum(1 for d in done_logs if _task_visible(task_info(d.task).get("role_scope"), role))
