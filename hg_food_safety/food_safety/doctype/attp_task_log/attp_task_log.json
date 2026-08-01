@@ -10,7 +10,7 @@
   {"fieldname":"column_break_a","fieldtype":"Column Break"},
   {"fieldname":"period_date","fieldtype":"Date","label":"Ngay ky","default":"Today","in_list_view":1},
   {"fieldname":"period_key","fieldtype":"Data","label":"Period key","hidden":1},
-  {"fieldname":"status","fieldtype":"Select","label":"Trang thai","options":"Cho lam\nDa lam\nTre","default":"Cho lam","in_list_view":1},
+  {"fieldname":"status","fieldtype":"Select","label":"Trang thai","options":"Cho lam\nDa lam\nTre\nBo lo","default":"Cho lam","in_list_view":1},
   {"fieldname":"section_done","fieldtype":"Section Break","label":"Thuc hien"},
   {"fieldname":"done_by","fieldtype":"Link","label":"Nguoi thuc hien","options":"User"},
   {"fieldname":"done_on","fieldtype":"Datetime","label":"Thoi diem"},

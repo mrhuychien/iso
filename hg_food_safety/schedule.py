@@ -23,8 +23,13 @@ def period_key(freq, d=None):
     return None  # Khi phat sinh -> khong tu sinh
 
 
+# Cong viec chu ky ngan: khong the lam bu ky truoc -> tu dong dong ky cu
+# ("Bo lo") de checklist khong lap lai cung mot viec moi ngay.
+EXPIRE_FREQ = {"Hang ngay", "Moi ca"}
+
+
 def generate_task_logs():
-    """Sinh log cho cac cong viec dinh ky den ky; danh dau tre cac log qua ky."""
+    """Sinh log cho cac cong viec dinh ky den ky; dong ky cu; danh dau tre."""
     today = nowdate()
     tasks = frappe.get_all("ATTP Task", filters={"active": 1},
                            fields=["name", "title", "task_group", "frequency"])
@@ -39,8 +44,20 @@ def generate_task_logs():
             "task_group": t.task_group, "frequency": t.frequency,
             "period_date": today, "period_key": key, "status": "Cho lam",
         }).insert(ignore_permissions=True)
+    expire_stale_logs()
     mark_overdue()
     frappe.db.commit()
+
+
+def expire_stale_logs():
+    """Ky cu cua cong viec theo ca/ngay chua lam -> 'Bo lo' (khong lam bu duoc)."""
+    for l in frappe.get_all("ATTP Task Log",
+                            filters={"status": ["in", ["Cho lam", "Tre"]],
+                                     "frequency": ["in", list(EXPIRE_FREQ)]},
+                            fields=["name", "frequency", "period_key"]):
+        cur = period_key(l.frequency)
+        if cur and l.period_key and l.period_key != cur:
+            frappe.db.set_value("ATTP Task Log", l.name, "status", "Bo lo")
 
 
 def mark_overdue():

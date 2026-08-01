@@ -36,8 +36,10 @@ function taskRow(t) {
   const action = t.linked_form
     ? `<a class="app-btn-sm" href="#/entry?dt=${escapeHtml(t.linked_form)}">Ghi</a>`
     : `<button class="app-btn-sm" data-done="${escapeHtml(t.name)}">Đánh dấu đã làm</button>`;
+  const missed = Number(t.missed) > 0
+    ? ` <span class="app-task-freq">· bỏ lỡ ${escapeHtml(String(t.missed))} kỳ</span>` : "";
   return `<div class="app-task">
     <div class="app-task-main"><div class="app-task-title">${escapeHtml(t.title)}</div>
-      <div class="app-task-meta">${chip} <span class="app-task-freq">${escapeHtml(t.frequency)}</span></div></div>
+      <div class="app-task-meta">${chip} <span class="app-task-freq">${escapeHtml(t.frequency)}</span>${missed}</div></div>
     <div class="app-task-act">${action}</div></div>`;
 }

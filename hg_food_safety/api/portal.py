@@ -148,17 +148,37 @@ def today_tasks() -> dict:
             cache[task] = frappe.db.get_value(
                 "ATTP Task", task, ["linked_form", "role_scope", "task_domain"], as_dict=True) or {}
         return cache[task]
-    groups = {}
-    visible = []
+    # Moi CONG VIEC chi hien 1 dong: giu ky moi nhat, dem so ky cu con ton.
+    per_task = {}
     for l in logs:
         info = task_info(l.task)
         if not _task_visible(info.get("role_scope"), role):
             continue
-        l["linked_form"] = info.get("linked_form") or ""
+        cur = per_task.get(l.task)
+        if cur is None:
+            l["missed"] = 0
+            l["_domain"] = info.get("task_domain") or "Khac"
+            l["linked_form"] = info.get("linked_form") or ""
+            per_task[l.task] = l
+        elif (l.period_date or "") > (cur.period_date or ""):
+            l["missed"] = cur["missed"] + 1
+            l["_domain"] = cur["_domain"]
+            l["linked_form"] = cur["linked_form"]
+            if cur.status == "Tre":
+                l["status"] = "Tre"
+            per_task[l.task] = l
+        else:
+            cur["missed"] += 1
+            if l.status == "Tre":
+                cur["status"] = "Tre"
+
+    groups = {}
+    visible = []
+    for l in per_task.values():
         l["title"] = TASK_VI.get(l.title, l.title)
         l["frequency"] = FREQ_VI.get(l.frequency, l.frequency)
         l["task_group"] = GROUP_VI.get(l.task_group, l.task_group)
-        groups.setdefault(info.get("task_domain") or "Khac", []).append(l)
+        groups.setdefault(l.pop("_domain"), []).append(l)
         visible.append(l)
     ordered = [{"group": DOMAIN_VI.get(d, d), "icon": DOMAIN_ICON.get(d, "task_alt"), "tasks": groups[d]}
                for d in DOMAIN_ORDER if d in groups]
@@ -180,6 +200,16 @@ def today_tasks() -> dict:
     }
 
 
+def _close_older_open(task, keep_log, period_date):
+    """Dong cac ky cu con mo cua cung cong viec -> moi viec chi con 1 dong."""
+    for old in frappe.get_all("ATTP Task Log",
+                              filters={"task": task, "status": ["in", ["Cho lam", "Tre"]],
+                                       "name": ["!=", keep_log]},
+                              fields=["name", "period_date"]):
+        if not period_date or (old.period_date and old.period_date <= period_date):
+            frappe.db.set_value("ATTP Task Log", old.name, "status", "Bo lo")
+
+
 @frappe.whitelist()
 def mark_task_done(log: str, note: str = None) -> dict:
     """Danh dau mot cong viec da lam (cho cong viec khong gan bieu mau)."""
@@ -191,6 +221,7 @@ def mark_task_done(log: str, note: str = None) -> dict:
     if note:
         doc.note = note
     doc.save(ignore_permissions=True)
+    _close_older_open(doc.task, doc.name, doc.period_date)
     return {"name": doc.name, "status": doc.status}
 
 
@@ -242,6 +273,8 @@ def _auto_complete_task(doctype, docname):
                 frappe.db.set_value("ATTP Task Log", lg.name, {
                     "status": "Da lam", "done_by": frappe.session.user,
                     "done_on": now_datetime(), "reference_doctype": doctype, "reference_name": docname})
+                _close_older_open(lg.task, lg.name,
+                                  frappe.db.get_value("ATTP Task Log", lg.name, "period_date"))
                 break
     except Exception:
         frappe.log_error(title="auto_complete_task")
