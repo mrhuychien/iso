@@ -99,6 +99,34 @@ SEED_TASKS = [
     ("Danh gia & duyet nha cung cap", "Khi phat sinh", "Khi phat sinh", "Mua hang", "", "", "QT07", "QA"),
     ("Kiem tra chat luong hang nhap", "Khi phat sinh", "Khi phat sinh", "KCS/Kho", "", "Quality Inspection", "QT07", "QC"),
     ("Thu hoi san pham mat an toan", "Khi phat sinh", "Khi phat sinh", "Doi ATTP", "", "Product Recall", "QT02", "QA"),
+
+    # ── Bo sung theo "Lich cong viec ATTP Hoang Giang.xlsx" (ban goc, 40 viec) ──
+    # Hang ngay / Moi ca (KCS tac nghiep tai xuong)
+    ("Kiem tra ve sinh ca nhan - suc khoe - bao ho cong nhan", "Hang ngay / Moi ca", "Hang ngay", "KCS / To truong", "", "", "PRP-SSOP4,5", "QC"),
+    ("Kiem soat lay nhiem cheo trong san xuat", "Hang ngay / Moi ca", "Hang ngay", "KCS / Truong ca", "", "", "PRP-SSOP3", "QC"),
+    ("Thu gom - xu ly chat thai trong va sau san xuat", "Hang ngay / Moi ca", "Hang ngay", "Phan xuong / KCS", "", "", "PRP-SSOP6", "QC"),
+    ("Kiem tra khoi luong - hinh dang vien banh (>=3 lan/ca/may)", "Hang ngay / Moi ca", "Moi ca", "Cong nhan SX", "", "", "QT08", "QC"),
+    ("Kiem tra do kin moi han nilon khi dong goi (>=2 lan/ca)", "Hang ngay / Moi ca", "Moi ca", "Quan ly SX", "", "", "QT08", "QC"),
+    ("Kiem tra tinh trang thiet bi san xuat", "Hang ngay / Moi ca", "Hang ngay", "Co dien / Phan xuong", "", "", "QT06", "QC"),
+    # Dinh ky ngan
+    ("Lay ket qua kiem nghiem chat luong nuoc tu nha cung cap", "Dinh ky ngan", "Hang thang", "KCS / Van phong", "", "", "PRP-SSOP1", "QC"),
+    ("Theo doi tinh hinh phat sinh dich benh", "Dinh ky ngan", "Hang thang", "Van phong", "", "", "QT03", "QA"),
+    ("Diet chuot toan bo khu vuc nha xuong", "Dinh ky ngan", "Hang quy", "Phan xuong", "", "", "PRP-SSOP7", "QC"),
+    # Dinh ky 6 thang
+    ("Ve sinh tran nha - quat thong gio - bong den - tu dien", "Dinh ky 6 thang", "6 thang", "Phan xuong", "", "", "PRP-SSOP", "QC"),
+    # Hang nam
+    ("Cap nhat boi canh to chuc", "Hang nam", "Hang nam", "Ban ISO", "", "", "QT05", "QA"),
+    ("Hop xem xet cua lanh dao", "Hang nam", "Hang nam", "Ban lanh dao", "", "", "QT01", "QA"),
+    ("Cap nhat muc tieu ATTP nam va ke hoach thuc hien", "Hang nam", "Hang nam", "Ban lanh dao", "", "", "Chinh sach - Muc tieu", "QA"),
+    ("Thau rua - ve sinh be nuoc", "Hang nam", "Hang nam", "Phan xuong", "", "", "KH HACCP", "QC"),
+    ("Ra soat ho so het han luu - lap bien ban huy", "Hang nam", "Hang nam", "Truong bo phan", "", "", "QT01", "QA"),
+    ("Cap nhat danh muc tai lieu noi bo/ben ngoai/ho so", "Hang nam", "Hang nam", "Ban ISO / Cac bo phan", "", "", "QT01", "QA"),
+    # Khi phat sinh
+    ("Sua doi - ban hanh tai lieu", "Khi phat sinh", "Khi phat sinh", "Bo phan de nghi / Ban ISO", "", "Doc Change Request", "QT01", "QA"),
+    ("Kiem soat su khong phu hop & hanh dong khac phuc", "Khi phat sinh", "Khi phat sinh", "Truong bo phan / Ban ISO", "", "Non Conformance", "QT01", "QA"),
+    ("Sua chua thiet bi khi co su co", "Khi phat sinh", "Khi phat sinh", "Co dien / Giam doc", "", "", "QT06", "QC"),
+    ("Ung pho tinh huong khan cap (hoa hoan - bao lu - dich benh)", "Khi phat sinh", "Khi phat sinh", "Ban ATTP / Van phong", "", "", "QT03", "QA"),
+    ("Xu ly san pham khach hang tra ve", "Khi phat sinh", "Khi phat sinh", "Bo phan dong goi / KCS", "", "", "QT02", "QC"),
 ]
 
 

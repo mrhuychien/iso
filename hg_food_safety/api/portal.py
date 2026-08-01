@@ -53,6 +53,28 @@ TASK_VI = {
     "Danh gia & duyet nha cung cap": "Đánh giá & duyệt nhà cung cấp",
     "Kiem tra chat luong hang nhap": "Kiểm tra chất lượng hàng nhập",
     "Thu hoi san pham mat an toan": "Thu hồi sản phẩm mất an toàn",
+    # Bo sung theo lich cong viec goc
+    "Kiem tra ve sinh ca nhan - suc khoe - bao ho cong nhan": "Kiểm tra vệ sinh cá nhân, sức khỏe, bảo hộ công nhân",
+    "Kiem soat lay nhiem cheo trong san xuat": "Kiểm soát lây nhiễm chéo trong sản xuất",
+    "Thu gom - xu ly chat thai trong va sau san xuat": "Thu gom, xử lý chất thải trong và sau sản xuất",
+    "Kiem tra khoi luong - hinh dang vien banh (>=3 lan/ca/may)": "Kiểm tra khối lượng, hình dạng viên bánh (≥3 lần/ca/máy)",
+    "Kiem tra do kin moi han nilon khi dong goi (>=2 lan/ca)": "Kiểm tra độ kín mối hàn nilon khi đóng gói (≥2 lần/ca)",
+    "Kiem tra tinh trang thiet bi san xuat": "Kiểm tra tình trạng thiết bị sản xuất",
+    "Lay ket qua kiem nghiem chat luong nuoc tu nha cung cap": "Lấy kết quả kiểm nghiệm chất lượng nước từ nhà cung cấp",
+    "Theo doi tinh hinh phat sinh dich benh": "Theo dõi tình hình phát sinh dịch bệnh",
+    "Diet chuot toan bo khu vuc nha xuong": "Diệt chuột toàn bộ khu vực nhà xưởng",
+    "Ve sinh tran nha - quat thong gio - bong den - tu dien": "Vệ sinh trần nhà, quạt thông gió, bóng đèn, tủ điện",
+    "Cap nhat boi canh to chuc": "Cập nhật bối cảnh tổ chức",
+    "Hop xem xet cua lanh dao": "Họp xem xét của lãnh đạo",
+    "Cap nhat muc tieu ATTP nam va ke hoach thuc hien": "Cập nhật mục tiêu ATTP năm và kế hoạch thực hiện",
+    "Thau rua - ve sinh be nuoc": "Thau rửa, vệ sinh bể nước",
+    "Ra soat ho so het han luu - lap bien ban huy": "Rà soát hồ sơ hết hạn lưu, lập biên bản hủy",
+    "Cap nhat danh muc tai lieu noi bo/ben ngoai/ho so": "Cập nhật danh mục tài liệu nội bộ/bên ngoài/hồ sơ",
+    "Sua doi - ban hanh tai lieu": "Sửa đổi, ban hành tài liệu",
+    "Kiem soat su khong phu hop & hanh dong khac phuc": "Kiểm soát sự không phù hợp & hành động khắc phục",
+    "Sua chua thiet bi khi co su co": "Sửa chữa thiết bị khi có sự cố",
+    "Ung pho tinh huong khan cap (hoa hoan - bao lu - dich benh)": "Ứng phó tình huống khẩn cấp (hỏa hoạn, bão lũ, dịch bệnh)",
+    "Xu ly san pham khach hang tra ve": "Xử lý sản phẩm khách hàng trả về",
 }
 
 
