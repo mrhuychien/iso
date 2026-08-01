@@ -67,12 +67,8 @@ function task(title,freq,late,form){
 const VIEWS = {
   "": () => ROLE === "QA" ? `
     <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
-    <h2 class="app-h2">Công việc QA — quản lý & giám sát</h2>
-    <div class="app-grid">
-      ${stat("Cần làm",5,"","pending_actions")}
-      ${stat("Trễ hạn",1,"red","schedule")}
-      ${stat("Đã làm hôm nay",3,"","task_alt")}
-    </div>
+    <h2 class="app-h2">Công việc cần làm</h2>
+    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">6 việc cần làm · <b class="app-sub-late">1 trễ hạn</b></div>
     ${dom("folder_managed","Hệ thống & tài liệu",3)}
     <div class="app-tasklist">
       ${task("Đánh giá nội bộ toàn bộ bộ phận","Hằng năm",false,false)}
@@ -89,12 +85,8 @@ const VIEWS = {
       ${task("Diễn tập thu hồi (mock recall)","Hằng năm",false,false)}
     </div>` : `
     <div class="app-banner app-banner-red">${sym("warning")}<span><b>2</b> lô đang bị cô lập — cần xử lý</span></div>
-    <h2 class="app-h2">Công việc KCS hôm nay</h2>
-    <div class="app-grid">
-      ${stat("Cần làm",7,"","pending_actions")}
-      ${stat("Trễ hạn",2,"red","schedule")}
-      ${stat("Đã làm hôm nay",12,"","task_alt")}
-    </div>
+    <h2 class="app-h2">Công việc cần làm</h2>
+    <div class="app-muted" style="margin:-8px 0 6px;font-size:13px">12 việc cần làm · <b class="app-sub-late">2 trễ hạn</b></div>
     ${dom("precision_manufacturing","Kiểm soát quá trình sản xuất",4)}
     <div class="app-tasklist">
       ${task("Giám sát OPRP theo ca","Mỗi ca",false,true)}

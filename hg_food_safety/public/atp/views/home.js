@@ -2,26 +2,24 @@ import { call } from "../lib/api.js";
 import { escapeHtml, formatNumber } from "../lib/format.js";
 
 export async function render({ container }) {
-  container.innerHTML = '<div class="app-card app-muted">Đang tải công việc hôm nay...</div>';
+  container.innerHTML = '<div class="app-card app-muted">Đang tải công việc...</div>';
   let d = {};
   try { d = await call("hg_food_safety.api.portal.today_tasks"); }
   catch (e) { container.innerHTML = `<div class="app-alert app-alert-red">${escapeHtml(e.message)}</div>`; return; }
 
   const hold = d.batches_on_hold || 0;
-  const title = d.role === "QA" ? "Công việc QA — quản lý & giám sát" : "Công việc KCS hôm nay";
   const groups = (d.groups || []).map((g) => `
     <h3 class="app-h3"><span class="material-symbols-outlined app-h3-ic">${escapeHtml(g.icon || "task_alt")}</span>
       ${escapeHtml(g.group)} <span class="app-badge">${g.tasks.length}</span></h3>
     <div class="app-tasklist">${g.tasks.map(taskRow).join("")}</div>`).join("");
 
+  const overdue = d.overdue_count || 0;
+  const sub = `${formatNumber(d.open_count)} việc cần làm${overdue ? ` · <b class="app-sub-late">${formatNumber(overdue)} trễ hạn</b>` : ""}`;
+
   container.innerHTML = `
     ${hold ? `<div class="app-banner app-banner-red"><span class="material-symbols-outlined">warning</span><span><b>${formatNumber(hold)}</b> lô đang bị cô lập — cần xử lý</span></div>` : ""}
-    <h2 class="app-h2">${escapeHtml(title)}</h2>
-    <div class="app-grid">
-      ${stat("Cần làm", d.open_count, "", "pending_actions")}
-      ${stat("Trễ hạn", d.overdue_count, d.overdue_count ? "red" : "", "schedule")}
-      ${stat("Đã làm hôm nay", d.done_today, "", "task_alt")}
-    </div>
+    <h2 class="app-h2">Công việc cần làm</h2>
+    ${d.open_count ? `<div class="app-muted" style="margin:-8px 0 6px;font-size:13px">${sub}</div>` : ""}
     ${groups || '<div class="app-alert app-alert-ok">Không còn công việc nào đang chờ. 👍</div>'}`;
 
   container.querySelectorAll("[data-done]").forEach((b) =>
@@ -42,10 +40,4 @@ function taskRow(t) {
     <div class="app-task-main"><div class="app-task-title">${escapeHtml(t.title)}</div>
       <div class="app-task-meta">${chip} <span class="app-task-freq">${escapeHtml(t.frequency)}</span></div></div>
     <div class="app-task-act">${action}</div></div>`;
-}
-
-function stat(label, val, tone, icon) {
-  const ic = icon ? `<div class="app-stat-ic"><span class="material-symbols-outlined">${icon}</span></div>` : "";
-  return `<div class="app-stat ${tone === "red" ? "app-stat-red" : ""}">${ic}
-    <div class="app-stat-val">${formatNumber(val)}</div><div class="app-stat-label">${escapeHtml(label)}</div></div>`;
 }
