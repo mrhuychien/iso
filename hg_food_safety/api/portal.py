@@ -68,6 +68,8 @@ FREQ_ICON = {
     "Khi phat sinh": "bolt",
 }
 TASK_VI = {
+    # 3 dong duoi thuoc cong viec da bo (RETIRED_TASKS trong setup/install.py).
+    # Van giu ban dich de ho so "Da lam" cu hien dung ten tieng Viet.
     "Giam sat OPRP theo ca": "Giám sát OPRP theo ca",
     "Kiem tra di vat / luoi sang / dau do": "Kiểm tra dị vật / lưới sàng / đầu dò",
     "Kiem tra thanh pham moi lo": "Kiểm tra thành phẩm mỗi lô",

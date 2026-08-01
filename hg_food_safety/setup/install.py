@@ -20,6 +20,7 @@ def run_all():
     ensure_custom_fields()
     ensure_workflows()
     ensure_tasks()
+    retire_tasks()
     ensure_documents()
     frappe.db.commit()
 
@@ -72,12 +73,9 @@ def ensure_documents():
 
 SEED_TASKS = [
     # (title, group, frequency, responsible, linked_form, linked_doctype, procedure, role_scope)
-    ("Giam sat OPRP theo ca", "Hang ngay / Moi ca", "Moi ca", "KCS", "oprp", "OPRP Monitoring Log", "KH.OPRP.01", "QC"),
-    ("Kiem tra di vat / luoi sang / dau do", "Hang ngay / Moi ca", "Moi ca", "KCS", "foreign_body", "Foreign Body Check Log", "QT10", "QC"),
     ("Kiem tra thanh pham moi lo", "Hang ngay / Moi ca", "Hang ngay", "KCS", "", "Quality Inspection", "KH HACCP", "QC"),
     ("Lay mau luu cuoi ngay", "Hang ngay / Moi ca", "Hang ngay", "Ky thuat", "sample", "Sample Retention", "QD.01", "QC"),
     ("Nhat ky ve sinh dau/cuoi ca", "Hang ngay / Moi ca", "Hang ngay", "KCS", "sanitation", "Sanitation Log", "PRP-SSOP2", "QC"),
-    ("Xa nuoc dau voi + cam quan nuoc", "Hang ngay / Moi ca", "Hang ngay", "Cong nhan/KCS", "water", "Water Control Log", "PRP-SSOP1", "QC"),
     ("Ghi nhan hang tai che (rework)", "Khi phat sinh", "Khi phat sinh", "KCS", "rework", "Rework Log", "QT10", "QC"),
     ("Diet ruoi muoi khu nha xuong", "Dinh ky ngan", "15 ngay", "Phan xuong", "", "Periodic Sanitation Log", "PRP-SSOP7", "QC"),
     ("Kiem tra thiet bi PCCC", "Dinh ky ngan", "Hang thang", "Van phong", "", "Fire Equipment Log", "QT03", "QA"),
@@ -156,8 +154,6 @@ TASK_DOMAIN = {
     "Diet chuot toan bo khu vuc nha xuong": D_HT,
     "Ve sinh tran nha - quat thong gio - bong den - tu dien": D_HT,
     # Qua trinh san xuat
-    "Giam sat OPRP theo ca": D_SX,
-    "Kiem tra di vat / luoi sang / dau do": D_SX,
     "Kiem tra khoi luong - hinh dang vien banh (>=3 lan/ca/may)": D_SX,
     "Kiem tra do kin moi han nilon khi dong goi (>=2 lan/ca)": D_SX,
     "Ghi nhan hang tai che (rework)": D_SX,
@@ -167,7 +163,6 @@ TASK_DOMAIN = {
     "Lay mau luu cuoi ngay": D_TP,
     "Tham dinh han su dung (shelf-life)": D_TP,
     # Nuoc & moi truong
-    "Xa nuoc dau voi + cam quan nuoc": D_NM,
     "Lay ket qua kiem nghiem chat luong nuoc tu nha cung cap": D_NM,
     "Giam sat moi truong (swab be mat/khong khi)": D_NM,
     "Kiem nghiem nuoc/san pham dinh ky": D_NM,
@@ -202,6 +197,30 @@ TASK_DOMAIN = {
     "Sua doi - ban hanh tai lieu": D_HS,
     "Kiem soat su khong phu hop & hanh dong khac phuc": D_HS,
 }
+
+
+# Cong viec da bo khoi checklist. Giu ban ghi ATTP Task + cac log "Da lam"
+# de con ho so truy vet, chi ngung sinh ky moi va don cac ky chua lam.
+RETIRED_TASKS = [
+    "Giam sat OPRP theo ca",
+    "Kiem tra di vat / luoi sang / dau do",
+    "Xa nuoc dau voi + cam quan nuoc",
+]
+
+
+def retire_tasks():
+    """Tat cong viec da bo (idempotent, chay moi lan migrate)."""
+    for title in RETIRED_TASKS:
+        name = frappe.db.get_value("ATTP Task", {"title": title}, "name")
+        if not name:
+            continue
+        if frappe.db.get_value("ATTP Task", name, "active"):
+            frappe.db.set_value("ATTP Task", name, "active", 0)
+        # Ky chua lam khong con ap dung -> xoa; log "Da lam" van giu nguyen.
+        for log in frappe.get_all("ATTP Task Log",
+                                  filters={"task": name, "status": ["in", ["Cho lam", "Tre"]]},
+                                  pluck="name"):
+            frappe.delete_doc("ATTP Task Log", log, force=1, ignore_permissions=True)
 
 
 def ensure_tasks():
